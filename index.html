@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Akademik Ses Kalitesi Değerlendirme (MOS) Çalışması</title>
+    <title>Konuşma Sentezi/Sıkıştırma Kalite Testi (MOS)</title>
     <style>
         :root {
             --primary-color: #2c3e50;
@@ -70,45 +70,44 @@
 </head>
 <body>
 
-    <h1>Deep Learning Tabanlı Ses Sıkıştırma Çalışması</h1>
-    <p class="subtitle">Subjektif Kalite Değerlendirme Testi (MOS)</p>
+    <h1>Derin Öğrenme Tabanlı Konuşma Sıkıştırma</h1>
+    <p class="subtitle">Subjektif Konuşma Kalitesi Değerlendirmesi (MOS Testi)</p>
 
     <div class="info-section">
-        <h3>👋 Çalışma Hakkında</h3>
-        <p>Bu çalışma, geliştirdiğimiz yapay zeka tabanlı sıkıştırma modelinin ses kalitesi üzerindeki etkisini ölçmeyi amaçlar. Katılım gönüllüdür ve yanıtlar anonim olarak bilimsel analiz için kullanılacaktır.</p>
-        <p><strong>Tahmini Süre:</strong> Yaklaşık 3-5 dakika.</p>
+        <h3>👋 Hoşgeldiniz</h3>
+        <h3>Çalışma Hakkında</h3>
+        <p>Bu çalışma, konuşma sinyalleri için geliştirdiğimiz sıkıştırma modelinin "algısal kalitesini" ölçmeyi amaçlar. Katılım gönüllüdür ve veriler akademik analiz için anonim olarak kullanılacaktır.</p>
     </div>
 
     <div class="info-section" style="border-left-color: #e67e22;">
-        <h3>🎧 Dinleme Koşulları ve Görev</h3>
+        <h3>🎧 Test Yönergesi</h3>
         <ul>
-            <li><strong>Ekipman:</strong> Lütfen mümkünse kulaklık kullanınız ve sessiz bir ortamda bulununuz.</li>
-            <li><strong>Ses Seviyesi:</strong> Sesi, detayları duyabileceğiniz rahat bir seviyeye ayarlayın ve test boyunca değiştirmeyin.</li>
-            <li><strong>Akış:</strong> Her kutucukta önce <strong>Referans</strong> sesi, ardından <strong>Model Çıktısını</strong> dinleyin.</li>
-            <li><strong>Puanlama:</strong> Model çıktısının kalitesini, referansı da dikkate alarak aşağıdaki ölçeğe göre puanlayın.</li>
+            <li><strong>Odak Noktası:</strong> Lütfen konuşmanın <strong>"Doğallığına" (Naturalness)</strong> ve <strong>"Anlaşılırlığına" (Intelligibility)</strong> odaklanın.</li>
+            <li><strong>Ekipman:</strong> Konuşma detaylarını duyabilmek için kulaklık kullanılması önerilir.</li>
+            <li><strong>Akış:</strong> Her satırda önce referans (orijinal) kaydı, sonra model çıktısını dinleyiniz.</li>
         </ul>
     </div>
 
     <div class="scale-guide">
         <div class="scale-row">
             <div class="scale-score">5</div>
-            <div class="scale-desc"><strong>Mükemmel</strong>Çok doğal, temiz, rahatsız edici cızırtı/bozulma yok denecek kadar az.</div>
+            <div class="scale-desc"><strong>Mükemmel</strong>Konuşma tamamen doğal ve net. Hiçbir bozulma duyulmuyor.</div>
         </div>
         <div class="scale-row">
             <div class="scale-score">4</div>
-            <div class="scale-desc"><strong>İyi</strong>Genel olarak doğal. Küçük kusurlar var ama rahatsız etmiyor.</div>
+            <div class="scale-desc"><strong>İyi</strong>Konuşma doğal ve net. Çok hafif dip gürültüsü veya bozulma var ama rahatsız etmiyor.</div>
         </div>
         <div class="scale-row">
             <div class="scale-score">3</div>
-            <div class="scale-desc"><strong>Orta</strong>Bozulmalar fark ediliyor. Kabul edilebilir ama kalite belirgin şekilde düşmüş.</div>
+            <div class="scale-desc"><strong>Orta</strong>Konuşma anlaşılır ancak kalite kaybı (robotikleşme/cızırtı) belirgin şekilde duyuluyor.</div>
         </div>
         <div class="scale-row">
             <div class="scale-score">2</div>
-            <div class="scale-desc"><strong>Kötü</strong>Bozulmalar çok belirgin. Dinlemek rahatsız edici, metalik/robotik sesler var.</div>
+            <div class="scale-desc"><strong>Kötü</strong>Konuşmayı anlamak için çaba gerekiyor. Metalik sesler ve bozulmalar çok rahatsız edici.</div>
         </div>
         <div class="scale-row">
             <div class="scale-score">1</div>
-            <div class="scale-desc"><strong>Çok Kötü</strong>Ciddi bozulma. Konuşma anlaşılmıyor veya dinlenemeyecek kadar kötü.</div>
+            <div class="scale-desc"><strong>Çok Kötü</strong>Konuşma anlaşılamıyor veya tamamen bozulmuş.</div>
         </div>
     </div>
 
@@ -122,7 +121,7 @@
                 <input type="text" name="Katilimci_Ismi" placeholder="Örn: Kullanici123">
             </div>
             <div class="form-group">
-                <label class="input-label">Şu an kullandığınız ekipman:</label>
+                <label class="input-label">Dinleme Ekipmanınız:</label>
                 <select name="Kulaklik_Tipi">
                     <option value="Kulaklik_Kablolu">Kablolu Kulaklık (Önerilen)</option>
                     <option value="Kulaklik_Bluetooth">Bluetooth Kulaklık</option>
@@ -139,21 +138,20 @@
     </form>
     
     <div class="footer-note">
-        © 2025 Akademik Araştırma Grubu - Tüm hakları saklıdır.<br>
-        Sorularınız için: [E-posta adresiniz buraya]
+        © 2025 Akademik Araştırma Grubu<br>
     </div>
 
     <script>
-       
+        // --- AYARLAR ---
         const scriptURL = 'https://script.google.com/macros/s/AKfycbzaRNt8_Y5B4bWNa9uSwLXDoOmo1_w4d5ccyLFpCfNPdbcOuL7dhHu4r1_jKBdMEIDK/exec';
 
-        // SES DOSYALARI LİSTESİ (Burayı güncelleyebilirsin)
+        // KONUŞMA SESLERİ LİSTESİ
+        // Dosya yolları "audio/" klasöründeki isimlerle aynı olmalı
         const sesListesi = [
-            { id: "s1", title: "Örnek 1: Erkek Sesi (İngilizce)", ref: "audio/sample1_ref.wav", model: "audio/sample1_model.wav" },
-            { id: "s2", title: "Örnek 2: Müzik Enstrümanı", ref: "audio/sample2_ref.wav", model: "audio/sample2_model.wav" },
-            { id: "s3", title: "Örnek 3: Gürültülü Ortam", ref: "audio/sample3_ref.wav", model: "audio/sample3_model.wav" },
-            // Yeni ses eklemek için:
-            // { id: "s4", title: "Örnek 4: Yeni Ses", ref: "audio/sample4_ref.wav", model: "audio/sample4_model.wav" }
+            { id: "s1", title: "Örnek 1: ", ref: "audio/sample1_ref.wav", model: "audio/sample1_model.wav" },
+            { id: "s2", title: "Örnek 2: ", ref: "audio/sample2_ref.wav", model: "audio/sample2_model.wav" },
+            { id: "s3", title: "Örnek 3: ", ref: "audio/sample3_ref.wav", model: "audio/sample3_model.wav" },
+            { id: "s4", title: "Örnek 4: ", ref: "audio/sample4_ref.wav", model: "audio/sample4_model.wav" }
         ];
 
         // --- SAYFA OLUŞTURUCU ---
@@ -178,7 +176,7 @@
                 </div>
 
                 <div class="rating-area">
-                    <span class="rating-question">Model çıktısının kalitesini nasıl değerlendirirsiniz?</span>
+                    <span class="rating-question">Konuşma kalitesini ve anlaşılırlığını puanlayınız:</span>
                     <div class="rating-options">
                         <label class="rating-label">
                             <span class="rating-val">1</span>
@@ -226,11 +224,10 @@
                 .then(response => {
                     alert("Değerlendirmeniz başarıyla alındı! Katkılarınız için teşekkür ederiz.");
                     submitBtn.innerHTML = "Gönderildi ✅";
-                    // Formu sıfırlamıyoruz ki kullanıcı gönderdiğini görsün
                 })
                 .catch(error => {
                     console.error('Hata!', error.message);
-                    alert("Bir hata oluştu. Lütfen internet bağlantınızı kontrol edip tekrar deneyin.");
+                    alert("Bir hata oluştu. Lütfen bağlantınızı kontrol edip tekrar deneyin.");
                     submitBtn.innerHTML = "Tekrar Dene";
                     submitBtn.disabled = false;
                 });
@@ -238,4 +235,3 @@
     </script>
 </body>
 </html>
-
