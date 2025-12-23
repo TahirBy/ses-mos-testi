@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ses Kalitesi Değerlendirme Testi (MOS)</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f9; color: #333; max-width: 800px; margin: 0 auto; padding: 20px; }
+        h1 { text-align: center; color: #2c3e50; }
+        .intro { background: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .sample-container { background: #fff; padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .audio-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; flex-wrap: wrap; }
+        .audio-label { font-weight: bold; margin-bottom: 5px; display: block; }
+        audio { width: 100%; max-width: 300px; }
+        .rating-area { margin-top: 15px; padding-top: 15px; border-top: 1px solid #eee; }
+        .rating-title { font-weight: bold; margin-bottom: 10px; display: block; }
+        .rating-options { display: flex; justify-content: space-between; max-width: 400px; }
+        .rating-options label { cursor: pointer; text-align: center; }
+        .rating-options input { margin-bottom: 5px; }
+        button#submit-btn { display: block; width: 100%; padding: 15px; background-color: #27ae60; color: white; border: none; border-radius: 8px; font-size: 18px; cursor: pointer; transition: background 0.3s; }
+        button#submit-btn:hover { background-color: #219150; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <h1>Ses Kalitesi Testi</h1>
+    
+    <div class="intro">
+        <p><strong>Talimatlar:</strong> Lütfen önce "Referans" sesi, ardından "Test Sesi"ni dinleyiniz. Test sesinin kalitesini 1 (Çok Kötü) ile 5 (Mükemmel) arasında puanlayınız. Kulaklık kullanmanız önerilir.</p>
+    </div>
+
+    <form id="mos-form">
+        <div class="sample-container">
+            <h3>Örnek 1</h3>
+            <div class="audio-row">
+                <div>
+                    <span class="audio-label">Referans (Orijinal)</span>
+                    <audio controls src="audio/sample1_ref.wav"></audio>
+                </div>
+                <div>
+                    <span class="audio-label">Test Sesi (Model)</span>
+                    <audio controls src="audio/sample1_model.wav"></audio>
+                </div>
+            </div>
+            <div class="rating-area">
+                <span class="rating-title">Kalite Puanınız:</span>
+                <div class="rating-options">
+                    <label><input type="radio" name="s1" value="1" required> 1<br><small>Kötü</small></label>
+                    <label><input type="radio" name="s1" value="2"> 2<br><small>Zayıf</small></label>
+                    <label><input type="radio" name="s1" value="3"> 3<br><small>Orta</small></label>
+                    <label><input type="radio" name="s1" value="4"> 4<br><small>İyi</small></label>
+                    <label><input type="radio" name="s1" value="5"> 5<br><small>Mükemmel</small></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="sample-container">
+            <h3>Örnek 2</h3>
+            <div class="audio-row">
+                <div>
+                    <span class="audio-label">Referans (Orijinal)</span>
+                    <audio controls src="audio/sample2_ref.wav"></audio>
+                </div>
+                <div>
+                    <span class="audio-label">Test Sesi (Model)</span>
+                    <audio controls src="audio/sample2_model.wav"></audio>
+                </div>
+            </div>
+            <div class="rating-area">
+                <span class="rating-title">Kalite Puanınız:</span>
+                <div class="rating-options">
+                    <label><input type="radio" name="s2" value="1" required> 1</label>
+                    <label><input type="radio" name="s2" value="2"> 2</label>
+                    <label><input type="radio" name="s2" value="3"> 3</label>
+                    <label><input type="radio" name="s2" value="4"> 4</label>
+                    <label><input type="radio" name="s2" value="5"> 5</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="sample-container">
+            <h3>Örnek 3</h3>
+            <div class="audio-row">
+                <div>
+                    <span class="audio-label">Referans (Orijinal)</span>
+                    <audio controls src="audio/sample3_ref.wav"></audio>
+                </div>
+                <div>
+                    <span class="audio-label">Test Sesi (Model)</span>
+                    <audio controls src="audio/sample3_model.wav"></audio>
+                </div>
+            </div>
+            <div class="rating-area">
+                <span class="rating-title">Kalite Puanınız:</span>
+                <div class="rating-options">
+                    <label><input type="radio" name="s3" value="1" required> 1</label>
+                    <label><input type="radio" name="s3" value="2"> 2</label>
+                    <label><input type="radio" name="s3" value="3"> 3</label>
+                    <label><input type="radio" name="s3" value="4"> 4</label>
+                    <label><input type="radio" name="s3" value="5"> 5</label>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" id="submit-btn">Değerlendirmeyi Gönder</button>
+    </form>
+
+    <script>
+        // SENİN ALDIĞIN URL'Yİ BURAYA YAPIŞTIR (Tırnakların içine)
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzaRNt8_Y5B4bWNa9uSwLXDoOmo1_w4d5ccyLFpCfNPdbcOuL7dhHu4r1_jKBdMEIDK/exec';
+
+        const form = document.getElementById('mos-form');
+        const submitBtn = document.getElementById('submit-btn');
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            
+            submitBtn.innerHTML = "Gönderiliyor...";
+            submitBtn.disabled = true;
+
+            const formData = new FormData(form);
+
+            // Veriyi Google Sheets'e gönder
+            fetch(scriptURL, { method: 'POST', body: formData})
+                .then(response => {
+                    alert("Değerlendirmeniz başarıyla kaydedildi! Teşekkürler.");
+                    submitBtn.innerHTML = "Gönderildi";
+                    form.reset(); // Formu temizle
+                    // İstersen butonu tekrar aktif etme, mükerrer oyu engeller
+                })
+                .catch(error => {
+                    console.error('Hata!', error.message);
+                    alert("Bir hata oluştu. Lütfen tekrar deneyin.");
+                    submitBtn.innerHTML = "Tekrar Dene";
+                    submitBtn.disabled = false;
+                });
+        });
+    </script>
+</body>
+</html>
