@@ -3,235 +3,169 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Konuşma Sentezi/Sıkıştırma Kalite Testi (MOS)</title>
+    <title>Kör Test (Blind MOS) - Konuşma Kalitesi</title>
     <style>
         :root {
             --primary-color: #2c3e50;
             --accent-color: #3498db;
-            --bg-color: #f8f9fa;
+            --bg-color: #f4f6f7;
         }
-        body { font-family: 'Segoe UI', 'Roboto', Helvetica, Arial, sans-serif; background-color: var(--bg-color); color: #333; max-width: 900px; margin: 0 auto; padding: 40px 20px; line-height: 1.6; }
+        body { font-family: 'Segoe UI', 'Roboto', sans-serif; background-color: var(--bg-color); color: #333; max-width: 800px; margin: 0 auto; padding: 40px 20px; }
         
-        h1 { text-align: center; color: var(--primary-color); margin-bottom: 10px; }
-        .subtitle { text-align: center; color: #7f8c8d; font-size: 0.9em; margin-bottom: 40px; }
+        h1 { text-align: center; color: var(--primary-color); margin-bottom: 5px; }
+        .subtitle { text-align: center; color: #7f8c8d; margin-bottom: 40px; font-size: 0.9em; }
 
-        /* Bilgilendirme Kutuları */
-        .info-section { background: #fff; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 25px; border-left: 5px solid var(--accent-color); }
-        .info-section h3 { margin-top: 0; color: var(--primary-color); }
-        .info-section ul { padding-left: 20px; }
-        .info-section li { margin-bottom: 8px; }
+        .info-box { background: #fff; padding: 20px; border-radius: 8px; border-left: 5px solid var(--accent-color); margin-bottom: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
 
-        /* MOS Skala Tablosu */
-        .scale-guide { background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; margin-bottom: 30px; }
-        .scale-row { display: flex; border-bottom: 1px solid #eee; }
-        .scale-row:last-child { border-bottom: none; }
-        .scale-score { width: 50px; background: var(--primary-color); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2em; }
-        .scale-desc { padding: 10px 15px; flex: 1; font-size: 0.9em; }
-        .scale-desc strong { display: block; color: var(--primary-color); }
+        /* Skala Tablosu */
+        .scale-guide { display: flex; justify-content: space-between; background: #fff; padding: 15px; border-radius: 8px; margin-bottom: 30px; text-align: center; font-size: 0.85em; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .scale-item strong { display: block; font-size: 1.4em; color: var(--accent-color); }
 
-        /* Form ve Kartlar */
-        .form-group { margin-bottom: 15px; }
-        label.input-label { font-weight: bold; display: block; margin-bottom: 8px; }
-        input[type="text"], select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
+        /* Kart Tasarımı */
+        .sample-card { background: #fff; padding: 30px; margin-bottom: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; transition: transform 0.2s; }
+        .sample-card:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
 
-        .sample-card { background: #fff; padding: 25px; margin-bottom: 30px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: transform 0.2s; border: 1px solid #eee; }
-        .sample-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); border-color: var(--accent-color); }
+        .sample-index { font-weight: bold; color: #95a5a6; text-transform: uppercase; font-size: 0.8em; letter-spacing: 1px; margin-bottom: 10px; display: block; }
+
+        audio { width: 100%; max-width: 500px; margin: 20px 0; height: 40px; }
+
+        /* Puanlama */
+        .rating-options { display: flex; justify-content: center; gap: 15px; margin-top: 15px; flex-wrap: wrap; }
+        .rating-label { cursor: pointer; display: flex; flex-direction: column; align-items: center; width: 60px; padding: 10px; border-radius: 8px; transition: background 0.2s; border: 1px solid transparent; }
+        .rating-label:hover { background: #eeffff; border-color: #b2ebf2; }
+        .rating-val { font-size: 1.2em; font-weight: bold; color: var(--primary-color); margin-bottom: 5px; }
+        .rating-text { font-size: 0.75em; color: #666; }
+        input[type="radio"] { transform: scale(1.3); margin-top: 5px; cursor: pointer; }
+
+        /* Form Elemanları */
+        .user-info { background: #fff; padding: 20px; border-radius: 8px; margin-bottom: 30px; }
+        input[type="text"], select { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
         
-        .sample-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 15px; }
-        .sample-title { font-weight: bold; font-size: 1.1em; color: #444; }
-
-        .audio-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
-        @media (max-width: 600px) { .audio-grid { grid-template-columns: 1fr; } }
-        
-        .audio-col { text-align: center; background: #fafafa; padding: 15px; border-radius: 8px; }
-        .badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 0.75em; font-weight: bold; text-transform: uppercase; margin-bottom: 8px; }
-        .badge-ref { background: #e3f2fd; color: #1565c0; }
-        .badge-model { background: #e8f5e9; color: #2e7d32; }
-        audio { width: 100%; height: 35px; margin-top: 5px; }
-
-        /* Puanlama Alanı */
-        .rating-area { background: #fdfdfd; padding: 15px; border-radius: 8px; text-align: center; border-top: 1px solid #eee; }
-        .rating-question { display: block; margin-bottom: 15px; font-weight: 600; color: #555; }
-        
-        .rating-options { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
-        .rating-label { cursor: pointer; position: relative; width: 80px; text-align: center; padding: 5px; border: 1px solid transparent; border-radius: 8px; transition: all 0.2s; }
-        .rating-label:hover { background: #f0f8ff; border-color: #b3e5fc; }
-        .rating-label input { margin-bottom: 5px; transform: scale(1.2); cursor: pointer; }
-        .rating-text { display: block; font-size: 0.8em; color: #666; line-height: 1.2; }
-        .rating-val { font-weight: bold; font-size: 1.2em; display: block; color: var(--primary-color); }
-
-        /* Buton */
-        button#submit-btn { width: 100%; padding: 18px; background-color: var(--accent-color); color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: 600; cursor: pointer; transition: background 0.3s; margin-top: 20px; }
-        button#submit-btn:hover { background-color: #2980b9; }
-        button:disabled { background-color: #95a5a6; cursor: not-allowed; }
-
-        .footer-note { text-align: center; font-size: 0.85em; color: #999; margin-top: 40px; }
+        button#submit-btn { width: 100%; padding: 15px; background: var(--accent-color); color: white; border: none; border-radius: 8px; font-size: 1.1em; cursor: pointer; font-weight: bold; transition: background 0.3s; }
+        button#submit-btn:hover { background: #2980b9; }
+        button:disabled { background: #bdc3c7; cursor: not-allowed; }
     </style>
 </head>
 <body>
 
-    <h1>Derin Öğrenme Tabanlı Konuşma Sıkıştırma</h1>
-    <p class="subtitle">Subjektif Konuşma Kalitesi Değerlendirmesi (MOS Testi)</p>
+    <h1>Ses Kalitesi Değerlendirmesi</h1>
+    <p class="subtitle">Blind Single Stimulus Test (ACR)</p>
 
-    <div class="info-section">
-        <h3>👋 Hoşgeldiniz</h3>
-        <h3>Çalışma Hakkında</h3>
-        <p>Bu çalışma, konuşma sinyalleri için geliştirdiğimiz sıkıştırma modelinin "algısal kalitesini" ölçmeyi amaçlar. Katılım gönüllüdür ve veriler akademik analiz için anonim olarak kullanılacaktır.</p>
-    </div>
-
-    <div class="info-section" style="border-left-color: #e67e22;">
-        <h3>🎧 Test Yönergesi</h3>
-        <ul>
-            <li><strong>Odak Noktası:</strong> Lütfen konuşmanın <strong>"Doğallığına" (Naturalness)</strong> ve <strong>"Anlaşılırlığına" (Intelligibility)</strong> odaklanın.</li>
-            <li><strong>Ekipman:</strong> Konuşma detaylarını duyabilmek için kulaklık kullanılması önerilir.</li>
-            <li><strong>Akış:</strong> Her satırda önce referans (orijinal) kaydı, sonra model çıktısını dinleyiniz.</li>
-        </ul>
+    <div class="info-box">
+        <h3>ℹ️ Bilgilendirme</h3>
+        <p>Aşağıda karışık sırayla sunulan ses kayıtlarını dinleyiniz. Her bir kaydın <strong>Doğallığını</strong> ve <strong>Netliğini</strong> 1 (Çok Kötü) ile 5 (Mükemmel) arasında puanlayınız. Kayıtların hangisinin orijinal hangisinin model çıktısı olduğu belirtilmemiştir.</p>
     </div>
 
     <div class="scale-guide">
-        <div class="scale-row">
-            <div class="scale-score">5</div>
-            <div class="scale-desc"><strong>Mükemmel</strong>Konuşma tamamen doğal ve net. Hiçbir bozulma duyulmuyor.</div>
-        </div>
-        <div class="scale-row">
-            <div class="scale-score">4</div>
-            <div class="scale-desc"><strong>İyi</strong>Konuşma doğal ve net. Çok hafif dip gürültüsü veya bozulma var ama rahatsız etmiyor.</div>
-        </div>
-        <div class="scale-row">
-            <div class="scale-score">3</div>
-            <div class="scale-desc"><strong>Orta</strong>Konuşma anlaşılır ancak kalite kaybı (robotikleşme/cızırtı) belirgin şekilde duyuluyor.</div>
-        </div>
-        <div class="scale-row">
-            <div class="scale-score">2</div>
-            <div class="scale-desc"><strong>Kötü</strong>Konuşmayı anlamak için çaba gerekiyor. Metalik sesler ve bozulmalar çok rahatsız edici.</div>
-        </div>
-        <div class="scale-row">
-            <div class="scale-score">1</div>
-            <div class="scale-desc"><strong>Çok Kötü</strong>Konuşma anlaşılamıyor veya tamamen bozulmuş.</div>
-        </div>
+        <div class="scale-item"><strong>1</strong>Çok Kötü</div>
+        <div class="scale-item"><strong>2</strong>Kötü</div>
+        <div class="scale-item"><strong>3</strong>Orta</div>
+        <div class="scale-item"><strong>4</strong>İyi</div>
+        <div class="scale-item"><strong>5</strong>Mükemmel</div>
     </div>
 
     <form id="mos-form">
-        <div class="sample-card">
-            <div class="sample-header">
-                <span class="sample-title">Katılımcı Bilgileri (Opsiyonel)</span>
-            </div>
-            <div class="form-group">
-                <label class="input-label">Rumuzunuz:</label>
-                <input type="text" name="Katilimci_Ismi" placeholder="Örn: Kullanici123">
-            </div>
-            <div class="form-group">
-                <label class="input-label">Dinleme Ekipmanınız:</label>
-                <select name="Kulaklik_Tipi">
-                    <option value="Kulaklik_Kablolu">Kablolu Kulaklık (Önerilen)</option>
-                    <option value="Kulaklik_Bluetooth">Bluetooth Kulaklık</option>
-                    <option value="Laptop_Hoparlor">Laptop Hoparlörü</option>
-                    <option value="Telefon">Telefon Hoparlörü</option>
-                    <option value="Diger">Diğer</option>
-                </select>
-            </div>
+        <div class="user-info">
+            <label><strong>Rumuzunuz (İsteğe Bağlı):</strong></label>
+            <input type="text" name="Katilimci_Ismi" placeholder="Örn: Kullanici1">
+            
+            <label style="display:block; margin-top:15px;"><strong>Kulaklık Tipi:</strong></label>
+            <select name="Donanim">
+                <option value="Kulaklik_Kablolu">Kablolu Kulaklık</option>
+                <option value="Kulaklik_BT">Bluetooth Kulaklık</option>
+                <option value="Hoparlor">Hoparlör</option>
+            </select>
         </div>
 
         <div id="audio-container"></div>
 
-        <button type="submit" id="submit-btn">Testi Tamamla ve Gönder</button>
+        <button type="submit" id="submit-btn">Testi Tamamla</button>
     </form>
-    
-    <div class="footer-note">
-        © 2025 Akademik Araştırma Grubu<br>
-    </div>
 
     <script>
-        // --- AYARLAR ---
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbzaRNt8_Y5B4bWNa9uSwLXDoOmo1_w4d5ccyLFpCfNPdbcOuL7dhHu4r1_jKBdMEIDK/exec';
+        const scriptURL = 'BURAYA_GOOGLE_SCRIPT_URL_GELECEK'; // Kendi URL'nizi buraya yapıştırın
 
-        // KONUŞMA SESLERİ LİSTESİ
-        // Dosya yolları "audio/" klasöründeki isimlerle aynı olmalı
-        const sesListesi = [
-            { id: "s1", title: "Örnek 1: ", ref: "audio/sample1_ref.wav", model: "audio/sample1_model.wav" },
-            { id: "s2", title: "Örnek 2: ", ref: "audio/sample2_ref.wav", model: "audio/sample2_model.wav" },
-            { id: "s3", title: "Örnek 3: ", ref: "audio/sample3_ref.wav", model: "audio/sample3_model.wav" },
-            { id: "s4", title: "Örnek 4: ", ref: "audio/sample4_ref.wav", model: "audio/sample4_model.wav" }
+        // 1. ADIM: SES HAVUZU
+        // Buraya hem referansları hem modelleri ayrı ayrı ekliyoruz.
+        // "id" kısmı Excel'e yazılacak başlık olacak (unique olmalı).
+        const rawAudioList = [
+            // Örnek 1
+            { id: "s1_ref", url: "audio/sample1_ref.wav" },
+            { id: "s1_model", url: "audio/sample1_model.wav" },
+            
+            // Örnek 2
+            { id: "s2_ref", url: "audio/sample2_ref.wav" },
+            { id: "s2_model", url: "audio/sample2_model.wav" },
+
+            // Örnek 3
+            { id: "s3_ref", url: "audio/sample3_ref.wav" },
+            { id: "s3_model", url: "audio/sample3_model.wav" },
+
+            // Örnek 4
+            { id: "s4_ref", url: "audio/sample4_ref.wav" },
+            { id: "s4_model", url: "audio/sample4_model.wav" }
         ];
 
-        // --- SAYFA OLUŞTURUCU ---
+        // 2. ADIM: KARIŞTIRMA FONKSİYONU (Fisher-Yates Shuffle)
+        // Bu fonksiyon listeyi rastgele karıştırır.
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Listeyi karıştır
+        const shuffledList = shuffleArray([...rawAudioList]);
+
+        // 3. ADIM: ARAYÜZ OLUŞTURMA
         const container = document.getElementById('audio-container');
 
-        sesListesi.forEach((ses, index) => {
-            const htmlContent = `
+        shuffledList.forEach((item, index) => {
+            const html = `
             <div class="sample-card">
-                <div class="sample-header">
-                    <span class="sample-title">${index + 1}. ${ses.title}</span>
-                </div>
+                <span class="sample-index">Kayıt #${index + 1}</span>
                 
-                <div class="audio-grid">
-                    <div class="audio-col">
-                        <span class="badge badge-ref">Referans (Orijinal)</span>
-                        <audio controls controlsList="nodownload" src="${ses.ref}" preload="none"></audio>
-                    </div>
-                    <div class="audio-col">
-                        <span class="badge badge-model">Model Çıktısı</span>
-                        <audio controls controlsList="nodownload" src="${ses.model}" preload="none"></audio>
-                    </div>
-                </div>
-
-                <div class="rating-area">
-                    <span class="rating-question">Konuşma kalitesini ve anlaşılırlığını puanlayınız:</span>
-                    <div class="rating-options">
+                <audio controls controlsList="nodownload" src="${item.url}" preload="none"></audio>
+                
+                <div class="rating-options">
+                    ${[1, 2, 3, 4, 5].map(val => `
                         <label class="rating-label">
-                            <span class="rating-val">1</span>
-                            <input type="radio" name="${ses.id}" value="1" required>
-                            <span class="rating-text">Çok Kötü</span>
+                            <span class="rating-val">${val}</span>
+                            <input type="radio" name="${item.id}" value="${val}" required>
+                            <span class="rating-text">
+                                ${val===1?'Çok Kötü': val===2?'Kötü': val===3?'Orta': val===4?'İyi':'Mükemmel'}
+                            </span>
                         </label>
-                        <label class="rating-label">
-                            <span class="rating-val">2</span>
-                            <input type="radio" name="${ses.id}" value="2">
-                            <span class="rating-text">Kötü</span>
-                        </label>
-                        <label class="rating-label">
-                            <span class="rating-val">3</span>
-                            <input type="radio" name="${ses.id}" value="3">
-                            <span class="rating-text">Orta</span>
-                        </label>
-                        <label class="rating-label">
-                            <span class="rating-val">4</span>
-                            <input type="radio" name="${ses.id}" value="4">
-                            <span class="rating-text">İyi</span>
-                        </label>
-                        <label class="rating-label">
-                            <span class="rating-val">5</span>
-                            <input type="radio" name="${ses.id}" value="5">
-                            <span class="rating-text">Mükemmel</span>
-                        </label>
-                    </div>
+                    `).join('')}
                 </div>
             </div>`;
-            container.innerHTML += htmlContent;
+            container.innerHTML += html;
         });
 
-        // --- GÖNDERME İŞLEMİ ---
+        // 4. ADIM: GÖNDERME İŞLEMİ (Değişmedi)
         const form = document.getElementById('mos-form');
         const submitBtn = document.getElementById('submit-btn');
 
         form.addEventListener('submit', e => {
             e.preventDefault();
-            submitBtn.innerHTML = "Sonuçlar Kaydediliyor...";
             submitBtn.disabled = true;
-
+            submitBtn.innerHTML = "Kaydediliyor...";
+            
             const formData = new FormData(form);
-
             fetch(scriptURL, { method: 'POST', body: formData})
                 .then(response => {
-                    alert("Değerlendirmeniz başarıyla alındı! Katkılarınız için teşekkür ederiz.");
+                    alert("Teşekkürler! Test başarıyla gönderildi.");
                     submitBtn.innerHTML = "Gönderildi ✅";
                 })
                 .catch(error => {
-                    console.error('Hata!', error.message);
-                    alert("Bir hata oluştu. Lütfen bağlantınızı kontrol edip tekrar deneyin.");
-                    submitBtn.innerHTML = "Tekrar Dene";
+                    alert("Hata oluştu!");
                     submitBtn.disabled = false;
+                    submitBtn.innerHTML = "Tekrar Dene";
                 });
         });
     </script>
+
 </body>
 </html>
