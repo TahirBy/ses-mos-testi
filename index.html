@@ -3,58 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Konuşma Sentezi/Sıkıştırma Kalite Testi (MOS)</title>
+    <title>Derin Öğrenme Tabanlı Konuşma Sıkıştırma</title>
     <style>
         :root {
             --primary-color: #2c3e50;
-            --accent-color: #3498db;
+            --accent-blue: #3498db;
+            --accent-orange: #e67e22;
             --bg-color: #f8f9fa;
+            --text-color: #333;
         }
-        body { font-family: 'Segoe UI', 'Roboto', Helvetica, Arial, sans-serif; background-color: var(--bg-color); color: #333; max-width: 900px; margin: 0 auto; padding: 40px 20px; line-height: 1.6; }
+        body { 
+            font-family: 'Segoe UI', 'Roboto', Helvetica, Arial, sans-serif; 
+            background-color: var(--bg-color); 
+            color: var(--text-color); 
+            max-width: 900px; 
+            margin: 0 auto; 
+            padding: 40px 20px; 
+            line-height: 1.6; 
+        }
         
-        h1 { text-align: center; color: var(--primary-color); margin-bottom: 10px; }
+        h1 { text-align: center; color: var(--primary-color); margin-bottom: 5px; }
         .subtitle { text-align: center; color: #7f8c8d; font-size: 0.9em; margin-bottom: 40px; }
 
-        /* --- BİLGİLENDİRME KUTULARI (ESKİ STİL) --- */
-        .info-section { background: #fff; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 25px; border-left: 5px solid var(--accent-color); }
-        .info-section h3 { margin-top: 0; color: var(--primary-color); }
-        .info-section ul { padding-left: 20px; }
-        .info-section li { margin-bottom: 8px; }
+        /* --- BİLGİLENDİRME KUTULARI (GÖRSELDEKİ GİBİ) --- */
+        .info-section { 
+            background: #fff; 
+            padding: 25px; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+            margin-bottom: 25px; 
+            border-left: 6px solid var(--accent-blue); /* Varsayılan Mavi */
+        }
+        
+        .info-section.orange { border-left-color: var(--accent-orange); }
 
-        /* --- MOS SKALA TABLOSU (ESKİ STİL) --- */
-        .scale-guide { background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; margin-bottom: 30px; }
+        .info-header { display: flex; align-items: center; margin-bottom: 15px; }
+        .info-icon { font-size: 1.5em; margin-right: 10px; }
+        .info-section h3 { margin: 0; color: var(--primary-color); font-size: 1.1em; font-weight: 700; }
+        
+        .info-section p { margin: 0 0 10px 0; font-size: 0.95em; }
+        .info-section ul { padding-left: 20px; margin: 0; }
+        .info-section li { margin-bottom: 8px; font-size: 0.95em; }
+
+        /* --- MOS SKALA TABLOSU (GÖRSELDEKİ GİBİ) --- */
+        .scale-guide { 
+            background: #fff; 
+            border: 1px solid #e0e0e0; 
+            border-radius: 8px; 
+            overflow: hidden; 
+            margin-bottom: 30px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
         .scale-row { display: flex; border-bottom: 1px solid #eee; }
         .scale-row:last-child { border-bottom: none; }
-        .scale-score { width: 60px; background: var(--primary-color); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.4em; }
+        .scale-score { 
+            width: 60px; 
+            background: var(--primary-color); 
+            color: #fff; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-weight: bold; 
+            font-size: 1.4em; 
+        }
         .scale-desc { padding: 15px; flex: 1; font-size: 0.95em; }
         .scale-desc strong { display: block; color: var(--primary-color); margin-bottom: 4px; }
 
-        /* --- TEST KARTLARI (YENİ MANTIK UYUMLU) --- */
-        .sample-card { background: #fff; padding: 25px; margin-bottom: 30px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: transform 0.2s; border: 1px solid #eee; }
-        .sample-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); border-color: var(--accent-color); }
+        /* --- KATILIMCI FORMU & TEST KARTLARI --- */
+        .card-box { 
+            background: #fff; 
+            padding: 25px; 
+            margin-bottom: 30px; 
+            border-radius: 12px; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05); 
+            border: 1px solid #eee; 
+        }
         
-        .sample-header { border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px; }
-        .sample-index { font-weight: bold; color: #95a5a6; text-transform: uppercase; font-size: 0.8em; letter-spacing: 1px; }
-
-        audio { width: 100%; height: 40px; margin: 10px 0 20px 0; }
-
-        /* --- PUANLAMA ALANI --- */
-        .rating-area { background: #fdfdfd; padding: 15px; border-radius: 8px; text-align: center; border-top: 1px solid #eee; }
-        .rating-question { display: block; margin-bottom: 15px; font-weight: 600; color: #555; }
+        .card-header { border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px; font-weight: bold; font-size: 1.1em; color: #444; }
         
-        .rating-options { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
-        .rating-label { cursor: pointer; position: relative; width: 80px; text-align: center; padding: 8px; border: 1px solid transparent; border-radius: 8px; transition: all 0.2s; }
-        .rating-label:hover { background: #f0f8ff; border-color: #b3e5fc; }
-        .rating-label input { margin-bottom: 5px; transform: scale(1.3); cursor: pointer; }
-        .rating-text { display: block; font-size: 0.85em; color: #666; line-height: 1.2; margin-top: 5px;}
-        .rating-val { font-weight: bold; font-size: 1.2em; display: block; color: var(--primary-color); }
-
-        /* --- FORM ELEMANLARI --- */
         .form-group { margin-bottom: 15px; }
-        label.input-label { font-weight: bold; display: block; margin-bottom: 8px; }
+        label.input-label { font-weight: bold; display: block; margin-bottom: 8px; font-size: 0.9em; }
         input[type="text"], select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
 
-        button#submit-btn { width: 100%; padding: 18px; background-color: var(--accent-color); color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: 600; cursor: pointer; transition: background 0.3s; margin-top: 20px; }
+        /* --- TEST ALANI STİLLERİ --- */
+        .sample-index { font-weight: bold; color: #95a5a6; text-transform: uppercase; font-size: 0.8em; letter-spacing: 1px; }
+        
+        audio { width: 100%; height: 40px; margin: 15px 0; }
+
+        .rating-area { background: #fdfdfd; padding: 15px; border-radius: 8px; text-align: center; border-top: 1px solid #eee; margin-top: 10px; }
+        .rating-question { display: block; margin-bottom: 15px; font-weight: 600; color: #555; font-size: 0.95em; }
+        
+        .rating-options { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        .rating-label { cursor: pointer; width: 70px; text-align: center; padding: 8px; border: 1px solid transparent; border-radius: 8px; transition: all 0.2s; }
+        .rating-label:hover { background: #f0f8ff; border-color: #b3e5fc; }
+        .rating-label input { margin-bottom: 5px; transform: scale(1.3); cursor: pointer; }
+        .rating-text { display: block; font-size: 0.8em; color: #666; }
+        .rating-val { font-weight: bold; font-size: 1.2em; display: block; color: var(--primary-color); }
+
+        button#submit-btn { width: 100%; padding: 18px; background-color: var(--accent-blue); color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: 600; cursor: pointer; transition: background 0.3s; margin-top: 20px; }
         button#submit-btn:hover { background-color: #2980b9; }
         button:disabled { background-color: #95a5a6; cursor: not-allowed; }
 
@@ -67,13 +113,19 @@
     <p class="subtitle">Subjektif Konuşma Kalitesi Değerlendirmesi (Blind MOS Testi)</p>
 
     <div class="info-section">
-        <h3>👋 Hoşgeldiniz</h3>
-        <h3>Çalışma Hakkında</h3>
+        <div class="info-header">
+            <span class="info-icon">👋</span>
+            <h3>Hoşgeldiniz</h3>
+        </div>
+        <p><strong>Çalışma Hakkında</strong></p>
         <p>Bu çalışma, konuşma sinyalleri için geliştirdiğimiz sıkıştırma modelinin "algısal kalitesini" ölçmeyi amaçlar. Katılım gönüllüdür ve veriler akademik analiz için anonim olarak kullanılacaktır.</p>
     </div>
 
-    <div class="info-section" style="border-left-color: #e67e22;">
-        <h3>🎧 Test Yönergesi</h3>
+    <div class="info-section orange">
+        <div class="info-header">
+            <span class="info-icon">🎧</span>
+            <h3>Test Yönergesi</h3>
+        </div>
         <ul>
             <li><strong>Odak Noktası:</strong> Lütfen konuşmanın <strong>"Doğallığına" (Naturalness)</strong> ve <strong>"Anlaşılırlığına" (Intelligibility)</strong> odaklanın.</li>
             <li><strong>Yöntem:</strong> Aşağıda karışık sırayla sunulan ses kayıtlarını dinleyiniz. Kayıtların orijinal mi yoksa model çıktısı mı olduğu belirtilmemiştir (Kör Test).</li>
@@ -105,10 +157,8 @@
     </div>
 
     <form id="mos-form">
-        <div class="sample-card">
-            <div class="sample-header">
-                <span class="sample-title" style="font-weight:bold; font-size:1.1em;">Katılımcı Bilgileri (Opsiyonel)</span>
-            </div>
+        <div class="card-box">
+            <div class="card-header">Katılımcı Bilgileri (Opsiyonel)</div>
             <div class="form-group">
                 <label class="input-label">Rumuzunuz:</label>
                 <input type="text" name="Katilimci_Ismi" placeholder="Örn: Kullanici123">
@@ -135,32 +185,31 @@
     </div>
 
     <script>
-        // --- AYARLAR ---
-        // Google Script URL'nizi buraya yapıştırın
+        // --- GOOGLE SCRIPT URL ---
         const scriptURL = 'https://script.google.com/macros/s/AKfycbzaRNt8_Y5B4bWNa9uSwLXDoOmo1_w4d5ccyLFpCfNPdbcOuL7dhHu4r1_jKBdMEIDK/exec';
 
-        // --- SES VERİ HAVUZU (BLIND TEST İÇİN DÜZ LİSTE) ---
-        // Her satır TEK BİR SES dosyasını temsil eder.
-        // id: Excel'e yazılacak sütun başlığıdır.
+        // --- SES VERİ HAVUZU ---
+        // BLIND TEST MANTIĞI: Referans ve Modelleri tek bir listeye koyuyoruz.
+        // ID'ler Excel'e gidecek sütun başlıklarıdır. Kullanıcı ID'yi görmez.
         const rawAudioList = [
-            // Örnek 1 Sesleri
+            // Örnek 1
             { id: "s1_ref", url: "audio/sample1_ref.wav" },
             { id: "s1_model", url: "audio/sample1_model.wav" },
             
-            // Örnek 2 Sesleri
+            // Örnek 2
             { id: "s2_ref", url: "audio/sample2_ref.wav" },
             { id: "s2_model", url: "audio/sample2_model.wav" },
 
-            // Örnek 3 Sesleri
+            // Örnek 3
             { id: "s3_ref", url: "audio/sample3_ref.wav" },
             { id: "s3_model", url: "audio/sample3_model.wav" },
-
-            // Örnek 4 Sesleri
+            
+            // Örnek 4
             { id: "s4_ref", url: "audio/sample4_ref.wav" },
             { id: "s4_model", url: "audio/sample4_model.wav" }
         ];
 
-        // --- KARIŞTIRMA FONKSİYONU ---
+        // --- KARIŞTIRMA (SHUFFLE) FONKSİYONU ---
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -169,7 +218,7 @@
             return array;
         }
 
-        // Listeyi karıştır (Sayfa her yenilendiğinde sıra değişir)
+        // Listeyi karıştır
         const shuffledList = shuffleArray([...rawAudioList]);
 
         // --- SAYFA OLUŞTURUCU ---
@@ -177,8 +226,8 @@
 
         shuffledList.forEach((item, index) => {
             const htmlContent = `
-            <div class="sample-card">
-                <div class="sample-header">
+            <div class="card-box">
+                <div class="card-header">
                     <span class="sample-index">TEST KAYDI #${index + 1}</span>
                 </div>
                 
