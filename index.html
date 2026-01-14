@@ -3,179 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Konuşma Sentezi/Sıkıştırma Kalite Testi (MOS)</title>
+    <title>Ses Kalitesi Değerlendirme (Blind Test)</title>
     <style>
-        /* Tasarım Ayarları */
-        :root { --primary-color: #2c3e50; --accent-color: #3498db; --bg-color: #f8f9fa; }
-        body { font-family: 'Segoe UI', 'Roboto', sans-serif; background-color: var(--bg-color); color: #333; max-width: 900px; margin: 0 auto; padding: 40px 20px; line-height: 1.6; }
-        h1 { text-align: center; color: var(--primary-color); margin-bottom: 10px; }
-        .subtitle { text-align: center; color: #7f8c8d; font-size: 0.9em; margin-bottom: 40px; }
-        .info-section { background: #fff; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 25px; border-left: 5px solid var(--accent-color); }
-        .scale-guide { background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; margin-bottom: 30px; }
-        .scale-row { display: flex; border-bottom: 1px solid #eee; }
-        .scale-row:last-child { border-bottom: none; }
-        .scale-score { width: 50px; background: var(--primary-color); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2em; }
-        .scale-desc { padding: 10px 15px; flex: 1; font-size: 0.9em; }
-        .scale-desc strong { display: block; color: var(--primary-color); }
-        .form-group { margin-bottom: 15px; }
-        label.input-label { font-weight: bold; display: block; margin-bottom: 8px; }
-        input[type="text"], select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
-        .sample-card { background: #fff; padding: 25px; margin-bottom: 30px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: transform 0.2s; border: 1px solid #eee; }
-        .sample-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); border-color: var(--accent-color); }
-        .sample-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 15px; }
-        .sample-title { font-weight: bold; font-size: 1.1em; color: #444; }
-        .audio-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
-        @media (max-width: 600px) { .audio-grid { grid-template-columns: 1fr; } }
-        .audio-col { text-align: center; background: #fafafa; padding: 15px; border-radius: 8px; }
-        .badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 0.75em; font-weight: bold; text-transform: uppercase; margin-bottom: 8px; }
-        .badge-ref { background: #e3f2fd; color: #1565c0; }
-        .badge-model { background: #e8f5e9; color: #2e7d32; }
-        audio { width: 100%; height: 35px; margin-top: 5px; }
-        .rating-area { background: #fdfdfd; padding: 15px; border-radius: 8px; text-align: center; border-top: 1px solid #eee; }
-        .rating-question { display: block; margin-bottom: 15px; font-weight: 600; color: #555; }
-        .rating-options { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
-        .rating-label { cursor: pointer; position: relative; width: 80px; text-align: center; padding: 5px; border: 1px solid transparent; border-radius: 8px; transition: all 0.2s; }
-        .rating-label:hover { background: #f0f8ff; border-color: #b3e5fc; }
-        .rating-label input { margin-bottom: 5px; transform: scale(1.2); cursor: pointer; }
-        .rating-text { display: block; font-size: 0.8em; color: #666; line-height: 1.2; }
-        .rating-val { font-weight: bold; font-size: 1.2em; display: block; color: var(--primary-color); }
-        button#submit-btn { width: 100%; padding: 18px; background-color: var(--accent-color); color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: 600; cursor: pointer; transition: background 0.3s; margin-top: 20px; }
-        button#submit-btn:hover { background-color: #2980b9; }
-        button:disabled { background-color: #95a5a6; cursor: not-allowed; }
-        .footer-note { text-align: center; font-size: 0.85em; color: #999; margin-top: 40px; }
+        :root { --primary-color: #2c3e50; --accent-color: #27ae60; --bg-color: #f4f6f7; }
+        body { font-family: 'Segoe UI', 'Roboto', sans-serif; background-color: var(--bg-color); color: #333; max-width: 800px; margin: 0 auto; padding: 40px 20px; line-height: 1.6; }
+        
+        h1 { text-align: center; color: var(--primary-color); margin-bottom: 5px; }
+        .subtitle { text-align: center; color: #7f8c8d; margin-bottom: 30px; font-size: 0.9em; }
+
+        .info-box { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 30px; border-left: 5px solid var(--accent-color); }
+        
+        /* Tekli Kart Tasarımı */
+        .sample-card { background: #fff; padding: 20px; margin-bottom: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #e0e0e0; }
+        .sample-header { font-weight: bold; margin-bottom: 15px; color: #555; border-bottom: 1px solid #eee; padding-bottom: 10px; display: flex; justify-content: space-between; }
+        
+        audio { width: 100%; margin-bottom: 15px; outline: none; }
+
+        /* Puanlama Şeritleri */
+        .rating-container { display: flex; justify-content: space-between; align-items: center; background: #fafafa; padding: 10px; border-radius: 8px; }
+        .rating-group { display: flex; gap: 15px; }
+        .rating-label { cursor: pointer; display: flex; flex-direction: column; align-items: center; font-size: 0.85em; color: #666; }
+        .rating-label input { margin-bottom: 5px; transform: scale(1.3); accent-color: var(--accent-color); cursor: pointer; }
+        .rating-label span { font-weight: 500; }
+        
+        button#submit-btn { width: 100%; padding: 15px; background-color: var(--primary-color); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 20px; }
+        button#submit-btn:hover { background-color: #34495e; }
+        
+        /* Yükleniyor Animasyonu */
+        .loading { text-align: center; font-style: italic; color: #999; margin-top: 20px; }
     </style>
 </head>
 <body>
 
-    <h1>Konuşma Sıkıştırma Modeli</h1>
-    <p class="subtitle">Geniş Kapsamlı MOS Testi</p>
+    <h1>Subjektif Ses Kalitesi Testi</h1>
+    <p class="subtitle">Blind MOS (Kör Test) Yöntemi</p>
 
-    <div class="info-section">
-        <h3>👋 Hoş Geldiniz</h3>
-        <p>Aşağıda farklı sıkıştırma oranlarına sahip ses dosyaları bulunmaktadır. Lütfen her birini referans ses ile kıyaslayarak puanlayınız.</p>
-    </div>
-
-    <div class="scale-guide">
-        <div class="scale-row"><div class="scale-score">5</div><div class="scale-desc"><strong>Mükemmel</strong> - Referans ile ayırt edilemiyor.</div></div>
-        <div class="scale-row"><div class="scale-score">4</div><div class="scale-desc"><strong>İyi</strong> - Çok hafif bozulma, rahatsız etmiyor.</div></div>
-        <div class="scale-row"><div class="scale-score">3</div><div class="scale-desc"><strong>Orta</strong> - Bozulma belirgin ama anlaşılır.</div></div>
-        <div class="scale-row"><div class="scale-score">2</div><div class="scale-desc"><strong>Kötü</strong> - Rahatsız edici, metalik sesler.</div></div>
-        <div class="scale-row"><div class="scale-score">1</div><div class="scale-desc"><strong>Çok Kötü</strong> - Anlaşılamıyor.</div></div>
+    <div class="info-box">
+        <h3>🎧 Test Yönergesi</h3>
+        <p>Aşağıda karışık sırayla listelenmiş ses kayıtları bulunmaktadır. Bu kayıtların bazıları orijinal, bazıları ise işlenmiş seslerdir.</p>
+        <p><strong>Göreviniz:</strong> Her sesi tek tek dinleyip, <strong>kalitesine (bozulma olup olmadığına)</strong> göre 1 ile 5 arasında puanlamanızdır.</p>
+        <small>1: Çok Kötü | 2: Kötü | 3: Orta | 4: İyi | 5: Mükemmel</small>
     </div>
 
     <form id="mos-form">
         <div class="sample-card">
-            <div class="sample-header"><span class="sample-title">Katılımcı Bilgileri</span></div>
-            <div class="form-group">
-                <label class="input-label">Rumuz:</label>
-                <input type="text" name="Katilimci_Ismi" placeholder="Adınız / Rumuzunuz">
-            </div>
-            <div class="form-group">
-                <label class="input-label">Ekipman:</label>
-                <select name="Kulaklik_Tipi">
-                    <option value="Kablolu_Kulaklik">Kablolu Kulaklık</option>
-                    <option value="Bluetooth_Kulaklik">Bluetooth Kulaklık</option>
+            <div class="sample-header">Katılımcı Bilgisi</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <input type="text" name="Katilimci_Ismi" placeholder="Rumuzunuz" style="padding: 10px; border: 1px solid #ddd; border-radius: 5px; width: 100%; box-sizing: border-box;">
+                <select name="Kulaklik_Tipi" style="padding: 10px; border: 1px solid #ddd; border-radius: 5px; width: 100%;">
+                    <option value="Kulaklik">Kulaklık (Önerilen)</option>
                     <option value="Hoparlor">Hoparlör</option>
                 </select>
             </div>
         </div>
 
-        <div id="audio-container"></div>
+        <div id="audio-container" class="loading">Ses dosyaları hazırlanıyor ve karıştırılıyor...</div>
 
-        <button type="submit" id="submit-btn">Testi Gönder</button>
+        <button type="submit" id="submit-btn">Değerlendirmeyi Gönder</button>
     </form>
-    
-    <div class="footer-note">© 2026 Akademik Araştırma Grubu</div>
 
     <script>
         // --- AYARLAR ---
         const scriptURL = 'BURAYA_GOOGLE_SCRIPT_URL_YAPISTIR';
 
-        // 1. ADIM: ELİNİZDEKİ NUMARALARI BURAYA YAZIN
-        // Görselde gördüğüm kadarıyla 01, 02, 04, 06, 07, 09... şeklinde gidiyor.
-        // Buraya 100 dosya hangi numaralara aitse onları tırnak içinde virgülle yazın.
-        const sampleNumaralari = [
-            "01", "02", "04", "06", "07", "09", "11", "12", "13", "15", "17", "18", "22", "23", "26", "32", "36", "42", "46"
-            // Devamını buraya ekleyin... Örn: "10", "12", "15"
-        ];
+        // 1. İNDEXLER: Verdiğiniz liste
+        const indexler = ["01", "02", "04", "06", "07", "09", "11", "12", "13", "15", "17", "18", "22", "23", "26", "32", "36", "42", "46"];
 
-        // 2. ADIM: RECON (MODEL) TÜRLERİNİ TANIMLIYORUZ (Görsele göre)
-        // Dosya uzantılarını (.wav) kod aşağıda kendisi ekleyecek.
-        const reconTurleri = ["recon_0_8", "recon_1_6", "recon_3_2", "recon_4"];
+        // 2. VARYASYONLAR: Her indexin sahip olduğu dosya türleri
+        // original_1 dosyasını da ekledik, böylece o da gizlice puanlanacak.
+        const varyasyonlar = ["original_1", "recon_0_8", "recon_1_6", "recon_3_2", "recon_4"];
 
-        // --- OTOMATİK LİSTE OLUŞTURUCU (Dokunmayınız) ---
-        const container = document.getElementById('audio-container');
-        let globalCounter = 1;
+        // --- LİSTE OLUŞTURMA VE KARIŞTIRMA ---
+        
+        let oynatmaListesi = [];
 
-        // Her bir numara için döngü (Örn: sample_01 için)
-        sampleNumaralari.forEach(num => {
-            
-            // Bu numara için Referans Dosyası
-            const refFile = `audio/sample_${num}_original_1.wav`;
-
-            // Bu numaranın 4 farklı recon versiyonu için döngü
-            reconTurleri.forEach(tur => {
-                // Test Dosyası: sample_01_recon_0_8.wav
-                const testFile = `audio/sample_${num}_${tur}.wav`;
-                
-                // Google Sheets Sütun İsmi: sample_01_recon_0_8
-                // (Nokta veya özel karakter olmamasına dikkat ediyoruz)
-                const sutunIsmi = `sample_${num}_${tur}`;
-
-                const htmlContent = `
-                <div class="sample-card">
-                    <div class="sample-header">
-                        <span class="sample-title">#${globalCounter} - Örnek ${num} (${tur.replace('_', '.')})</span>
-                    </div>
-                    
-                    <div class="audio-grid">
-                        <div class="audio-col">
-                            <span class="badge badge-ref">Referans</span>
-                            <audio controls controlsList="nodownload" src="${refFile}" preload="none"></audio>
-                        </div>
-                        <div class="audio-col">
-                            <span class="badge badge-model">Model Çıktısı</span>
-                            <audio controls controlsList="nodownload" src="${testFile}" preload="none"></audio>
-                        </div>
-                    </div>
-
-                    <div class="rating-area">
-                        <span class="rating-question">Kalite Puanınız:</span>
-                        <div class="rating-options">
-                            <label class="rating-label"><span class="rating-val">1</span><input type="radio" name="${sutunIsmi}" value="1" required><span class="rating-text">Çok Kötü</span></label>
-                            <label class="rating-label"><span class="rating-val">2</span><input type="radio" name="${sutunIsmi}" value="2"><span class="rating-text">Kötü</span></label>
-                            <label class="rating-label"><span class="rating-val">3</span><input type="radio" name="${sutunIsmi}" value="3"><span class="rating-text">Orta</span></label>
-                            <label class="rating-label"><span class="rating-val">4</span><input type="radio" name="${sutunIsmi}" value="4"><span class="rating-text">İyi</span></label>
-                            <label class="rating-label"><span class="rating-val">5</span><input type="radio" name="${sutunIsmi}" value="5"><span class="rating-text">Mükemmel</span></label>
-                        </div>
-                    </div>
-                </div>`;
-                
-                container.innerHTML += htmlContent;
-                globalCounter++;
+        // Tüm kombinasyonları oluştur
+        indexler.forEach(idx => {
+            varyasyonlar.forEach(tur => {
+                oynatmaListesi.push({
+                    dosyaYolu: `audio/sample_${idx}_${tur}.wav`,
+                    // Google Sheet'teki Sütun Adı (sample_01_original_1 gibi)
+                    sutunAdi: `sample_${idx}_${tur}`
+                });
             });
         });
 
-        // --- GÖNDERME İŞLEMİ ---
+        // SHUFFLE (Fisher-Yates Algoritması) - Listeyi Rastgele Karıştırır
+        function karistir(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Listeyi karıştır
+        oynatmaListesi = karistir(oynatmaListesi);
+
+        // Ekrana Bas
+        const container = document.getElementById('audio-container');
+        container.innerHTML = ""; // Loading yazısını sil
+        container.classList.remove("loading");
+
+        oynatmaListesi.forEach((item, index) => {
+            const htmlContent = `
+            <div class="sample-card">
+                <div class="sample-header">
+                    <span>Ses Kaydı #${index + 1}</span>
+                    <span style="font-weight:normal; font-size:0.8em; color:#999;">(Dinleyip Puanlayınız)</span>
+                </div>
+                
+                <audio controls controlsList="nodownload" preload="none" src="${item.dosyaYolu}"></audio>
+
+                <div class="rating-container">
+                    <span style="font-size:0.9em; font-weight:bold;">Kalite:</span>
+                    <div class="rating-group">
+                        <label class="rating-label"><input type="radio" name="${item.sutunAdi}" value="1" required><span>1</span></label>
+                        <label class="rating-label"><input type="radio" name="${item.sutunAdi}" value="2"><span>2</span></label>
+                        <label class="rating-label"><input type="radio" name="${item.sutunAdi}" value="3"><span>3</span></label>
+                        <label class="rating-label"><input type="radio" name="${item.sutunAdi}" value="4"><span>4</span></label>
+                        <label class="rating-label"><input type="radio" name="${item.sutunAdi}" value="5"><span>5</span></label>
+                    </div>
+                </div>
+            </div>`;
+            container.innerHTML += htmlContent;
+        });
+
+        // --- GÖNDERME ---
         const form = document.getElementById('mos-form');
         const submitBtn = document.getElementById('submit-btn');
 
         form.addEventListener('submit', e => {
             e.preventDefault();
-            submitBtn.innerHTML = "Kaydediliyor... (Dosya sayısı çok olduğu için biraz sürebilir)";
+            submitBtn.innerHTML = "Kaydediliyor... (Lütfen bekleyin)";
             submitBtn.disabled = true;
 
             const formData = new FormData(form);
-
+            
             fetch(scriptURL, { method: 'POST', body: formData})
                 .then(response => {
-                    alert("Tüm değerlendirmeler başarıyla kaydedildi!");
+                    alert("Tüm oylarınız kaydedildi. Teşekkürler!");
                     submitBtn.innerHTML = "Tamamlandı ✅";
                 })
                 .catch(error => {
-                    console.error('Hata!', error);
-                    alert("Hata oluştu. Lütfen tekrar deneyin.");
-                    submitBtn.innerHTML = "Tekrar Dene";
+                    console.error('Hata', error);
+                    alert("Hata oluştu.");
                     submitBtn.disabled = false;
                 });
         });
