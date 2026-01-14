@@ -3,142 +3,290 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ses Sıkıştırma Modeli Kalite Testi (Blind Test)</title>
+    <title>Speech Compression Quality Test (MOS)</title>
     <style>
-        :root { --primary-color: #2c3e50; --accent-color: #2980b9; --bg-color: #f4f6f7; }
-        body { font-family: 'Segoe UI', 'Roboto', sans-serif; background-color: var(--bg-color); color: #333; max-width: 800px; margin: 0 auto; padding: 40px 20px; line-height: 1.6; }
+        :root { 
+            --primary-color: #2c3e50; 
+            --accent-color: #3498db; 
+            --success-color: #27ae60;
+            --bg-color: #f0f2f5; 
+            --card-bg: #ffffff;
+        }
+
+        body { 
+            font-family: 'Segoe UI', 'Roboto', Helvetica, Arial, sans-serif; 
+            background-color: var(--bg-color); 
+            color: #333; 
+            max-width: 850px; 
+            margin: 0 auto; 
+            padding: 40px 20px; 
+            line-height: 1.6; 
+        }
         
+        /* Tipografi ve Çeviri Stilleri */
         h1 { text-align: center; color: var(--primary-color); margin-bottom: 5px; }
-        .subtitle { text-align: center; color: #7f8c8d; margin-bottom: 30px; font-size: 0.9em; }
+        .subtitle { text-align: center; color: #7f8c8d; margin-bottom: 30px; font-weight: 500; }
+        
+        .en-sub {
+            display: block;
+            font-size: 0.85em;
+            font-style: italic;
+            color: #7f8c8d;
+            font-weight: normal;
+            margin-top: 2px;
+        }
+        .subtitle .en-sub { font-size: 0.9em; }
 
-        .info-box { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 25px; border-left: 5px solid var(--accent-color); }
-        .info-box ul { padding-left: 20px; margin-top: 5px; }
-        .info-box li { margin-bottom: 5px; font-size: 0.95em; }
+        /* Bilgi Kutusu */
+        .info-box { 
+            background: var(--card-bg); 
+            padding: 25px; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05); 
+            margin-bottom: 30px; 
+            border-left: 5px solid var(--accent-color); 
+            transition: transform 0.3s ease;
+        }
+        .info-box:hover { transform: translateY(-2px); }
+        .info-box ul { padding-left: 20px; margin-top: 10px; }
+        .info-box li { margin-bottom: 8px; }
 
-        /* Puanlama Rehberi */
-        .scale-guide { background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; margin-bottom: 25px; display: flex; flex-wrap: wrap; }
-        .scale-item { flex: 1; min-width: 100px; text-align: center; padding: 10px; border-right: 1px solid #eee; }
+        /* Puanlama Rehberi Tablosu */
+        .scale-guide { 
+            display: flex; 
+            background: var(--card-bg); 
+            border-radius: 12px; 
+            overflow: hidden; 
+            margin-bottom: 30px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            flex-wrap: wrap;
+        }
+        .scale-item { 
+            flex: 1; 
+            min-width: 100px;
+            text-align: center; 
+            padding: 15px 10px; 
+            border-right: 1px solid #f0f0f0; 
+            transition: background 0.2s;
+        }
         .scale-item:last-child { border-right: none; }
-        .scale-num { font-weight: bold; font-size: 1.2em; color: var(--accent-color); display: block; }
-        .scale-text { font-size: 0.85em; color: #555; }
+        .scale-item:hover { background-color: #fcfcfc; }
+        .scale-num { font-weight: bold; font-size: 1.4em; color: var(--accent-color); display: block; }
+        .scale-text { font-size: 0.9em; font-weight: 600; color: #555; }
+        .scale-text .en-sub { font-size: 0.8em; }
 
-        /* Kart Tasarımı */
-        .sample-card { background: #fff; padding: 20px; margin-bottom: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #e0e0e0; transition: transform 0.2s; }
-        .sample-card:hover { border-color: var(--accent-color); }
-        
-        .sample-header { font-weight: bold; margin-bottom: 15px; color: #555; border-bottom: 1px solid #eee; padding-bottom: 10px; display: flex; justify-content: space-between; }
-        
-        audio { width: 100%; margin-bottom: 15px; outline: none; height: 40px; }
+        /* Ses Kartları */
+        .sample-card { 
+            background: var(--card-bg); 
+            padding: 25px; 
+            margin-bottom: 25px; 
+            border-radius: 12px; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06); 
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .sample-card:hover { 
+            transform: translateY(-4px); 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1); 
+            border-color: #e1e8ed;
+        }
+
+        .sample-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-bottom: 1px solid #eee; 
+            padding-bottom: 15px; 
+            margin-bottom: 20px; 
+        }
+        .sample-title { font-weight: bold; font-size: 1.1em; color: #444; }
+
+        audio { width: 100%; margin-bottom: 20px; outline: none; height: 40px; }
 
         /* Form Elemanları */
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        input[type="text"], select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .form-group label { font-weight: bold; display: block; margin-bottom: 8px; color: #2c3e50; }
+        input[type="text"], select { 
+            width: 100%; 
+            padding: 12px; 
+            border: 1px solid #ddd; 
+            border-radius: 8px; 
+            box-sizing: border-box; 
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus, select:focus { border-color: var(--accent-color); outline: none; }
 
-        /* Puanlama Şeritleri */
-        .rating-container { display: flex; justify-content: space-between; align-items: center; background: #fafafa; padding: 10px 15px; border-radius: 8px; }
-        .rating-group { display: flex; gap: 15px; }
-        .rating-label { cursor: pointer; display: flex; flex-direction: column; align-items: center; font-size: 0.85em; color: #666; position: relative; }
-        .rating-label input { margin-bottom: 5px; transform: scale(1.3); cursor: pointer; accent-color: var(--accent-color); }
-        .rating-label span { font-weight: 600; }
-        .rating-label:hover span { color: var(--accent-color); }
+        /* Radyo Butonları ve Etiketler */
+        .rating-container { 
+            background: #fafafa; 
+            padding: 15px; 
+            border-radius: 10px; 
+            text-align: center; 
+            border: 1px solid #eee;
+        }
+        .rating-title { font-weight: bold; display: block; margin-bottom: 15px; color: #555; }
         
-        button#submit-btn { width: 100%; padding: 18px; background-color: var(--accent-color); color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 20px; }
-        button#submit-btn:hover { background-color: #2471a3; }
-        button:disabled { background-color: #95a5a6; cursor: not-allowed; }
+        .rating-group { 
+            display: flex; 
+            justify-content: space-between; 
+            gap: 10px; 
+            flex-wrap: wrap;
+        }
         
-        .loading { text-align: center; color: #7f8c8d; font-style: italic; padding: 20px; }
-        .footer { text-align: center; font-size: 0.8em; color: #aaa; margin-top: 40px; }
+        .rating-label { 
+            cursor: pointer; 
+            flex: 1;
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 10px 5px; 
+            border-radius: 8px; 
+            transition: background 0.2s;
+            min-width: 60px;
+        }
+        .rating-label:hover { background-color: #e8f4fd; }
+        
+        .rating-label input { margin-bottom: 8px; transform: scale(1.4); accent-color: var(--accent-color); cursor: pointer; }
+        .rating-val { font-weight: bold; font-size: 1.1em; color: var(--primary-color); }
+        .rating-desc { font-size: 0.8em; color: #666; line-height: 1.2; margin-top: 4px; }
+
+        /* Gönder Butonu */
+        button#submit-btn { 
+            width: 100%; 
+            padding: 18px; 
+            background-color: var(--accent-color); 
+            color: white; 
+            border: none; 
+            border-radius: 8px; 
+            font-size: 1.1em; 
+            font-weight: bold; 
+            cursor: pointer; 
+            transition: all 0.3s; 
+            margin-top: 30px; 
+            box-shadow: 0 4px 6px rgba(52, 152, 219, 0.3);
+        }
+        button#submit-btn:hover { background-color: #2980b9; transform: translateY(-2px); box-shadow: 0 6px 12px rgba(52, 152, 219, 0.4); }
+        button:disabled { background-color: #95a5a6; cursor: not-allowed; box-shadow: none; transform: none; }
+
+        .loading { text-align: center; color: #7f8c8d; font-style: italic; padding: 40px; }
+        .footer { text-align: center; font-size: 0.85em; color: #aaa; margin-top: 50px; border-top: 1px solid #eee; padding-top: 20px; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         @media (max-width: 600px) {
-            .rating-container { flex-direction: column; align-items: flex-start; gap: 10px; }
-            .rating-group { width: 100%; justify-content: space-between; }
             .form-row { grid-template-columns: 1fr; }
+            .rating-label { min-width: 80px; margin-bottom: 10px; }
+            .rating-group { justify-content: center; }
         }
     </style>
 </head>
 <body>
 
-    <h1>Konuşma Sıkıştırma Kalite Testi</h1>
-    <p class="subtitle">Blind MOS (Kör Test) Yöntemi</p>
+    <h1>Konuşma Sıkıştırma Kalite Testi<span class="en-sub">(Speech Compression Quality Test)</span></h1>
+    <p class="subtitle">Blind MOS (Kör Test) Yöntemi <span class="en-sub">(Blind MOS Method)</span></p>
 
     <div class="info-box">
-        <h3>🎧 Test Yönergesi</h3>
+        <h3>🎧 Test Yönergesi <span class="en-sub">(Test Instructions)</span></h3>
         <ul>
-            <li>Lütfen testi <strong>kulaklık</strong> ile ve sessiz bir ortamda gerçekleştiriniz.</li>
-            <li>Aşağıdaki listede ses kayıtları <strong>rastgele (karışık)</strong> sıralanmıştır.</li>
-            <li>Her bir sesi dinleyip, genel kalitesini (bozulma, cızırtı, doğallık) aşağıdaki ölçeğe göre puanlayınız.</li>
-            <li>Listede kontrol amaçlı <strong>Orijinal (Referans)</strong> sesler de gizlenmiştir. Lütfen dikkatli dinleyiniz.</li>
+            <li>Lütfen testi <strong>kulaklık</strong> ile ve sessiz bir ortamda gerçekleştiriniz.
+                <span class="en-sub">(Please perform the test using <strong>headphones</strong> in a quiet environment.)</span>
+            </li>
+            <li>Aşağıdaki listede ses kayıtları <strong>rastgele (karışık)</strong> sıralanmıştır.
+                <span class="en-sub">(The audio recordings in the list below are sorted <strong>randomly</strong>.)</span>
+            </li>
+            <li>Her bir sesi dinleyip, genel kalitesini (bozulma, cızırtı, doğallık) aşağıdaki ölçeğe göre puanlayınız.
+                <span class="en-sub">(Listen to each audio and rate its general quality (distortion, noise, naturalness) according to the scale below.)</span>
+            </li>
+            <li>Listede kontrol amaçlı <strong>Orijinal (Referans)</strong> sesler de gizlenmiştir. Lütfen dikkatli dinleyiniz.
+                <span class="en-sub">(<strong>Original/Reference</strong> audios are also hidden in the list for control purposes. Please listen carefully.)</span>
+            </li>
         </ul>
     </div>
 
     <div class="scale-guide">
-        <div class="scale-item"><span class="scale-num">5</span><span class="scale-text">Mükemmel<br>(Farksız)</span></div>
-        <div class="scale-item"><span class="scale-num">4</span><span class="scale-text">İyi<br>(Hafif Bozulma)</span></div>
-        <div class="scale-item"><span class="scale-num">3</span><span class="scale-text">Orta<br>(Belirgin Bozulma)</span></div>
-        <div class="scale-item"><span class="scale-num">2</span><span class="scale-text">Kötü<br>(Rahatsız Edici)</span></div>
-        <div class="scale-item"><span class="scale-num">1</span><span class="scale-text">Çok Kötü<br>(Anlaşılamaz)</span></div>
+        <div class="scale-item">
+            <span class="scale-num">5</span>
+            <div class="scale-text">Mükemmel <span class="en-sub">(Excellent)</span></div>
+        </div>
+        <div class="scale-item">
+            <span class="scale-num">4</span>
+            <div class="scale-text">İyi <span class="en-sub">(Good)</span></div>
+        </div>
+        <div class="scale-item">
+            <span class="scale-num">3</span>
+            <div class="scale-text">Orta <span class="en-sub">(Fair)</span></div>
+        </div>
+        <div class="scale-item">
+            <span class="scale-num">2</span>
+            <div class="scale-text">Kötü <span class="en-sub">(Bad)</span></div>
+        </div>
+        <div class="scale-item">
+            <span class="scale-num">1</span>
+            <div class="scale-text">Çok Kötü <span class="en-sub">(Very Bad)</span></div>
+        </div>
     </div>
 
     <form id="mos-form">
         <div class="sample-card">
-            <div class="sample-header">Katılımcı Bilgisi (Zorunlu)</div>
+            <div class="sample-header">
+                <span class="sample-title">Katılımcı Bilgisi (Zorunlu) <span class="en-sub">(Participant Info - Required)</span></span>
+            </div>
             <div class="form-row">
-                <div>
-                    <label style="font-size:0.9em; font-weight:bold;">Adınız / Rumuzunuz:</label>
+                <div class="form-group">
+                    <label>Adınız / Rumuzunuz: <span class="en-sub">(Name / Nickname)</span></label>
                     <input type="text" name="Katilimci_Ismi" placeholder="Örn: Ahmet Y." required>
                 </div>
-                <div>
-                    <label style="font-size:0.9em; font-weight:bold;">Dinleme Ekipmanı:</label>
+                <div class="form-group">
+                    <label>Dinleme Ekipmanı: <span class="en-sub">(Listening Equipment)</span></label>
                     <select name="Kulaklik_Tipi">
-                        <option value="Kablolu_Kulaklik">Kablolu Kulaklık (Önerilen)</option>
-                        <option value="Bluetooth_Kulaklik">Bluetooth Kulaklık</option>
-                        <option value="Hoparlor">Hoparlör</option>
-                        <option value="Diger">Diğer</option>
+                        <option value="Kablolu_Kulaklik">Kablolu Kulaklık (Wired Headphones)</option>
+                        <option value="Bluetooth_Kulaklik">Bluetooth Kulaklık (Bluetooth Headphones)</option>
+                        <option value="Hoparlor">Hoparlör (Speaker)</option>
+                        <option value="Diger">Diğer (Other)</option>
                     </select>
                 </div>
             </div>
         </div>
 
-        <div id="audio-container" class="loading">Ses dosyaları hazırlanıyor...</div>
+        <div id="audio-container" class="loading">
+            Ses dosyaları hazırlanıyor... <br> 
+            <span class="en-sub">(Preparing audio files...)</span>
+        </div>
 
-        <button type="submit" id="submit-btn">Testi Tamamla ve Gönder</button>
+        <button type="submit" id="submit-btn">
+            Testi Tamamla ve Gönder <br> 
+            <span class="en-sub" style="color:white; font-size:0.8em;">(Complete Test and Submit)</span>
+        </button>
     </form>
 
     <div class="footer">
-        © 2026 Akademik Araştırma Grubu<br>
-        Bu çalışma bilimsel veri toplama amaçlıdır.
+        © 2026 Akademik Araştırma Grubu - Academic Research Group<br>
+        Bu çalışma bilimsel veri toplama amaçlıdır. <span class="en-sub">(This study is for scientific data collection purposes.)</span>
     </div>
 
     <script>
         // --- 1. AYARLAR ---
-        // LÜTFEN KENDİ GOOGLE SCRIPT URL'NİZİ BURAYA YAPIŞTIRIN:
         const scriptURL = 'https://script.google.com/macros/s/AKfycbys0EXNGfyYc7OT3w8-DBDazw9CyPiQjRFCv2i-u-jHppF0aANUx5TQaYxkQ5KMUDwv/exec';
 
         // --- 2. DOSYA TANIMLAMALARI ---
-        
-        // Elimizdeki ses numaraları (Indexler)
         const indexler = ["01", "02", "04", "06", "07", "09", "11", "12", "13", "15", "17", "18", "22", "23", "26", "32", "36", "42", "46"];
-
-        // Her ses için varyasyonlar (Orijinal dahil 5 çeşit)
         const varyasyonlar = ["original_1", "recon_0_8", "recon_1_6", "recon_3_2", "recon_4"];
 
-        // --- 3. LİSTE OLUŞTURMA VE KARIŞTIRMA MANTIĞI ---
-        
+        // --- 3. LİSTE OLUŞTURMA VE KARIŞTIRMA ---
         let oynatmaListesi = [];
 
-        // Tüm kombinasyonları (95 dosya) listeye ekle
         indexler.forEach(idx => {
             varyasyonlar.forEach(tur => {
                 oynatmaListesi.push({
-                    // Dosya yolu: audio/sample_01_recon_4.wav
                     dosyaYolu: `audio/sample_${idx}_${tur}.wav`,
-                    // Veritabanı sütunu: sample_01_recon_4
                     sutunAdi: `sample_${idx}_${tur}` 
                 });
             });
         });
 
-        // Fisher-Yates Algoritması ile listeyi tamamen rastgele karıştır
+        // Fisher-Yates Shuffle
         function karistir(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -158,34 +306,47 @@
             const htmlContent = `
             <div class="sample-card">
                 <div class="sample-header">
-                    <span>Ses Kaydı #${index + 1}</span>
+                    <span class="sample-title">
+                        Ses Kaydı #${index + 1} 
+                        <span class="en-sub" style="display:inline; margin-left:5px;">(Audio Sample #${index + 1})</span>
+                    </span>
                     <span style="font-weight:normal; font-size:0.8em; color:#999;">${index + 1} / ${oynatmaListesi.length}</span>
                 </div>
                 
                 <audio controls controlsList="nodownload" preload="none" src="${item.dosyaYolu}"></audio>
 
                 <div class="rating-container">
-                    <span style="font-size:0.9em; font-weight:bold; color:#555;">Kalite Puanınız:</span>
+                    <span class="rating-title">Kalite Puanınız: <span class="en-sub" style="display:inline;">(Your Quality Score:)</span></span>
+                    
                     <div class="rating-group">
-                        <label class="rating-label" title="Çok Kötü">
+                        <label class="rating-label">
                             <input type="radio" name="${item.sutunAdi}" value="1" required>
-                            <span>1</span>
+                            <span class="rating-val">1</span>
+                            <span class="rating-desc">Çok Kötü<br><i>(Very Bad)</i></span>
                         </label>
-                        <label class="rating-label" title="Kötü">
+                        
+                        <label class="rating-label">
                             <input type="radio" name="${item.sutunAdi}" value="2">
-                            <span>2</span>
+                            <span class="rating-val">2</span>
+                            <span class="rating-desc">Kötü<br><i>(Bad)</i></span>
                         </label>
-                        <label class="rating-label" title="Orta">
+                        
+                        <label class="rating-label">
                             <input type="radio" name="${item.sutunAdi}" value="3">
-                            <span>3</span>
+                            <span class="rating-val">3</span>
+                            <span class="rating-desc">Orta<br><i>(Fair)</i></span>
                         </label>
-                        <label class="rating-label" title="İyi">
+                        
+                        <label class="rating-label">
                             <input type="radio" name="${item.sutunAdi}" value="4">
-                            <span>4</span>
+                            <span class="rating-val">4</span>
+                            <span class="rating-desc">İyi<br><i>(Good)</i></span>
                         </label>
-                        <label class="rating-label" title="Mükemmel">
+                        
+                        <label class="rating-label">
                             <input type="radio" name="${item.sutunAdi}" value="5">
-                            <span>5</span>
+                            <span class="rating-val">5</span>
+                            <span class="rating-desc">Mükemmel<br><i>(Excellent)</i></span>
                         </label>
                     </div>
                 </div>
@@ -200,24 +361,23 @@
         form.addEventListener('submit', e => {
             e.preventDefault();
             
-            // Kullanıcıya bilgi ver
-            submitBtn.innerHTML = "Sonuçlar Sunucuya Gönderiliyor... Lütfen Bekleyin...";
-            submitBtn.style.backgroundColor = "#f39c12"; // Sarı renk
+            submitBtn.innerHTML = "Sonuçlar Sunucuya Gönderiliyor... <br> <span class='en-sub' style='color:white;'>(Sending results to server...)</span>";
+            submitBtn.style.backgroundColor = "#f39c12"; 
             submitBtn.disabled = true;
 
             const formData = new FormData(form);
 
             fetch(scriptURL, { method: 'POST', body: formData})
                 .then(response => {
-                    alert("✅ İşlem Tamamlandı!\n\nTüm puanlarınız başarıyla kaydedildi. Katılımınız için teşekkür ederiz.");
-                    submitBtn.innerHTML = "Gönderildi ✅";
-                    submitBtn.style.backgroundColor = "#27ae60"; // Yeşil renk
+                    alert("✅ İşlem Tamamlandı!\nTüm puanlarınız başarıyla kaydedildi. Katılımınız için teşekkür ederiz.\n\n(Process Completed! All your scores have been saved successfully. Thank you for your participation.)");
+                    submitBtn.innerHTML = "Gönderildi ✅ <br> <span class='en-sub' style='color:white;'>(Submitted)</span>";
+                    submitBtn.style.backgroundColor = "#27ae60"; 
                 })
                 .catch(error => {
                     console.error('Hata', error);
-                    alert("❌ Bir hata oluştu!\n\nLütfen internet bağlantınızı kontrol edip tekrar deneyin.");
-                    submitBtn.innerHTML = "Tekrar Dene";
-                    submitBtn.style.backgroundColor = "#c0392b"; // Kırmızı renk
+                    alert("❌ Bir hata oluştu! Lütfen internet bağlantınızı kontrol edip tekrar deneyin.\n\n(An error occurred! Please check your internet connection and try again.)");
+                    submitBtn.innerHTML = "Tekrar Dene <br> <span class='en-sub' style='color:white;'>(Try Again)</span>";
+                    submitBtn.style.backgroundColor = "#c0392b"; 
                     submitBtn.disabled = false;
                 });
         });
