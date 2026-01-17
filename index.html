@@ -9,9 +9,10 @@
             --primary-color: #2c3e50; 
             --accent-color: #3498db; 
             --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --danger-color: #c0392b;
             --bg-color: #f0f2f5; 
             --card-bg: #ffffff;
-            --locked-color: #e0e0e0;
         }
 
         body { 
@@ -20,160 +21,112 @@
             color: #333; 
             max-width: 850px; 
             margin: 0 auto; 
-            padding: 60px 20px 40px 20px; /* Üst boşluk progress bar için arttırıldı */
+            padding: 60px 20px 40px 20px; 
             line-height: 1.6; 
         }
 
-        /* --- PROGRESS BAR (YENİ) --- */
+        /* --- PROGRESS BAR --- */
         .progress-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 8px;
-            background-color: #ddd;
-            z-index: 1000;
+            position: fixed; top: 0; left: 0; width: 100%; height: 8px; background-color: #ddd; z-index: 1000;
         }
         .progress-bar {
-            height: 100%;
-            background-color: var(--success-color);
-            width: 0%;
-            transition: width 0.3s ease;
+            height: 100%; background-color: var(--success-color); width: 0%; transition: width 0.3s ease;
         }
         .progress-text {
-            position: fixed;
-            top: 10px;
-            right: 20px;
-            background: rgba(0,0,0,0.7);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 0.8em;
-            z-index: 1001;
+            position: fixed; top: 10px; right: 20px; background: rgba(0,0,0,0.7); color: white; 
+            padding: 5px 10px; border-radius: 15px; font-size: 0.8em; z-index: 1001;
         }
 
-        /* Tipografi ve Çeviri Stilleri */
+        /* Tipografi */
         h1 { text-align: center; color: var(--primary-color); margin-bottom: 5px; }
         .subtitle { text-align: center; color: #7f8c8d; margin-bottom: 30px; font-weight: 500; }
         
         .en-sub {
-            display: block;
-            font-size: 0.85em;
-            font-style: italic;
-            color: #7f8c8d;
-            font-weight: normal;
-            margin-top: 2px;
+            display: block; font-size: 0.85em; font-style: italic; color: #7f8c8d; font-weight: normal; margin-top: 2px;
         }
         .subtitle .en-sub { font-size: 0.9em; }
 
-        /* Bilgi Kutusu */
+        /* Yönerge Kutusu */
         .info-box { 
-            background: var(--card-bg); 
-            padding: 25px; 
-            border-radius: 12px; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05); 
-            margin-bottom: 30px; 
+            background: var(--card-bg); padding: 25px; border-radius: 12px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; 
             border-left: 5px solid var(--accent-color); 
         }
         .info-box ul { padding-left: 20px; margin-top: 10px; }
         .info-box li { margin-bottom: 8px; }
 
-        /* Puanlama Rehberi */
-        .scale-guide { 
-            display: flex; 
-            background: var(--card-bg); 
-            border-radius: 12px; 
-            overflow: hidden; 
-            margin-bottom: 30px; 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            flex-wrap: wrap;
+        /* --- DETAYLI PUANLAMA TABLOSU (YENİ) --- */
+        .rating-guide-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            font-size: 0.95em;
         }
-        .scale-item { 
-            flex: 1; 
-            min-width: 100px;
-            text-align: center; 
-            padding: 15px 10px; 
-            border-right: 1px solid #f0f0f0; 
+        .rating-guide-table th {
+            background: var(--primary-color);
+            color: #fff;
+            padding: 12px;
+            text-align: left;
         }
-        .scale-item:last-child { border-right: none; }
-        .scale-num { font-weight: bold; font-size: 1.4em; color: var(--accent-color); display: block; }
-        .scale-text { font-size: 0.9em; font-weight: 600; color: #555; }
-        .scale-text .en-sub { font-size: 0.8em; }
+        .rating-guide-table td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            vertical-align: top;
+        }
+        .rating-guide-table tr:last-child td { border-bottom: none; }
+        
+        .score-badge {
+            display: inline-block; width: 30px; height: 30px; line-height: 30px;
+            text-align: center; border-radius: 50%; color: white; font-weight: bold;
+        }
+        .score-5 { background-color: #27ae60; }
+        .score-4 { background-color: #88cd38; }
+        .score-3 { background-color: #f39c12; }
+        .score-2 { background-color: #e67e22; }
+        .score-1 { background-color: #c0392b; }
 
         /* Ses Kartları */
         .sample-card { 
-            background: var(--card-bg); 
-            padding: 25px; 
-            margin-bottom: 25px; 
-            border-radius: 12px; 
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06); 
-            transition: all 0.3s ease;
-            border: 1px solid transparent;
+            background: var(--card-bg); padding: 25px; margin-bottom: 25px; border-radius: 12px; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06); transition: all 0.3s ease; border: 1px solid transparent;
         }
-        .sample-card:hover { 
-            transform: translateY(-2px); 
-            box-shadow: 0 8px 15px rgba(0,0,0,0.1); 
-        }
-
+        .sample-card:hover { transform: translateY(-2px); box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
         .sample-header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            border-bottom: 1px solid #eee; 
-            padding-bottom: 15px; 
-            margin-bottom: 20px; 
+            display: flex; justify-content: space-between; align-items: center; 
+            border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 20px; 
         }
         .sample-title { font-weight: bold; font-size: 1.1em; color: #444; }
 
         audio { width: 100%; margin-bottom: 20px; outline: none; height: 40px; }
-
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .form-group label { font-weight: bold; display: block; margin-bottom: 8px; color: #2c3e50; }
-        input[type="text"], select { 
-            width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; 
-        }
+        input[type="text"], select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
 
-        /* --- LOCKED / UNLOCKED RATING STYLES (YENİ) --- */
+        /* Rating UI */
         .rating-container { 
-            background: #fafafa; 
-            padding: 15px; 
-            border-radius: 10px; 
-            text-align: center; 
-            border: 1px solid #eee;
-            transition: all 0.3s;
+            background: #fafafa; padding: 15px; border-radius: 10px; text-align: center; 
+            border: 1px solid #eee; transition: all 0.3s;
         }
-
-        /* Kilitli Durum (Dinlemeden Önce) */
         .rating-container.locked {
-            opacity: 0.5;
-            pointer-events: none; /* Tıklamayı engeller */
-            background: #f0f0f0;
+            opacity: 0.5; pointer-events: none; background: #f0f0f0;
         }
-        
         .rating-container.locked::after {
             content: "🔒 Lütfen önce sesi dinleyiniz / Please listen first";
-            display: block;
-            font-size: 0.8em;
-            color: #e74c3c;
-            margin-top: 10px;
-            font-weight: bold;
+            display: block; font-size: 0.8em; color: var(--danger-color); margin-top: 10px; font-weight: bold;
         }
-
-        .rating-title { font-weight: bold; display: block; margin-bottom: 15px; color: #555; }
-        
-        .rating-group { 
-            display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap;
-        }
-        
+        .rating-group { display: flex; justify-content: space-between; gap: 5px; flex-wrap: wrap; }
         .rating-label { 
             cursor: pointer; flex: 1; display: flex; flex-direction: column; align-items: center; 
             padding: 10px 5px; border-radius: 8px; transition: background 0.2s; min-width: 60px;
         }
         .rating-label:hover { background-color: #e8f4fd; }
-        
         .rating-label input { margin-bottom: 8px; transform: scale(1.4); accent-color: var(--accent-color); cursor: pointer; }
         .rating-val { font-weight: bold; font-size: 1.1em; color: var(--primary-color); }
-        .rating-desc { font-size: 0.8em; color: #666; line-height: 1.2; margin-top: 4px; }
+        .rating-desc { font-size: 0.75em; color: #666; line-height: 1.2; margin-top: 4px; }
 
         button#submit-btn { 
             width: 100%; padding: 18px; background-color: var(--accent-color); color: white; border: none; 
@@ -187,8 +140,7 @@
 
         @media (max-width: 600px) {
             .form-row { grid-template-columns: 1fr; }
-            .rating-label { min-width: 80px; margin-bottom: 10px; }
-            .rating-group { justify-content: center; }
+            .rating-guide-table td { font-size: 0.85em; padding: 10px; }
         }
     </style>
 </head>
@@ -206,24 +158,68 @@
         <h3>🎧 Test Yönergesi <span class="en-sub">(Test Instructions)</span></h3>
         <ul>
             <li>Lütfen testi <strong>kulaklık</strong> ile ve sessiz bir ortamda gerçekleştiriniz.
-                <span class="en-sub">(Please perform the test using <strong>headphones</strong> in a quiet environment.)</span>
+                <span class="en-sub">(Please use <strong>headphones</strong> in a quiet environment.)</span>
             </li>
             <li><strong>Önemli:</strong> Puanlama yapabilmek için önce sesi oynatmalısınız.
                 <span class="en-sub">(<strong>Important:</strong> You must play the audio first to enable rating.)</span>
             </li>
-            <li>Her bir sesi dinleyip, genel kalitesini aşağıdaki ölçeğe göre puanlayınız.
-                <span class="en-sub">(Listen to each audio and rate its general quality according to the scale below.)</span>
+            <li>Her bir sesi dinleyip, kalitesini aşağıdaki rehbere göre puanlayınız.
+                <span class="en-sub">(Listen to each audio and rate its quality according to the guide below.)</span>
             </li>
         </ul>
     </div>
 
-    <div class="scale-guide">
-        <div class="scale-item"><span class="scale-num">5</span><div class="scale-text">Mükemmel <span class="en-sub">(Excellent)</span></div></div>
-        <div class="scale-item"><span class="scale-num">4</span><div class="scale-text">İyi <span class="en-sub">(Good)</span></div></div>
-        <div class="scale-item"><span class="scale-num">3</span><div class="scale-text">Orta <span class="en-sub">(Fair)</span></div></div>
-        <div class="scale-item"><span class="scale-num">2</span><div class="scale-text">Kötü <span class="en-sub">(Bad)</span></div></div>
-        <div class="scale-item"><span class="scale-num">1</span><div class="scale-text">Çok Kötü <span class="en-sub">(Very Bad)</span></div></div>
-    </div>
+    <table class="rating-guide-table">
+        <thead>
+            <tr>
+                <th style="width: 10%;">Puan<br><span style="font-weight:normal; font-size:0.8em;">(Score)</span></th>
+                <th style="width: 25%;">Kalite Düzeyi<br><span style="font-weight:normal; font-size:0.8em;">(Quality Level)</span></th>
+                <th>Hangi Koşulda Verilmeli?<br><span style="font-weight:normal; font-size:0.8em;">(Conditions for Rating)</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><span class="score-badge score-5">5</span></td>
+                <td><strong>Mükemmel</strong><br><span class="en-sub">Excellent</span></td>
+                <td>
+                    Bozulma <strong>fark edilemez</strong>. Ses tamamen doğal, pürüzsüz ve orijinal gibidir.
+                    <span class="en-sub">Imperceptible impairment. Audio is completely natural, smooth, and like the original.</span>
+                </td>
+            </tr>
+            <tr>
+                <td><span class="score-badge score-4">4</span></td>
+                <td><strong>İyi</strong><br><span class="en-sub">Good</span></td>
+                <td>
+                    Bozulma <strong>fark edilebilir</strong> ancak <strong>rahatsız etmez</strong>. Hafif bir dip gürültüsü olabilir ama konuşma çok nettir.
+                    <span class="en-sub">Perceptible impairment but <strong>not annoying</strong>. Slight background noise might exist, but speech is very clear.</span>
+                </td>
+            </tr>
+            <tr>
+                <td><span class="score-badge score-3">3</span></td>
+                <td><strong>Orta</strong><br><span class="en-sub">Fair</span></td>
+                <td>
+                    Bozulma <strong>biraz rahatsız edici</strong> seviyededir. Robotikleşme veya cızırtı duyulur ancak <strong>ne söylendiği kolayca anlaşılır</strong>.
+                    <span class="en-sub">Slightly annoying impairment. Robotic sounds or static are audible, but <strong>speech is easily intelligible</strong>.</span>
+                </td>
+            </tr>
+            <tr>
+                <td><span class="score-badge score-2">2</span></td>
+                <td><strong>Kötü</strong><br><span class="en-sub">Poor</span></td>
+                <td>
+                    Bozulma <strong>rahatsız edicidir</strong>. Metalik sesler ve kesilmeler yoğundur. Dinlemek çaba gerektirir.
+                    <span class="en-sub">Annoying impairment. Metallic sounds and interruptions are intense. Requires effort to listen.</span>
+                </td>
+            </tr>
+            <tr>
+                <td><span class="score-badge score-1">1</span></td>
+                <td><strong>Çok Kötü</strong><br><span class="en-sub">Bad</span></td>
+                <td>
+                    Bozulma <strong>çok rahatsız edicidir</strong>. Konuşma anlaşılamaz haldedir veya gürültü konuşmayı bastırır.
+                    <span class="en-sub">Very annoying impairment. Speech is unintelligible or overwhelmed by noise.</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 
     <form id="mos-form">
         <input type="hidden" name="Sure_Saniye" id="durationInput">
@@ -284,7 +280,6 @@
                 oynatmaListesi.push({
                     dosyaYolu: `audio/sample_${idx}_${tur}.wav`,
                     sutunAdi: `sample_${idx}_${tur}`,
-                    // Benzersiz ID oluştur (Force Listen için gerekli)
                     benzersizID: `box_${idx}_${tur}`
                 });
             });
@@ -329,12 +324,12 @@
                         <label class="rating-label">
                             <input type="radio" name="${item.sutunAdi}" value="1" required disabled onchange="updateProgress()">
                             <span class="rating-val">1</span>
-                            <span class="rating-desc">Çok Kötü<br><i>(Very Bad)</i></span>
+                            <span class="rating-desc">Çok Kötü<br><i>(Bad)</i></span>
                         </label>
                         <label class="rating-label">
                             <input type="radio" name="${item.sutunAdi}" value="2" disabled onchange="updateProgress()">
                             <span class="rating-val">2</span>
-                            <span class="rating-desc">Kötü<br><i>(Bad)</i></span>
+                            <span class="rating-desc">Kötü<br><i>(Poor)</i></span>
                         </label>
                         <label class="rating-label">
                             <input type="radio" name="${item.sutunAdi}" value="3" disabled onchange="updateProgress()">
@@ -359,12 +354,11 @@
 
         // --- 5. FONKSİYONLAR ---
 
-        // Puanlamayı Aktif Etme Fonksiyonu
+        // Puanlamayı Aktif Etme
         window.unlockRating = function(elementId) {
             const container = document.getElementById(elementId);
             if (container.classList.contains('locked')) {
-                container.classList.remove('locked'); // Görsel kilidi kaldır
-                // Tüm inputların disabled özelliğini kaldır
+                container.classList.remove('locked');
                 const inputs = container.querySelectorAll('input');
                 inputs.forEach(input => input.disabled = false);
             }
@@ -373,10 +367,8 @@
         // Progress Bar Güncelleme
         window.updateProgress = function() {
             const total = oynatmaListesi.length;
-            // İşaretlenmiş radyo butonlarını say
             const answered = document.querySelectorAll('input[type="radio"]:checked').length;
             const percentage = Math.round((answered / total) * 100);
-            
             document.getElementById('progressBar').style.width = percentage + "%";
             document.getElementById('progressText').innerText = percentage + "%";
         };
@@ -388,7 +380,6 @@
         form.addEventListener('submit', e => {
             e.preventDefault();
             
-            // Süreyi Hesapla
             const endTime = Date.now();
             const durationSeconds = Math.round((endTime - startTime) / 1000);
             document.getElementById('durationInput').value = durationSeconds;
@@ -401,7 +392,7 @@
 
             fetch(scriptURL, { method: 'POST', body: formData})
                 .then(response => {
-                    alert("✅ İşlem Tamamlandı!\nTüm puanlarınız başarıyla kaydedildi.\nGeçen Süre: " + durationSeconds + " saniye.\n\n(Process Completed! Time elapsed: " + durationSeconds + " seconds.)");
+                    alert("✅ İşlem Tamamlandı!\nTüm puanlarınız başarıyla kaydedildi.\n\n(Process Completed! Scores saved successfully.)");
                     submitBtn.innerHTML = "Gönderildi ✅ <br> <span class='en-sub' style='color:white;'>(Submitted)</span>";
                     submitBtn.style.backgroundColor = "#27ae60"; 
                 })
@@ -416,4 +407,3 @@
     </script>
 </body>
 </html>
-
