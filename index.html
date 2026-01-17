@@ -11,6 +11,7 @@
             --success-color: #27ae60;
             --bg-color: #f0f2f5; 
             --card-bg: #ffffff;
+            --locked-color: #e0e0e0;
         }
 
         body { 
@@ -19,10 +20,38 @@
             color: #333; 
             max-width: 850px; 
             margin: 0 auto; 
-            padding: 40px 20px; 
+            padding: 60px 20px 40px 20px; /* Üst boşluk progress bar için arttırıldı */
             line-height: 1.6; 
         }
-        
+
+        /* --- PROGRESS BAR (YENİ) --- */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background-color: #ddd;
+            z-index: 1000;
+        }
+        .progress-bar {
+            height: 100%;
+            background-color: var(--success-color);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        .progress-text {
+            position: fixed;
+            top: 10px;
+            right: 20px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            z-index: 1001;
+        }
+
         /* Tipografi ve Çeviri Stilleri */
         h1 { text-align: center; color: var(--primary-color); margin-bottom: 5px; }
         .subtitle { text-align: center; color: #7f8c8d; margin-bottom: 30px; font-weight: 500; }
@@ -45,13 +74,11 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.05); 
             margin-bottom: 30px; 
             border-left: 5px solid var(--accent-color); 
-            transition: transform 0.3s ease;
         }
-        .info-box:hover { transform: translateY(-2px); }
         .info-box ul { padding-left: 20px; margin-top: 10px; }
         .info-box li { margin-bottom: 8px; }
 
-        /* Puanlama Rehberi Tablosu */
+        /* Puanlama Rehberi */
         .scale-guide { 
             display: flex; 
             background: var(--card-bg); 
@@ -67,10 +94,8 @@
             text-align: center; 
             padding: 15px 10px; 
             border-right: 1px solid #f0f0f0; 
-            transition: background 0.2s;
         }
         .scale-item:last-child { border-right: none; }
-        .scale-item:hover { background-color: #fcfcfc; }
         .scale-num { font-weight: bold; font-size: 1.4em; color: var(--accent-color); display: block; }
         .scale-text { font-size: 0.9em; font-weight: 600; color: #555; }
         .scale-text .en-sub { font-size: 0.8em; }
@@ -84,12 +109,10 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.06); 
             transition: all 0.3s ease;
             border: 1px solid transparent;
-            animation: fadeIn 0.5s ease-in-out;
         }
         .sample-card:hover { 
-            transform: translateY(-4px); 
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1); 
-            border-color: #e1e8ed;
+            transform: translateY(-2px); 
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1); 
         }
 
         .sample-header { 
@@ -104,47 +127,47 @@
 
         audio { width: 100%; margin-bottom: 20px; outline: none; height: 40px; }
 
-        /* Form Elemanları */
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .form-group label { font-weight: bold; display: block; margin-bottom: 8px; color: #2c3e50; }
         input[type="text"], select { 
-            width: 100%; 
-            padding: 12px; 
-            border: 1px solid #ddd; 
-            border-radius: 8px; 
-            box-sizing: border-box; 
-            font-size: 1em;
-            transition: border-color 0.3s;
+            width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; 
         }
-        input[type="text"]:focus, select:focus { border-color: var(--accent-color); outline: none; }
 
-        /* Radyo Butonları ve Etiketler */
+        /* --- LOCKED / UNLOCKED RATING STYLES (YENİ) --- */
         .rating-container { 
             background: #fafafa; 
             padding: 15px; 
             border-radius: 10px; 
             text-align: center; 
             border: 1px solid #eee;
+            transition: all 0.3s;
         }
+
+        /* Kilitli Durum (Dinlemeden Önce) */
+        .rating-container.locked {
+            opacity: 0.5;
+            pointer-events: none; /* Tıklamayı engeller */
+            background: #f0f0f0;
+        }
+        
+        .rating-container.locked::after {
+            content: "🔒 Lütfen önce sesi dinleyiniz / Please listen first";
+            display: block;
+            font-size: 0.8em;
+            color: #e74c3c;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
         .rating-title { font-weight: bold; display: block; margin-bottom: 15px; color: #555; }
         
         .rating-group { 
-            display: flex; 
-            justify-content: space-between; 
-            gap: 10px; 
-            flex-wrap: wrap;
+            display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap;
         }
         
         .rating-label { 
-            cursor: pointer; 
-            flex: 1;
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            padding: 10px 5px; 
-            border-radius: 8px; 
-            transition: background 0.2s;
-            min-width: 60px;
+            cursor: pointer; flex: 1; display: flex; flex-direction: column; align-items: center; 
+            padding: 10px 5px; border-radius: 8px; transition: background 0.2s; min-width: 60px;
         }
         .rating-label:hover { background-color: #e8f4fd; }
         
@@ -152,28 +175,15 @@
         .rating-val { font-weight: bold; font-size: 1.1em; color: var(--primary-color); }
         .rating-desc { font-size: 0.8em; color: #666; line-height: 1.2; margin-top: 4px; }
 
-        /* Gönder Butonu */
         button#submit-btn { 
-            width: 100%; 
-            padding: 18px; 
-            background-color: var(--accent-color); 
-            color: white; 
-            border: none; 
-            border-radius: 8px; 
-            font-size: 1.1em; 
-            font-weight: bold; 
-            cursor: pointer; 
-            transition: all 0.3s; 
-            margin-top: 30px; 
-            box-shadow: 0 4px 6px rgba(52, 152, 219, 0.3);
+            width: 100%; padding: 18px; background-color: var(--accent-color); color: white; border: none; 
+            border-radius: 8px; font-size: 1.1em; font-weight: bold; cursor: pointer; transition: all 0.3s; margin-top: 30px; 
         }
-        button#submit-btn:hover { background-color: #2980b9; transform: translateY(-2px); box-shadow: 0 6px 12px rgba(52, 152, 219, 0.4); }
-        button:disabled { background-color: #95a5a6; cursor: not-allowed; box-shadow: none; transform: none; }
+        button#submit-btn:hover { background-color: #2980b9; transform: translateY(-2px); }
+        button:disabled { background-color: #95a5a6; cursor: not-allowed; transform: none; }
 
         .loading { text-align: center; color: #7f8c8d; font-style: italic; padding: 40px; }
         .footer { text-align: center; font-size: 0.85em; color: #aaa; margin-top: 50px; border-top: 1px solid #eee; padding-top: 20px; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         @media (max-width: 600px) {
             .form-row { grid-template-columns: 1fr; }
@@ -184,6 +194,11 @@
 </head>
 <body>
 
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <div class="progress-text" id="progressText">0%</div>
+
     <h1>Konuşma Sıkıştırma Kalite Testi<span class="en-sub">(Speech Compression Quality Test)</span></h1>
     <p class="subtitle">Blind MOS (Kör Test) Yöntemi <span class="en-sub">(Blind MOS Method)</span></p>
 
@@ -193,42 +208,26 @@
             <li>Lütfen testi <strong>kulaklık</strong> ile ve sessiz bir ortamda gerçekleştiriniz.
                 <span class="en-sub">(Please perform the test using <strong>headphones</strong> in a quiet environment.)</span>
             </li>
-            <li>Aşağıdaki listede ses kayıtları <strong>rastgele (karışık)</strong> sıralanmıştır.
-                <span class="en-sub">(The audio recordings in the list below are sorted <strong>randomly</strong>.)</span>
+            <li><strong>Önemli:</strong> Puanlama yapabilmek için önce sesi oynatmalısınız.
+                <span class="en-sub">(<strong>Important:</strong> You must play the audio first to enable rating.)</span>
             </li>
-            <li>Her bir sesi dinleyip, genel kalitesini (bozulma, cızırtı, doğallık) aşağıdaki ölçeğe göre puanlayınız.
-                <span class="en-sub">(Listen to each audio and rate its general quality (distortion, noise, naturalness) according to the scale below.)</span>
-            </li>
-            <li>Listede kontrol amaçlı <strong>Orijinal (Referans)</strong> sesler de gizlenmiştir. Lütfen dikkatli dinleyiniz.
-                <span class="en-sub">(<strong>Original/Reference</strong> audios are also hidden in the list for control purposes. Please listen carefully.)</span>
+            <li>Her bir sesi dinleyip, genel kalitesini aşağıdaki ölçeğe göre puanlayınız.
+                <span class="en-sub">(Listen to each audio and rate its general quality according to the scale below.)</span>
             </li>
         </ul>
     </div>
 
     <div class="scale-guide">
-        <div class="scale-item">
-            <span class="scale-num">5</span>
-            <div class="scale-text">Mükemmel <span class="en-sub">(Excellent)</span></div>
-        </div>
-        <div class="scale-item">
-            <span class="scale-num">4</span>
-            <div class="scale-text">İyi <span class="en-sub">(Good)</span></div>
-        </div>
-        <div class="scale-item">
-            <span class="scale-num">3</span>
-            <div class="scale-text">Orta <span class="en-sub">(Fair)</span></div>
-        </div>
-        <div class="scale-item">
-            <span class="scale-num">2</span>
-            <div class="scale-text">Kötü <span class="en-sub">(Bad)</span></div>
-        </div>
-        <div class="scale-item">
-            <span class="scale-num">1</span>
-            <div class="scale-text">Çok Kötü <span class="en-sub">(Very Bad)</span></div>
-        </div>
+        <div class="scale-item"><span class="scale-num">5</span><div class="scale-text">Mükemmel <span class="en-sub">(Excellent)</span></div></div>
+        <div class="scale-item"><span class="scale-num">4</span><div class="scale-text">İyi <span class="en-sub">(Good)</span></div></div>
+        <div class="scale-item"><span class="scale-num">3</span><div class="scale-text">Orta <span class="en-sub">(Fair)</span></div></div>
+        <div class="scale-item"><span class="scale-num">2</span><div class="scale-text">Kötü <span class="en-sub">(Bad)</span></div></div>
+        <div class="scale-item"><span class="scale-num">1</span><div class="scale-text">Çok Kötü <span class="en-sub">(Very Bad)</span></div></div>
     </div>
 
     <form id="mos-form">
+        <input type="hidden" name="Sure_Saniye" id="durationInput">
+
         <div class="sample-card">
             <div class="sample-header">
                 <span class="sample-title">Katılımcı Bilgisi (Zorunlu) <span class="en-sub">(Participant Info - Required)</span></span>
@@ -263,7 +262,7 @@
 
     <div class="footer">
         © 2026 Akademik Araştırma Grubu - Academic Research Group<br>
-        Bu çalışma bilimsel veri toplama amaçlıdır. <span class="en-sub">(This study is for scientific data collection purposes.)</span>
+        Bu çalışma bilimsel veri toplama amaçlıdır.
     </div>
 
     <script>
@@ -274,6 +273,9 @@
         const indexler = ["01", "02", "04", "06", "07", "09", "11", "12", "13", "15", "17", "18", "22", "23", "26", "32", "36", "42", "46"];
         const varyasyonlar = ["original_1", "recon_0_8", "recon_1_6", "recon_3_2", "recon_4"];
 
+        // Başlangıç Zamanı
+        const startTime = Date.now();
+
         // --- 3. LİSTE OLUŞTURMA VE KARIŞTIRMA ---
         let oynatmaListesi = [];
 
@@ -281,7 +283,9 @@
             varyasyonlar.forEach(tur => {
                 oynatmaListesi.push({
                     dosyaYolu: `audio/sample_${idx}_${tur}.wav`,
-                    sutunAdi: `sample_${idx}_${tur}` 
+                    sutunAdi: `sample_${idx}_${tur}`,
+                    // Benzersiz ID oluştur (Force Listen için gerekli)
+                    benzersizID: `box_${idx}_${tur}`
                 });
             });
         });
@@ -313,38 +317,37 @@
                     <span style="font-weight:normal; font-size:0.8em; color:#999;">${index + 1} / ${oynatmaListesi.length}</span>
                 </div>
                 
-                <audio controls controlsList="nodownload" preload="none" src="${item.dosyaYolu}"></audio>
+                <audio controls controlsList="nodownload" preload="none" 
+                       src="${item.dosyaYolu}" 
+                       onplay="unlockRating('${item.benzersizID}')">
+                </audio>
 
-                <div class="rating-container">
+                <div id="${item.benzersizID}" class="rating-container locked">
                     <span class="rating-title">Kalite Puanınız: <span class="en-sub" style="display:inline;">(Your Quality Score:)</span></span>
                     
                     <div class="rating-group">
                         <label class="rating-label">
-                            <input type="radio" name="${item.sutunAdi}" value="1" required>
+                            <input type="radio" name="${item.sutunAdi}" value="1" required disabled onchange="updateProgress()">
                             <span class="rating-val">1</span>
                             <span class="rating-desc">Çok Kötü<br><i>(Very Bad)</i></span>
                         </label>
-                        
                         <label class="rating-label">
-                            <input type="radio" name="${item.sutunAdi}" value="2">
+                            <input type="radio" name="${item.sutunAdi}" value="2" disabled onchange="updateProgress()">
                             <span class="rating-val">2</span>
                             <span class="rating-desc">Kötü<br><i>(Bad)</i></span>
                         </label>
-                        
                         <label class="rating-label">
-                            <input type="radio" name="${item.sutunAdi}" value="3">
+                            <input type="radio" name="${item.sutunAdi}" value="3" disabled onchange="updateProgress()">
                             <span class="rating-val">3</span>
                             <span class="rating-desc">Orta<br><i>(Fair)</i></span>
                         </label>
-                        
                         <label class="rating-label">
-                            <input type="radio" name="${item.sutunAdi}" value="4">
+                            <input type="radio" name="${item.sutunAdi}" value="4" disabled onchange="updateProgress()">
                             <span class="rating-val">4</span>
                             <span class="rating-desc">İyi<br><i>(Good)</i></span>
                         </label>
-                        
                         <label class="rating-label">
-                            <input type="radio" name="${item.sutunAdi}" value="5">
+                            <input type="radio" name="${item.sutunAdi}" value="5" disabled onchange="updateProgress()">
                             <span class="rating-val">5</span>
                             <span class="rating-desc">Mükemmel<br><i>(Excellent)</i></span>
                         </label>
@@ -354,13 +357,42 @@
             container.innerHTML += htmlContent;
         });
 
-        // --- 5. GÖNDERME İŞLEMİ ---
+        // --- 5. FONKSİYONLAR ---
+
+        // Puanlamayı Aktif Etme Fonksiyonu
+        window.unlockRating = function(elementId) {
+            const container = document.getElementById(elementId);
+            if (container.classList.contains('locked')) {
+                container.classList.remove('locked'); // Görsel kilidi kaldır
+                // Tüm inputların disabled özelliğini kaldır
+                const inputs = container.querySelectorAll('input');
+                inputs.forEach(input => input.disabled = false);
+            }
+        };
+
+        // Progress Bar Güncelleme
+        window.updateProgress = function() {
+            const total = oynatmaListesi.length;
+            // İşaretlenmiş radyo butonlarını say
+            const answered = document.querySelectorAll('input[type="radio"]:checked').length;
+            const percentage = Math.round((answered / total) * 100);
+            
+            document.getElementById('progressBar').style.width = percentage + "%";
+            document.getElementById('progressText').innerText = percentage + "%";
+        };
+
+        // --- 6. GÖNDERME İŞLEMİ ---
         const form = document.getElementById('mos-form');
         const submitBtn = document.getElementById('submit-btn');
 
         form.addEventListener('submit', e => {
             e.preventDefault();
             
+            // Süreyi Hesapla
+            const endTime = Date.now();
+            const durationSeconds = Math.round((endTime - startTime) / 1000);
+            document.getElementById('durationInput').value = durationSeconds;
+
             submitBtn.innerHTML = "Sonuçlar Sunucuya Gönderiliyor... <br> <span class='en-sub' style='color:white;'>(Sending results to server...)</span>";
             submitBtn.style.backgroundColor = "#f39c12"; 
             submitBtn.disabled = true;
@@ -369,14 +401,14 @@
 
             fetch(scriptURL, { method: 'POST', body: formData})
                 .then(response => {
-                    alert("✅ İşlem Tamamlandı!\nTüm puanlarınız başarıyla kaydedildi. Katılımınız için teşekkür ederiz.\n\n(Process Completed! All your scores have been saved successfully. Thank you for your participation.)");
+                    alert("✅ İşlem Tamamlandı!\nTüm puanlarınız başarıyla kaydedildi.\nGeçen Süre: " + durationSeconds + " saniye.\n\n(Process Completed! Time elapsed: " + durationSeconds + " seconds.)");
                     submitBtn.innerHTML = "Gönderildi ✅ <br> <span class='en-sub' style='color:white;'>(Submitted)</span>";
                     submitBtn.style.backgroundColor = "#27ae60"; 
                 })
                 .catch(error => {
                     console.error('Hata', error);
-                    alert("❌ Bir hata oluştu! Lütfen internet bağlantınızı kontrol edip tekrar deneyin.\n\n(An error occurred! Please check your internet connection and try again.)");
-                    submitBtn.innerHTML = "Tekrar Dene <br> <span class='en-sub' style='color:white;'>(Try Again)</span>";
+                    alert("❌ Hata oluştu! / Error occurred!");
+                    submitBtn.innerHTML = "Tekrar Dene / Try Again";
                     submitBtn.style.backgroundColor = "#c0392b"; 
                     submitBtn.disabled = false;
                 });
