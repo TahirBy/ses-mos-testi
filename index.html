@@ -25,7 +25,6 @@
             line-height: 1.6; 
         }
 
-        /* --- PROGRESS BAR --- */
         .progress-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 8px; background-color: #ddd; z-index: 1000;
         }
@@ -37,7 +36,6 @@
             padding: 5px 10px; border-radius: 15px; font-size: 0.8em; z-index: 1001;
         }
 
-        /* Tipografi */
         h1 { text-align: center; color: var(--primary-color); margin-bottom: 5px; }
         .subtitle { text-align: center; color: #7f8c8d; margin-bottom: 30px; font-weight: 500; }
         
@@ -46,25 +44,24 @@
         }
         .subtitle .en-sub { font-size: 0.9em; }
 
-        /* Bilgi Kutuları */
         .info-box { 
             background: var(--card-bg); padding: 25px; border-radius: 12px; 
             box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 25px; 
             border-left: 5px solid var(--accent-color); 
         }
-        /* GÜNCELLEME: Metinleri iki yana yasla */
+
         .info-box p { 
             margin-bottom: 15px; 
             text-align: justify; 
         }
         .info-box ul { padding-left: 20px; }
-        /* GÜNCELLEME: Liste maddelerini iki yana yasla */
+        
         .info-box li { 
             margin-bottom: 8px; 
             text-align: justify; 
         }
 
-        /* Kalibrasyon Kutusu */
+
         .calibration-box {
             background: #fff3cd; 
             border-left: 5px solid #ffc107;
@@ -73,12 +70,12 @@
             margin-bottom: 30px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
-        /* GÜNCELLEME: Kalibrasyon metnini iki yana yasla */
+        
         .calibration-box p {
             text-align: justify;
         }
 
-        /* --- DETAYLI PUANLAMA TABLOSU --- */
+        
         .rating-guide-table {
             width: 100%;
             border-collapse: collapse;
@@ -100,7 +97,7 @@
             padding: 15px;
             border-bottom: 1px solid #eee;
             vertical-align: top;
-            text-align: left; /* Tablo içeriği solda kalsın, daha okunaklı olur */
+            text-align: left; 
         }
         .rating-guide-table tr:last-child td { border-bottom: none; }
         
@@ -114,7 +111,7 @@
         .score-2 { background-color: #e67e22; }
         .score-1 { background-color: #c0392b; }
 
-        /* Ses Kartları */
+        
         .sample-card { 
             background: var(--card-bg); padding: 25px; margin-bottom: 25px; border-radius: 12px; 
             box-shadow: 0 2px 8px rgba(0,0,0,0.06); transition: all 0.3s ease; border: 1px solid transparent;
@@ -131,7 +128,7 @@
         .form-group label { font-weight: bold; display: block; margin-bottom: 8px; color: #2c3e50; }
         input[type="text"], select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
 
-        /* Rating UI */
+        
         .rating-container { 
             background: #fafafa; padding: 15px; border-radius: 10px; text-align: center; 
             border: 1px solid #eee; transition: all 0.3s;
@@ -213,8 +210,8 @@
                 <td><span class="score-badge score-5">5</span></td>
                 <td><strong>Mükemmel</strong><br><span class="en-sub">Excellent</span></td>
                 <td>
-                    Çok yüksek konuşma kalitesi; kusurlar yok veya fark edilmeyecek düzeyde.
-                    <span class="en-sub">Very high speech quality; imperfections are non-existent or imperceptible.</span>
+                    Çok yüksek konuşma kalitesi. Kusurlar yok veya fark edilmeyecek düzeyde.
+                    <span class="en-sub">Very high speech quality. Imperfections are non-existent or imperceptible.</span>
                 </td>
             </tr>
             <tr>
@@ -303,17 +300,17 @@
     </div>
 
     <script>
-        // --- 1. AYARLAR ---
+        
         const scriptURL = 'https://script.google.com/macros/s/AKfycbys0EXNGfyYc7OT3w8-DBDazw9CyPiQjRFCv2i-u-jHppF0aANUx5TQaYxkQ5KMUDwv/exec';
 
-        // --- 2. DOSYA TANIMLAMALARI ---
+        
         const indexler = ["01", "02", "04", "06", "07", "09", "11", "12", "13", "15", "17", "18", "22", "23", "26", "32", "36", "42", "46"];
         const varyasyonlar = ["original_1", "recon_0_8", "recon_1_6", "recon_3_2", "recon_4"];
 
-        // Başlangıç Zamanı
+        
         const startTime = Date.now();
 
-        // --- 3. LİSTE OLUŞTURMA VE KARIŞTIRMA ---
+        
         let oynatmaListesi = [];
 
         indexler.forEach(idx => {
@@ -326,7 +323,7 @@
             });
         });
 
-        // Fisher-Yates Shuffle
+        
         function karistir(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -337,7 +334,7 @@
 
         oynatmaListesi = karistir(oynatmaListesi);
 
-        // --- 4. EKRANA BASMA ---
+        
         const container = document.getElementById('audio-container');
         container.innerHTML = ""; 
         container.classList.remove("loading");
@@ -393,7 +390,7 @@
             container.innerHTML += htmlContent;
         });
 
-        // --- 5. FONKSİYONLAR ---
+        
 
         window.unlockRating = function(elementId) {
             const container = document.getElementById(elementId);
@@ -412,7 +409,7 @@
             document.getElementById('progressText').innerText = percentage + "%";
         };
 
-        // --- 6. GÖNDERME İŞLEMİ ---
+        
         const form = document.getElementById('mos-form');
         const submitBtn = document.getElementById('submit-btn');
 
@@ -446,4 +443,5 @@
     </script>
 </body>
 </html>
+
 
