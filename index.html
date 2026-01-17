@@ -19,7 +19,7 @@
             font-family: 'Segoe UI', 'Roboto', Helvetica, Arial, sans-serif; 
             background-color: var(--bg-color); 
             color: #333; 
-            max-width: 850px; 
+            max-width: 900px; 
             margin: 0 auto; 
             padding: 60px 20px 40px 20px; 
             line-height: 1.6; 
@@ -42,20 +42,21 @@
         .subtitle { text-align: center; color: #7f8c8d; margin-bottom: 30px; font-weight: 500; }
         
         .en-sub {
-            display: block; font-size: 0.85em; font-style: italic; color: #7f8c8d; font-weight: normal; margin-top: 2px;
+            display: block; font-size: 0.85em; font-style: italic; color: #7f8c8d; font-weight: normal; margin-top: 3px;
         }
         .subtitle .en-sub { font-size: 0.9em; }
 
         /* Yönerge Kutusu */
         .info-box { 
             background: var(--card-bg); padding: 25px; border-radius: 12px; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 25px; 
             border-left: 5px solid var(--accent-color); 
         }
-        .info-box ul { padding-left: 20px; margin-top: 10px; }
+        .info-box p { margin-bottom: 15px; }
+        .info-box ul { padding-left: 20px; }
         .info-box li { margin-bottom: 8px; }
 
-        /* --- DETAYLI PUANLAMA TABLOSU (YENİ) --- */
+        /* --- DETAYLI PUANLAMA TABLOSU --- */
         .rating-guide-table {
             width: 100%;
             border-collapse: collapse;
@@ -71,6 +72,7 @@
             color: #fff;
             padding: 12px;
             text-align: left;
+            border-right: 1px solid rgba(255,255,255,0.1);
         }
         .rating-guide-table td {
             padding: 15px;
@@ -80,8 +82,8 @@
         .rating-guide-table tr:last-child td { border-bottom: none; }
         
         .score-badge {
-            display: inline-block; width: 30px; height: 30px; line-height: 30px;
-            text-align: center; border-radius: 50%; color: white; font-weight: bold;
+            display: inline-block; width: 32px; height: 32px; line-height: 32px;
+            text-align: center; border-radius: 50%; color: white; font-weight: bold; font-size: 1.1em;
         }
         .score-5 { background-color: #27ae60; }
         .score-4 { background-color: #88cd38; }
@@ -140,7 +142,7 @@
 
         @media (max-width: 600px) {
             .form-row { grid-template-columns: 1fr; }
-            .rating-guide-table td { font-size: 0.85em; padding: 10px; }
+            .rating-guide-table th, .rating-guide-table td { padding: 10px 5px; font-size: 0.85em; }
         }
     </style>
 </head>
@@ -152,19 +154,25 @@
     <div class="progress-text" id="progressText">0%</div>
 
     <h1>Konuşma Sıkıştırma Kalite Testi<span class="en-sub">(Speech Compression Quality Test)</span></h1>
-    <p class="subtitle">Blind MOS (Kör Test) Yöntemi <span class="en-sub">(Blind MOS Method)</span></p>
+    <p class="subtitle">Subjektif Değerlendirme (MOS Testi) <span class="en-sub">(Subjective Evaluation - MOS Test)</span></p>
 
     <div class="info-box">
+        <h3>📄 Çalışmanın Amacı <span class="en-sub">(Aim of the Study)</span></h3>
+        <p>
+            Bu çalışma, geliştirilen özgün bir konuşma sıkıştırma yönteminin algısal başarısını belirlemek amacıyla gerçekleştirilmektedir. Sizlerden beklenen, sunulan ses örneklerini dikkatlice dinleyerek, duyduğunuz sesin kalitesini belirtilen kriterlere göre puanlamanızdır.
+            <span class="en-sub">This study is conducted to determine the perceptual performance of a developed speech compression method. You are expected to listen carefully to the presented audio samples and rate the quality of the sound you hear according to the specified criteria.</span>
+        </p>
+        
         <h3>🎧 Test Yönergesi <span class="en-sub">(Test Instructions)</span></h3>
         <ul>
             <li>Lütfen testi <strong>kulaklık</strong> ile ve sessiz bir ortamda gerçekleştiriniz.
                 <span class="en-sub">(Please use <strong>headphones</strong> in a quiet environment.)</span>
             </li>
-            <li><strong>Önemli:</strong> Puanlama yapabilmek için önce sesi oynatmalısınız.
-                <span class="en-sub">(<strong>Important:</strong> You must play the audio first to enable rating.)</span>
+            <li><strong>Önemli:</strong> Puanlama butonlarının aktif olması için önce sesi oynatmanız gerekmektedir.
+                <span class="en-sub">(<strong>Important:</strong> You must play the audio first to enable the rating buttons.)</span>
             </li>
-            <li>Her bir sesi dinleyip, kalitesini aşağıdaki rehbere göre puanlayınız.
-                <span class="en-sub">(Listen to each audio and rate its quality according to the guide below.)</span>
+            <li>Her bir sesi dinleyip, genel konuşma kalitesini aşağıdaki rehbere göre puanlayınız.
+                <span class="en-sub">(Listen to each audio and rate the general speech quality according to the guide below.)</span>
             </li>
         </ul>
     </div>
@@ -173,8 +181,8 @@
         <thead>
             <tr>
                 <th style="width: 10%;">Puan<br><span style="font-weight:normal; font-size:0.8em;">(Score)</span></th>
-                <th style="width: 25%;">Kalite Düzeyi<br><span style="font-weight:normal; font-size:0.8em;">(Quality Level)</span></th>
-                <th>Hangi Koşulda Verilmeli?<br><span style="font-weight:normal; font-size:0.8em;">(Conditions for Rating)</span></th>
+                <th style="width: 25%;">Kategori<br><span style="font-weight:normal; font-size:0.8em;">(Category)</span></th>
+                <th>Açıklama ve Koşullar<br><span style="font-weight:normal; font-size:0.8em;">(Description & Conditions)</span></th>
             </tr>
         </thead>
         <tbody>
@@ -182,40 +190,40 @@
                 <td><span class="score-badge score-5">5</span></td>
                 <td><strong>Mükemmel</strong><br><span class="en-sub">Excellent</span></td>
                 <td>
-                    Bozulma <strong>fark edilemez</strong>. Ses tamamen doğal, pürüzsüz ve orijinal gibidir.
-                    <span class="en-sub">Imperceptible impairment. Audio is completely natural, smooth, and like the original.</span>
+                    Çok yüksek konuşma kalitesi; kusurlar yok veya fark edilmeyecek düzeyde.
+                    <span class="en-sub">Very high speech quality; imperfections are non-existent or imperceptible.</span>
                 </td>
             </tr>
             <tr>
                 <td><span class="score-badge score-4">4</span></td>
                 <td><strong>İyi</strong><br><span class="en-sub">Good</span></td>
                 <td>
-                    Bozulma <strong>fark edilebilir</strong> ancak <strong>rahatsız etmez</strong>. Hafif bir dip gürültüsü olabilir ama konuşma çok nettir.
-                    <span class="en-sub">Perceptible impairment but <strong>not annoying</strong>. Slight background noise might exist, but speech is very clear.</span>
+                    Küçük kusurlar duyulabilir ama genel kaliteyi belirgin etkilemez; konuşma rahat takip edilir.
+                    <span class="en-sub">Minor imperfections can be heard but do not significantly affect general quality; speech is easily followed.</span>
                 </td>
             </tr>
             <tr>
                 <td><span class="score-badge score-3">3</span></td>
                 <td><strong>Orta</strong><br><span class="en-sub">Fair</span></td>
                 <td>
-                    Bozulma <strong>biraz rahatsız edici</strong> seviyededir. Robotikleşme veya cızırtı duyulur ancak <strong>ne söylendiği kolayca anlaşılır</strong>.
-                    <span class="en-sub">Slightly annoying impairment. Robotic sounds or static are audible, but <strong>speech is easily intelligible</strong>.</span>
+                    Kusurlar belirgin; kalite orta düzeyde, yine de konuşma anlaşılır.
+                    <span class="en-sub">Imperfections are distinct; quality is moderate, yet speech is intelligible.</span>
                 </td>
             </tr>
             <tr>
                 <td><span class="score-badge score-2">2</span></td>
                 <td><strong>Kötü</strong><br><span class="en-sub">Poor</span></td>
                 <td>
-                    Bozulma <strong>rahatsız edicidir</strong>. Metalik sesler ve kesilmeler yoğundur. Dinlemek çaba gerektirir.
-                    <span class="en-sub">Annoying impairment. Metallic sounds and interruptions are intense. Requires effort to listen.</span>
+                    Kalite belirgin düşük; artefakt/gürültü nedeniyle dinlemek çaba gerektirir.
+                    <span class="en-sub">Quality is clearly low; listening requires effort due to artifacts/noise.</span>
                 </td>
             </tr>
             <tr>
                 <td><span class="score-badge score-1">1</span></td>
                 <td><strong>Çok Kötü</strong><br><span class="en-sub">Bad</span></td>
                 <td>
-                    Bozulma <strong>çok rahatsız edicidir</strong>. Konuşma anlaşılamaz haldedir veya gürültü konuşmayı bastırır.
-                    <span class="en-sub">Very annoying impairment. Speech is unintelligible or overwhelmed by noise.</span>
+                    Kabul edilemez kalite; konuşma sık sık anlaşılamaz veya ciddi biçimde rahatsız edicidir.
+                    <span class="en-sub">Unacceptable quality; speech is frequently unintelligible or severely annoying.</span>
                 </td>
             </tr>
         </tbody>
@@ -354,7 +362,6 @@
 
         // --- 5. FONKSİYONLAR ---
 
-        // Puanlamayı Aktif Etme
         window.unlockRating = function(elementId) {
             const container = document.getElementById(elementId);
             if (container.classList.contains('locked')) {
@@ -364,7 +371,6 @@
             }
         };
 
-        // Progress Bar Güncelleme
         window.updateProgress = function() {
             const total = oynatmaListesi.length;
             const answered = document.querySelectorAll('input[type="radio"]:checked').length;
