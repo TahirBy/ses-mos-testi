@@ -46,7 +46,7 @@
         }
         .subtitle .en-sub { font-size: 0.9em; }
 
-        /* Yönerge Kutusu */
+        /* Bilgi Kutuları */
         .info-box { 
             background: var(--card-bg); padding: 25px; border-radius: 12px; 
             box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 25px; 
@@ -55,6 +55,16 @@
         .info-box p { margin-bottom: 15px; }
         .info-box ul { padding-left: 20px; }
         .info-box li { margin-bottom: 8px; }
+
+        /* Kalibrasyon Kutusu (Yeni) */
+        .calibration-box {
+            background: #fff3cd; /* Hafif sarı arka plan */
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
 
         /* --- DETAYLI PUANLAMA TABLOSU --- */
         .rating-guide-table {
@@ -229,6 +239,16 @@
         </tbody>
     </table>
 
+    <div class="calibration-box">
+        <h3>🔊 Ses Seviyesi Ayarı (Kalibrasyon) <span class="en-sub">(Volume Adjustment - Calibration)</span></h3>
+        <p>
+            Lütfen aşağıdaki örnek sesi dinleyerek kulaklık/hoparlör ses seviyesini <strong>rahat ve net duyabileceğiniz</strong> bir düzeye ayarlayınız. Test boyunca bu seviyeyi değiştirmemeniz önerilir.
+            <span class="en-sub">Please listen to the sample audio below and adjust your headphone/speaker volume to a <strong>comfortable and clear level</strong>. It is recommended not to change this level during the test.</span>
+        </p>
+        <div style="text-align: center;">
+            <audio controls src="audio/sample_01_original_1.wav" style="max-width: 400px;"></audio>
+        </div>
+    </div>
     <form id="mos-form">
         <input type="hidden" name="Sure_Saniye" id="durationInput">
 
@@ -239,7 +259,7 @@
             <div class="form-row">
                 <div class="form-group">
                     <label>Adınız / Rumuzunuz: <span class="en-sub">(Name / Nickname)</span></label>
-                    <input type="text" name="Katilimci_Ismi" placeholder="Örn: Ahmet Y." required>
+                    <input type="text" name="Katilimci_Ismi" placeholder="Örn: Yavuz B." required>
                 </div>
                 <div class="form-group">
                     <label>Dinleme Ekipmanı: <span class="en-sub">(Listening Equipment)</span></label>
