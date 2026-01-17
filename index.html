@@ -52,18 +52,30 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 25px; 
             border-left: 5px solid var(--accent-color); 
         }
-        .info-box p { margin-bottom: 15px; }
+        /* GÜNCELLEME: Metinleri iki yana yasla */
+        .info-box p { 
+            margin-bottom: 15px; 
+            text-align: justify; 
+        }
         .info-box ul { padding-left: 20px; }
-        .info-box li { margin-bottom: 8px; }
+        /* GÜNCELLEME: Liste maddelerini iki yana yasla */
+        .info-box li { 
+            margin-bottom: 8px; 
+            text-align: justify; 
+        }
 
-        /* Kalibrasyon Kutusu (Yeni) */
+        /* Kalibrasyon Kutusu */
         .calibration-box {
-            background: #fff3cd; /* Hafif sarı arka plan */
+            background: #fff3cd; 
             border-left: 5px solid #ffc107;
             padding: 20px;
             border-radius: 12px;
             margin-bottom: 30px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        /* GÜNCELLEME: Kalibrasyon metnini iki yana yasla */
+        .calibration-box p {
+            text-align: justify;
         }
 
         /* --- DETAYLI PUANLAMA TABLOSU --- */
@@ -88,6 +100,7 @@
             padding: 15px;
             border-bottom: 1px solid #eee;
             vertical-align: top;
+            text-align: left; /* Tablo içeriği solda kalsın, daha okunaklı olur */
         }
         .rating-guide-table tr:last-child td { border-bottom: none; }
         
