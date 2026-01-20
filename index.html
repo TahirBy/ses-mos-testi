@@ -25,15 +25,34 @@
             line-height: 1.6; 
         }
 
+        /* ===== PROGRESS BAR (ALWAYS VISIBLE) ===== */
         .progress-container {
-            position: fixed; top: 0; left: 0; width: 100%; height: 8px; background-color: #ddd; z-index: 1000;
+            position: fixed; top: 0; left: 0; width: 100%; height: 8px; background-color: #ddd; z-index: 2000;
         }
         .progress-bar {
-            height: 100%; background-color: var(--success-color); width: 0%; transition: width 0.3s ease;
+            height: 100%; background-color: var(--danger-color); width: 0%; transition: width 0.25s ease, background-color 0.25s ease;
         }
+
+        /* Small floating progress pill */
         .progress-text {
-            position: fixed; top: 10px; right: 20px; background: rgba(0,0,0,0.7); color: white; 
-            padding: 5px 10px; border-radius: 15px; font-size: 0.8em; z-index: 1001;
+            position: fixed; top: 10px; right: 20px; background: rgba(0,0,0,0.78); color: white; 
+            padding: 6px 10px; border-radius: 16px; font-size: 0.82em; z-index: 2001;
+            user-select: none;
+        }
+
+        /* Optional left panel for extra clarity */
+        .progress-panel{
+            position: fixed;
+            top: 10px;
+            left: 20px;
+            background: rgba(255,255,255,0.92);
+            border: 1px solid #e5e5e5;
+            border-radius: 10px;
+            padding: 6px 10px;
+            font-size: 0.85em;
+            z-index: 2001;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            user-select: none;
         }
 
         h1 { text-align: center; color: var(--primary-color); margin-bottom: 5px; }
@@ -61,7 +80,6 @@
             text-align: justify; 
         }
 
-
         .calibration-box {
             background: #fff3cd; 
             border-left: 5px solid #ffc107;
@@ -75,7 +93,6 @@
             text-align: justify;
         }
 
-        
         .rating-guide-table {
             width: 100%;
             border-collapse: collapse;
@@ -111,7 +128,6 @@
         .score-2 { background-color: #e67e22; }
         .score-1 { background-color: #c0392b; }
 
-        
         .sample-card { 
             background: var(--card-bg); padding: 25px; margin-bottom: 25px; border-radius: 12px; 
             box-shadow: 0 2px 8px rgba(0,0,0,0.06); transition: all 0.3s ease; border: 1px solid transparent;
@@ -128,7 +144,6 @@
         .form-group label { font-weight: bold; display: block; margin-bottom: 8px; color: #2c3e50; }
         input[type="text"], select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
 
-        
         .rating-container { 
             background: #fafafa; padding: 15px; border-radius: 10px; text-align: center; 
             border: 1px solid #eee; transition: all 0.3s;
@@ -163,15 +178,20 @@
         @media (max-width: 600px) {
             .form-row { grid-template-columns: 1fr; }
             .rating-guide-table th, .rating-guide-table td { padding: 10px 5px; font-size: 0.85em; }
+            .progress-panel{ display:none; } /* optional: hide left panel on small screens */
         }
     </style>
 </head>
 <body>
 
+    <!-- Always-visible progress UI -->
     <div class="progress-container">
         <div class="progress-bar" id="progressBar"></div>
     </div>
-    <div class="progress-text" id="progressText">0%</div>
+    <div class="progress-panel" id="progressPanel">
+        <strong>İlerleme:</strong> <span id="progressLabel">0 / 0</span>
+    </div>
+    <div class="progress-text" id="progressText">0 / 0 (0%)</div>
 
     <h1>Konuşma Sıkıştırma Kalite Testi<span class="en-sub">(Speech Compression Quality Test)</span></h1>
     <p class="subtitle">Subjektif Değerlendirme (MOS Testi) <span class="en-sub">(Subjective Evaluation - MOS Test)</span></p>
@@ -259,6 +279,7 @@
             <audio controls src="audio/sample_01_original_1.wav" style="max-width: 400px;"></audio>
         </div>
     </div>
+
     <form id="mos-form">
         <input type="hidden" name="Sure_Saniye" id="durationInput">
 
@@ -288,7 +309,7 @@
             <span class="en-sub">(Preparing audio files...)</span>
         </div>
 
-        <button type="submit" id="submit-btn">
+        <button type="submit" id="submit-btn" disabled>
             Testi Tamamla ve Gönder <br> 
             <span class="en-sub" style="color:white; font-size:0.8em;">(Complete Test and Submit)</span>
         </button>
@@ -300,17 +321,12 @@
     </div>
 
     <script>
-        
         const scriptURL = 'https://script.google.com/macros/s/AKfycbys0EXNGfyYc7OT3w8-DBDazw9CyPiQjRFCv2i-u-jHppF0aANUx5TQaYxkQ5KMUDwv/exec';
 
-        
         const indexler = ['01', '02', '09', '13', '14', '16', '18', '20', '22', '26', '28', '29', '50', '53', '70', '75', '82', '84', '95', '98'];
         const varyasyonlar = ["original_1", "recon_0_8", "recon_1_6", "recon_3_2", "recon_4"];
 
-        
         const startTime = Date.now();
-
-        
         let oynatmaListesi = [];
 
         indexler.forEach(idx => {
@@ -323,7 +339,6 @@
             });
         });
 
-        
         function karistir(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -334,9 +349,8 @@
 
         oynatmaListesi = karistir(oynatmaListesi);
 
-        
         const container = document.getElementById('audio-container');
-        container.innerHTML = ""; 
+        container.innerHTML = "";
         container.classList.remove("loading");
 
         oynatmaListesi.forEach((item, index) => {
@@ -390,38 +404,63 @@
             container.innerHTML += htmlContent;
         });
 
-        
-
+        // Unlock rating after play
         window.unlockRating = function(elementId) {
-            const container = document.getElementById(elementId);
-            if (container.classList.contains('locked')) {
-                container.classList.remove('locked');
-                const inputs = container.querySelectorAll('input');
-                inputs.forEach(input => input.disabled = false);
+            const c = document.getElementById(elementId);
+            if (c.classList.contains('locked')) {
+                c.classList.remove('locked');
+                c.querySelectorAll('input').forEach(input => input.disabled = false);
             }
         };
 
+        // Progress update: shows answered/total and % + color thresholds; enables submit only when complete
         window.updateProgress = function() {
             const total = oynatmaListesi.length;
             const answered = document.querySelectorAll('input[type="radio"]:checked').length;
             const percentage = Math.round((answered / total) * 100);
-            document.getElementById('progressBar').style.width = percentage + "%";
-            document.getElementById('progressText').innerText = percentage + "%";
+
+            const bar = document.getElementById('progressBar');
+            const text = document.getElementById('progressText');
+            const label = document.getElementById('progressLabel');
+            const submitBtn = document.getElementById('submit-btn');
+
+            bar.style.width = percentage + "%";
+            text.innerText = `${answered} / ${total} (${percentage}%)`;
+            if (label) label.innerText = `${answered} / ${total}`;
+
+            // Color thresholds
+            if (percentage < 34) bar.style.backgroundColor = "var(--danger-color)";
+            else if (percentage < 67) bar.style.backgroundColor = "var(--warning-color)";
+            else bar.style.backgroundColor = "var(--success-color)";
+
+            // Enable submit only when fully answered
+            if (submitBtn) submitBtn.disabled = (answered !== total);
         };
 
-        
+        // Initialize progress UI once cards are created
+        updateProgress();
+
         const form = document.getElementById('mos-form');
         const submitBtn = document.getElementById('submit-btn');
 
         form.addEventListener('submit', e => {
             e.preventDefault();
-            
+
+            const total = oynatmaListesi.length;
+            const answered = document.querySelectorAll('input[type="radio"]:checked').length;
+
+            // Safety: prevent partial submission
+            if (answered !== total) {
+                alert(`Lütfen tüm sesleri puanlayınız. (${answered}/${total})\n\nPlease rate all audios.`);
+                return;
+            }
+
             const endTime = Date.now();
             const durationSeconds = Math.round((endTime - startTime) / 1000);
             document.getElementById('durationInput').value = durationSeconds;
 
             submitBtn.innerHTML = "Sonuçlar Sunucuya Gönderiliyor... <br> <span class='en-sub' style='color:white;'>(Sending results to server...)</span>";
-            submitBtn.style.backgroundColor = "#f39c12"; 
+            submitBtn.style.backgroundColor = "#f39c12";
             submitBtn.disabled = true;
 
             const formData = new FormData(form);
@@ -430,19 +469,16 @@
                 .then(response => {
                     alert("✅ İşlem Tamamlandı!\nTüm puanlarınız başarıyla kaydedildi.\n\n(Process Completed! Scores saved successfully.)");
                     submitBtn.innerHTML = "Gönderildi ✅ <br> <span class='en-sub' style='color:white;'>(Submitted)</span>";
-                    submitBtn.style.backgroundColor = "#27ae60"; 
+                    submitBtn.style.backgroundColor = "#27ae60";
                 })
                 .catch(error => {
                     console.error('Hata', error);
                     alert("❌ Hata oluştu! / Error occurred!");
                     submitBtn.innerHTML = "Tekrar Dene / Try Again";
-                    submitBtn.style.backgroundColor = "#c0392b"; 
+                    submitBtn.style.backgroundColor = "#c0392b";
                     submitBtn.disabled = false;
                 });
         });
     </script>
 </body>
 </html>
-
-
-
