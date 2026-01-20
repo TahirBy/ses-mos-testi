@@ -5,24 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Speech Compression Quality Test (MOS)</title>
     <style>
-        :root { 
-            --primary-color: #2c3e50; 
-            --accent-color: #3498db; 
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #3498db;
             --success-color: #27ae60;
             --warning-color: #f39c12;
             --danger-color: #c0392b;
-            --bg-color: #f0f2f5; 
+            --bg-color: #f0f2f5;
             --card-bg: #ffffff;
         }
 
-        body { 
-            font-family: 'Segoe UI', 'Roboto', Helvetica, Arial, sans-serif; 
-            background-color: var(--bg-color); 
-            color: #333; 
-            max-width: 900px; 
-            margin: 0 auto; 
-            padding: 60px 20px 40px 20px; 
-            line-height: 1.6; 
+        body {
+            font-family: 'Segoe UI', 'Roboto', Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 20px 40px 20px;
+            line-height: 1.6;
         }
 
         /* ===== PROGRESS BAR (ALWAYS VISIBLE) ===== */
@@ -35,7 +35,7 @@
 
         /* Small floating progress pill */
         .progress-text {
-            position: fixed; top: 10px; right: 20px; background: rgba(0,0,0,0.78); color: white; 
+            position: fixed; top: 10px; right: 20px; background: rgba(0,0,0,0.78); color: white;
             padding: 6px 10px; border-radius: 16px; font-size: 0.82em; z-index: 2001;
             user-select: none;
         }
@@ -57,41 +57,39 @@
 
         h1 { text-align: center; color: var(--primary-color); margin-bottom: 5px; }
         .subtitle { text-align: center; color: #7f8c8d; margin-bottom: 30px; font-weight: 500; }
-        
+
         .en-sub {
             display: block; font-size: 0.85em; font-style: italic; color: #7f8c8d; font-weight: normal; margin-top: 3px;
         }
         .subtitle .en-sub { font-size: 0.9em; }
 
-        .info-box { 
-            background: var(--card-bg); padding: 25px; border-radius: 12px; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 25px; 
-            border-left: 5px solid var(--accent-color); 
+        .info-box {
+            background: var(--card-bg); padding: 25px; border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 25px;
+            border-left: 5px solid var(--accent-color);
         }
 
-        .info-box p { 
-            margin-bottom: 15px; 
-            text-align: justify; 
+        .info-box p {
+            margin-bottom: 15px;
+            text-align: justify;
         }
         .info-box ul { padding-left: 20px; }
-        
-        .info-box li { 
-            margin-bottom: 8px; 
-            text-align: justify; 
+
+        .info-box li {
+            margin-bottom: 8px;
+            text-align: justify;
         }
 
         .calibration-box {
-            background: #fff3cd; 
+            background: #fff3cd;
             border-left: 5px solid #ffc107;
             padding: 20px;
             border-radius: 12px;
             margin-bottom: 30px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
-        
-        .calibration-box p {
-            text-align: justify;
-        }
+
+        .calibration-box p { text-align: justify; }
 
         .rating-guide-table {
             width: 100%;
@@ -114,10 +112,10 @@
             padding: 15px;
             border-bottom: 1px solid #eee;
             vertical-align: top;
-            text-align: left; 
+            text-align: left;
         }
         .rating-guide-table tr:last-child td { border-bottom: none; }
-        
+
         .score-badge {
             display: inline-block; width: 32px; height: 32px; line-height: 32px;
             text-align: center; border-radius: 50%; color: white; font-weight: bold; font-size: 1.1em;
@@ -128,14 +126,14 @@
         .score-2 { background-color: #e67e22; }
         .score-1 { background-color: #c0392b; }
 
-        .sample-card { 
-            background: var(--card-bg); padding: 25px; margin-bottom: 25px; border-radius: 12px; 
+        .sample-card {
+            background: var(--card-bg); padding: 25px; margin-bottom: 25px; border-radius: 12px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.06); transition: all 0.3s ease; border: 1px solid transparent;
         }
         .sample-card:hover { transform: translateY(-2px); box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
-        .sample-header { 
-            display: flex; justify-content: space-between; align-items: center; 
-            border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 20px; 
+        .sample-header {
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 20px;
         }
         .sample-title { font-weight: bold; font-size: 1.1em; color: #444; }
 
@@ -144,8 +142,8 @@
         .form-group label { font-weight: bold; display: block; margin-bottom: 8px; color: #2c3e50; }
         input[type="text"], select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
 
-        .rating-container { 
-            background: #fafafa; padding: 15px; border-radius: 10px; text-align: center; 
+        .rating-container {
+            background: #fafafa; padding: 15px; border-radius: 10px; text-align: center;
             border: 1px solid #eee; transition: all 0.3s;
         }
         .rating-container.locked {
@@ -156,8 +154,8 @@
             display: block; font-size: 0.8em; color: var(--danger-color); margin-top: 10px; font-weight: bold;
         }
         .rating-group { display: flex; justify-content: space-between; gap: 5px; flex-wrap: wrap; }
-        .rating-label { 
-            cursor: pointer; flex: 1; display: flex; flex-direction: column; align-items: center; 
+        .rating-label {
+            cursor: pointer; flex: 1; display: flex; flex-direction: column; align-items: center;
             padding: 10px 5px; border-radius: 8px; transition: background 0.2s; min-width: 60px;
         }
         .rating-label:hover { background-color: #e8f4fd; }
@@ -165,9 +163,9 @@
         .rating-val { font-weight: bold; font-size: 1.1em; color: var(--primary-color); }
         .rating-desc { font-size: 0.75em; color: #666; line-height: 1.2; margin-top: 4px; }
 
-        button#submit-btn { 
-            width: 100%; padding: 18px; background-color: var(--accent-color); color: white; border: none; 
-            border-radius: 8px; font-size: 1.1em; font-weight: bold; cursor: pointer; transition: all 0.3s; margin-top: 30px; 
+        button#submit-btn {
+            width: 100%; padding: 18px; background-color: var(--accent-color); color: white; border: none;
+            border-radius: 8px; font-size: 1.1em; font-weight: bold; cursor: pointer; transition: all 0.3s; margin-top: 30px;
         }
         button#submit-btn:hover { background-color: #2980b9; transform: translateY(-2px); }
         button:disabled { background-color: #95a5a6; cursor: not-allowed; transform: none; }
@@ -178,7 +176,7 @@
         @media (max-width: 600px) {
             .form-row { grid-template-columns: 1fr; }
             .rating-guide-table th, .rating-guide-table td { padding: 10px 5px; font-size: 0.85em; }
-            .progress-panel{ display:none; } /* optional: hide left panel on small screens */
+            .progress-panel{ display:none; }
         }
     </style>
 </head>
@@ -202,7 +200,7 @@
             Bu çalışma, geliştirilen özgün bir konuşma sıkıştırma yönteminin algısal başarısını belirlemek amacıyla gerçekleştirilmektedir. Sizlerden beklenen, sunulan ses örneklerini dikkatlice dinleyerek, duyduğunuz sesin kalitesini belirtilen kriterlere göre puanlamanızdır. Katkılarınız için teşekkür ederiz.
             <span class="en-sub">This study is conducted to determine the perceptual performance of a developed speech compression method. You are expected to listen carefully to the presented audio samples and rate the quality of the sound you hear according to the specified criteria. Thank you for your contributions.</span>
         </p>
-        
+
         <h3>🎧 Test Yönergesi <span class="en-sub">(Test Instructions)</span></h3>
         <ul>
             <li>Lütfen testi <strong>kulaklık</strong> ile ve sessiz bir ortamda gerçekleştiriniz.
@@ -305,12 +303,12 @@
         </div>
 
         <div id="audio-container" class="loading">
-            Ses dosyaları hazırlanıyor... <br> 
+            Ses dosyaları hazırlanıyor... <br>
             <span class="en-sub">(Preparing audio files...)</span>
         </div>
 
         <button type="submit" id="submit-btn" disabled>
-            Testi Tamamla ve Gönder <br> 
+            Testi Tamamla ve Gönder <br>
             <span class="en-sub" style="color:white; font-size:0.8em;">(Complete Test and Submit)</span>
         </button>
     </form>
@@ -323,12 +321,19 @@
     <script>
         const scriptURL = 'https://script.google.com/macros/s/AKfycbys0EXNGfyYc7OT3w8-DBDazw9CyPiQjRFCv2i-u-jHppF0aANUx5TQaYxkQ5KMUDwv/exec';
 
+        // === DİKKAT: Sheet header'ına şunları ekle:
+        // anchor_1, anchor_2, anchor_1_repeat
+
         const indexler = ['01', '02', '09', '13', '14', '16', '18', '20', '22', '26', '28', '29', '50', '53', '70', '75', '82', '84', '95', '98'];
         const varyasyonlar = ["original_1", "recon_0_8", "recon_1_6", "recon_3_2", "recon_4"];
+
+        // Anchor havuzu (istersen ileride daha fazla anchor eklersin)
+        const anchorHavuzu = ["anchor_1", "anchor_2"];
 
         const startTime = Date.now();
         let oynatmaListesi = [];
 
+        // Normal sample'lar
         indexler.forEach(idx => {
             varyasyonlar.forEach(tur => {
                 oynatmaListesi.push({
@@ -339,6 +344,27 @@
             });
         });
 
+        // K-eleman rastgele seç (tekrarsız)
+        function pickRandomDistinct(arr, k) {
+            const a = [...arr];
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a.slice(0, Math.min(k, a.length));
+        }
+
+        // İstenen: rastgele 2 anchor test içinde çalsın (shuffle'a dahil)
+        const secilenAnchorlar = pickRandomDistinct(anchorHavuzu, 2);
+        secilenAnchorlar.forEach(a => {
+            oynatmaListesi.push({
+                dosyaYolu: `audio/${a}.wav`,
+                sutunAdi: a,                 // Sheet kolonu: anchor_1 veya anchor_2
+                benzersizID: `box_${a}`
+            });
+        });
+
+        // Fisher-Yates shuffle
         function karistir(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -347,7 +373,16 @@
             return array;
         }
 
+        // Önce karıştır
         oynatmaListesi = karistir(oynatmaListesi);
+
+        // İstenen: sonda anchor_1 bir daha çalsın
+        // Not: Aynı name="anchor_1" olursa formda çakışır; bu yüzden anchor_1_repeat
+        oynatmaListesi.push({
+            dosyaYolu: `audio/anchor_1.wav`,
+            sutunAdi: `anchor_1_repeat`,
+            benzersizID: `box_anchor_1_repeat`
+        });
 
         const container = document.getElementById('audio-container');
         container.innerHTML = "";
@@ -358,20 +393,20 @@
             <div class="sample-card">
                 <div class="sample-header">
                     <span class="sample-title">
-                        Ses Kaydı #${index + 1} 
+                        Ses Kaydı #${index + 1}
                         <span class="en-sub" style="display:inline; margin-left:5px;">(Audio Sample #${index + 1})</span>
                     </span>
                     <span style="font-weight:normal; font-size:0.8em; color:#999;">${index + 1} / ${oynatmaListesi.length}</span>
                 </div>
-                
-                <audio controls controlsList="nodownload" preload="none" 
-                       src="${item.dosyaYolu}" 
+
+                <audio controls controlsList="nodownload" preload="none"
+                       src="${item.dosyaYolu}"
                        onplay="unlockRating('${item.benzersizID}')">
                 </audio>
 
                 <div id="${item.benzersizID}" class="rating-container locked">
-                    <span class="rating-title">Kalite Puanınız: <span class="en-sub" style="display:inline;">(Your Quality Score:)</span></span>
-                    
+                    <span class="rating-title">Kaliteite Puanınız: <span class="en-sub" style="display:inline;">(Your Quality Score:)</span></span>
+
                     <div class="rating-group">
                         <label class="rating-label">
                             <input type="radio" name="${item.sutunAdi}" value="1" required disabled onchange="updateProgress()">
@@ -413,7 +448,7 @@
             }
         };
 
-        // Progress update: shows answered/total and % + color thresholds; enables submit only when complete
+        // Progress update
         window.updateProgress = function() {
             const total = oynatmaListesi.length;
             const answered = document.querySelectorAll('input[type="radio"]:checked').length;
@@ -428,12 +463,10 @@
             text.innerText = `${answered} / ${total} (${percentage}%)`;
             if (label) label.innerText = `${answered} / ${total}`;
 
-            // Color thresholds
             if (percentage < 34) bar.style.backgroundColor = "var(--danger-color)";
             else if (percentage < 67) bar.style.backgroundColor = "var(--warning-color)";
             else bar.style.backgroundColor = "var(--success-color)";
 
-            // Enable submit only when fully answered
             if (submitBtn) submitBtn.disabled = (answered !== total);
         };
 
@@ -449,7 +482,6 @@
             const total = oynatmaListesi.length;
             const answered = document.querySelectorAll('input[type="radio"]:checked').length;
 
-            // Safety: prevent partial submission
             if (answered !== total) {
                 alert(`Lütfen tüm sesleri puanlayınız. (${answered}/${total})\n\nPlease rate all audios.`);
                 return;
