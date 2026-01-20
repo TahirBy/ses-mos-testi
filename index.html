@@ -327,15 +327,20 @@
         const indexler = ['01', '02', '09', '13', '14', '16', '18', '20', '22', '26', '28', '29', '50', '53', '70', '75', '82', '84', '95', '98'];
         const varyasyonlar = ["original_1", "recon_0_8", "recon_1_6", "recon_3_2", "recon_4"];
 
-        // Anchor havuzu (istersen ileride daha fazla anchor eklersin)
+        // Sadece bu sample'ların original_1'i kalsın
+        const orijinalKalsin = new Set(["01", "02", "09"]);
+
+        // Anchor havuzu
         const anchorHavuzu = ["anchor_1", "anchor_2"];
 
         const startTime = Date.now();
         let oynatmaListesi = [];
 
-        // Normal sample'lar
+        // Normal sample'lar: original_1 sadece 01/02/09 için eklenecek
         indexler.forEach(idx => {
             varyasyonlar.forEach(tur => {
+                if (tur === "original_1" && !orijinalKalsin.has(idx)) return;
+
                 oynatmaListesi.push({
                     dosyaYolu: `audio/sample_${idx}_${tur}.wav`,
                     sutunAdi: `sample_${idx}_${tur}`,
@@ -354,7 +359,7 @@
             return a.slice(0, Math.min(k, a.length));
         }
 
-        // İstenen: rastgele 2 anchor test içinde çalsın (shuffle'a dahil)
+        // İstenen: test içinde rastgele 2 anchor çalsın (shuffle'a dahil)
         const secilenAnchorlar = pickRandomDistinct(anchorHavuzu, 2);
         secilenAnchorlar.forEach(a => {
             oynatmaListesi.push({
@@ -405,7 +410,7 @@
                 </audio>
 
                 <div id="${item.benzersizID}" class="rating-container locked">
-                    <span class="rating-title">Kaliteite Puanınız: <span class="en-sub" style="display:inline;">(Your Quality Score:)</span></span>
+                    <span class="rating-title">Kalite Puanınız: <span class="en-sub" style="display:inline;">(Your Quality Score:)</span></span>
 
                     <div class="rating-group">
                         <label class="rating-label">
