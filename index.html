@@ -21,38 +21,20 @@
             color: #333;
             max-width: 900px;
             margin: 0 auto;
-            padding: 60px 20px 40px 20px;
+            padding: 60px 20px 80px 20px; /* Alt boşluk butonlar için arttırıldı */
             line-height: 1.6;
         }
 
-        /* ===== PROGRESS BAR (ALWAYS VISIBLE) ===== */
+        /* ===== PROGRESS BAR ===== */
         .progress-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 8px; background-color: #ddd; z-index: 2000;
         }
         .progress-bar {
-            height: 100%; background-color: var(--danger-color); width: 0%; transition: width 0.25s ease, background-color 0.25s ease;
+            height: 100%; background-color: var(--danger-color); width: 0%; transition: width 0.3s ease, background-color 0.3s ease;
         }
-
-        /* Small floating progress pill */
         .progress-text {
             position: fixed; top: 10px; right: 20px; background: rgba(0,0,0,0.78); color: white;
-            padding: 6px 10px; border-radius: 16px; font-size: 0.82em; z-index: 2001;
-            user-select: none;
-        }
-
-        /* Optional left panel for extra clarity */
-        .progress-panel{
-            position: fixed;
-            top: 10px;
-            left: 20px;
-            background: rgba(255,255,255,0.92);
-            border: 1px solid #e5e5e5;
-            border-radius: 10px;
-            padding: 6px 10px;
-            font-size: 0.85em;
-            z-index: 2001;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            user-select: none;
+            padding: 6px 10px; border-radius: 16px; font-size: 0.82em; z-index: 2001; user-select: none;
         }
 
         h1 { text-align: center; color: var(--primary-color); margin-bottom: 5px; }
@@ -68,51 +50,24 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 25px;
             border-left: 5px solid var(--accent-color);
         }
-
-        .info-box p {
-            margin-bottom: 15px;
-            text-align: justify;
-        }
+        .info-box p, .info-box li { text-align: justify; margin-bottom: 10px; }
         .info-box ul { padding-left: 20px; }
 
-        .info-box li {
-            margin-bottom: 8px;
-            text-align: justify;
-        }
-
         .calibration-box {
-            background: #fff3cd;
-            border-left: 5px solid #ffc107;
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            background: #fff3cd; border-left: 5px solid #ffc107; padding: 20px;
+            border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
-
         .calibration-box p { text-align: justify; }
 
         .rating-guide-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: #fff;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            margin-bottom: 30px;
-            font-size: 0.95em;
+            width: 100%; border-collapse: collapse; background: #fff; border-radius: 12px;
+            overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 30px; font-size: 0.95em;
         }
         .rating-guide-table th {
-            background: var(--primary-color);
-            color: #fff;
-            padding: 12px;
-            text-align: left;
-            border-right: 1px solid rgba(255,255,255,0.1);
+            background: var(--primary-color); color: #fff; padding: 12px; text-align: left; border-right: 1px solid rgba(255,255,255,0.1);
         }
         .rating-guide-table td {
-            padding: 15px;
-            border-bottom: 1px solid #eee;
-            vertical-align: top;
-            text-align: left;
+            padding: 15px; border-bottom: 1px solid #eee; vertical-align: top; text-align: left;
         }
         .rating-guide-table tr:last-child td { border-bottom: none; }
 
@@ -126,11 +81,23 @@
         .score-2 { background-color: #e67e22; }
         .score-1 { background-color: #c0392b; }
 
+        /* ===== WIZARD / STEP STYLES ===== */
+        .step {
+            display: none; /* Varsayılan olarak gizli */
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        .step.active {
+            display: block; /* Sadece aktif olan görünür */
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .sample-card {
             background: var(--card-bg); padding: 25px; margin-bottom: 25px; border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06); transition: all 0.3s ease; border: 1px solid transparent;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08); border: 1px solid #eee;
         }
-        .sample-card:hover { transform: translateY(-2px); box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
         .sample-header {
             display: flex; justify-content: space-between; align-items: center;
             border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 20px;
@@ -163,33 +130,41 @@
         .rating-val { font-weight: bold; font-size: 1.1em; color: var(--primary-color); }
         .rating-desc { font-size: 0.75em; color: #666; line-height: 1.2; margin-top: 4px; }
 
-        button#submit-btn {
-            width: 100%; padding: 18px; background-color: var(--accent-color); color: white; border: none;
-            border-radius: 8px; font-size: 1.1em; font-weight: bold; cursor: pointer; transition: all 0.3s; margin-top: 30px;
+        /* ===== NAVIGATION BUTTONS ===== */
+        .nav-buttons {
+            display: flex; justify-content: space-between; margin-top: 30px;
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background: white; padding: 15px 20px; box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 1000; box-sizing: border-box;
         }
-        button#submit-btn:hover { background-color: #2980b9; transform: translateY(-2px); }
-        button:disabled { background-color: #95a5a6; cursor: not-allowed; transform: none; }
+        .nav-btn {
+            padding: 12px 25px; border: none; border-radius: 8px; font-weight: bold; font-size: 1em; cursor: pointer; transition: 0.3s;
+        }
+        .btn-prev { background-color: #ecf0f1; color: #7f8c8d; }
+        .btn-prev:hover { background-color: #bdc3c7; }
+        .btn-next { background-color: var(--accent-color); color: white; }
+        .btn-next:hover { background-color: #2980b9; transform: translateY(-2px); }
+        .btn-submit { background-color: var(--success-color); color: white; display: none; } /* Başlangıçta gizli */
+        .btn-submit:hover { background-color: #219150; transform: translateY(-2px); }
+        
+        button:disabled { background-color: #95a5a6; cursor: not-allowed; transform: none; opacity: 0.7; }
 
         .loading { text-align: center; color: #7f8c8d; font-style: italic; padding: 40px; }
-        .footer { text-align: center; font-size: 0.85em; color: #aaa; margin-top: 50px; border-top: 1px solid #eee; padding-top: 20px; }
+        .footer { text-align: center; font-size: 0.85em; color: #aaa; margin-top: 50px; border-top: 1px solid #eee; padding-top: 20px; margin-bottom: 60px; }
 
         @media (max-width: 600px) {
             .form-row { grid-template-columns: 1fr; }
             .rating-guide-table th, .rating-guide-table td { padding: 10px 5px; font-size: 0.85em; }
-            .progress-panel{ display:none; }
+            .nav-buttons { padding: 10px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Always-visible progress UI -->
     <div class="progress-container">
         <div class="progress-bar" id="progressBar"></div>
     </div>
-    <div class="progress-panel" id="progressPanel">
-        <strong>İlerleme:</strong> <span id="progressLabel">0 / 0</span>
-    </div>
-    <div class="progress-text" id="progressText">0 / 0 (0%)</div>
+    <div class="progress-text" id="progressText">Başlıyor...</div>
 
     <h1>Konuşma Sıkıştırma Kalite Testi<span class="en-sub">(Speech Compression Quality Test)</span></h1>
     <p class="subtitle">Subjektif Değerlendirme (MOS Testi) <span class="en-sub">(Subjective Evaluation - MOS Test)</span></p>
@@ -197,22 +172,9 @@
     <div class="info-box">
         <h3>📄 Çalışmanın Amacı <span class="en-sub">(Aim of the Study)</span></h3>
         <p>
-            Bu çalışma, geliştirilen özgün bir konuşma sıkıştırma yönteminin algısal başarısını belirlemek amacıyla gerçekleştirilmektedir. Sizlerden beklenen, sunulan ses örneklerini dikkatlice dinleyerek, duyduğunuz sesin kalitesini belirtilen kriterlere göre puanlamanızdır. Katkılarınız için teşekkür ederiz.
-            <span class="en-sub">This study is conducted to determine the perceptual performance of a developed speech compression method. You are expected to listen carefully to the presented audio samples and rate the quality of the sound you hear according to the specified criteria. Thank you for your contributions.</span>
+            Bu çalışma, geliştirilen özgün bir konuşma sıkıştırma yönteminin algısal başarısını belirlemek amacıyla gerçekleştirilmektedir. Sizlerden beklenen, sunulan ses örneklerini dikkatlice dinleyerek, duyduğunuz sesin kalitesini belirtilen kriterlere göre puanlamanızdır.
+            <span class="en-sub">This study is conducted to determine the perceptual performance of a developed speech compression method. You are expected to listen carefully to the presented audio samples and rate the quality of the sound you hear according to the specified criteria.</span>
         </p>
-
-        <h3>🎧 Test Yönergesi <span class="en-sub">(Test Instructions)</span></h3>
-        <ul>
-            <li>Lütfen testi <strong>kulaklık</strong> ile ve sessiz bir ortamda gerçekleştiriniz.
-                <span class="en-sub">(Please use <strong>headphones</strong> in a quiet environment.)</span>
-            </li>
-            <li><strong>Önemli:</strong> Puanlama butonlarının aktif olması için önce sesi oynatmanız gerekmektedir.
-                <span class="en-sub">(<strong>Important:</strong> You must play the audio first to enable the rating buttons.)</span>
-            </li>
-            <li>Her bir sesi dinleyip, genel konuşma kalitesini aşağıdaki rehbere göre puanlayınız.
-                <span class="en-sub">(Listen to each audio and rate the general speech quality according to the guide below.)</span>
-            </li>
-        </ul>
     </div>
 
     <table class="rating-guide-table">
@@ -227,52 +189,34 @@
             <tr>
                 <td><span class="score-badge score-5">5</span></td>
                 <td><strong>Mükemmel</strong><br><span class="en-sub">Excellent</span></td>
-                <td>
-                    Çok yüksek konuşma kalitesi. Kusurlar yok veya fark edilmeyecek düzeyde.
-                    <span class="en-sub">Very high speech quality. Imperfections are non-existent or imperceptible.</span>
-                </td>
+                <td>Çok yüksek konuşma kalitesi. Kusurlar yok veya fark edilmeyecek düzeyde.</td>
             </tr>
             <tr>
                 <td><span class="score-badge score-4">4</span></td>
                 <td><strong>İyi</strong><br><span class="en-sub">Good</span></td>
-                <td>
-                    Küçük kusurlar duyulabilir ama genel kaliteyi belirgin etkilemez. Konuşma rahat takip edilir.
-                    <span class="en-sub">Minor imperfections can be heard, but do not significantly affect the general quality. Speech is easily followed.</span>
-                </td>
+                <td>Küçük kusurlar duyulabilir ama genel kaliteyi belirgin etkilemez.</td>
             </tr>
             <tr>
                 <td><span class="score-badge score-3">3</span></td>
                 <td><strong>Orta</strong><br><span class="en-sub">Fair</span></td>
-                <td>
-                    Kusurlar belirgin. Kalite orta düzeyde, yine de konuşma anlaşılır.
-                    <span class="en-sub">Imperfections are distinct. Quality is moderate, yet speech is intelligible.</span>
-                </td>
+                <td>Kusurlar belirgin. Kalite orta düzeyde, yine de konuşma anlaşılır.</td>
             </tr>
             <tr>
                 <td><span class="score-badge score-2">2</span></td>
                 <td><strong>Kötü</strong><br><span class="en-sub">Poor</span></td>
-                <td>
-                    Kalite belirgin düşük. Artefakt/gürültü nedeniyle dinlemek çaba gerektirir.
-                    <span class="en-sub">Quality is clearly low. Listening requires effort due to artifacts/noise.</span>
-                </td>
+                <td>Kalite belirgin düşük. Artefakt/gürültü nedeniyle dinlemek çaba gerektirir.</td>
             </tr>
             <tr>
                 <td><span class="score-badge score-1">1</span></td>
                 <td><strong>Çok Kötü</strong><br><span class="en-sub">Bad</span></td>
-                <td>
-                    Kabul edilemez kalite. Konuşma sık sık anlaşılamaz veya ciddi biçimde rahatsız edicidir.
-                    <span class="en-sub">Unacceptable quality. Speech is frequently unintelligible or severely annoying.</span>
-                </td>
+                <td>Kabul edilemez kalite. Konuşma sık sık anlaşılamaz veya ciddi biçimde rahatsız edicidir.</td>
             </tr>
         </tbody>
     </table>
 
     <div class="calibration-box">
         <h3>🔊 Ses Seviyesi Ayarı (Kalibrasyon) <span class="en-sub">(Volume Adjustment - Calibration)</span></h3>
-        <p>
-            Lütfen aşağıdaki örnek sesi dinleyerek kulaklık/hoparlör ses seviyesini <strong>rahat ve net duyabileceğiniz</strong> bir düzeye ayarlayınız. Test boyunca bu seviyeyi değiştirmemeniz önerilir.
-            <span class="en-sub">Please listen to the sample audio below and adjust your headphone/speaker volume to a <strong>comfortable and clear level</strong>. It is recommended not to change this level during the test.</span>
-        </p>
+        <p>Lütfen aşağıdaki örnek sesi dinleyerek ses seviyenizi ayarlayınız.</p>
         <div style="text-align: center;">
             <audio controls src="audio/sample_02_original_1.wav" style="max-width: 400px;"></audio>
         </div>
@@ -281,66 +225,70 @@
     <form id="mos-form">
         <input type="hidden" name="Sure_Saniye" id="durationInput">
 
-        <div class="sample-card">
-            <div class="sample-header">
-                <span class="sample-title">Katılımcı Bilgisi (Zorunlu) <span class="en-sub">(Participant Info - Required)</span></span>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Adınız / Rumuzunuz: <span class="en-sub">(Name / Nickname)</span></label>
-                    <input type="text" name="Katilimci_Ismi" placeholder="Örn: Yavuz B." required>
+        <div class="step active" id="step-0">
+            <div class="sample-card">
+                <div class="sample-header">
+                    <span class="sample-title">Adım 1: Katılımcı Bilgisi <span class="en-sub">(Step 1: Participant Info)</span></span>
                 </div>
-                <div class="form-group">
-                    <label>Dinleme Ekipmanı: <span class="en-sub">(Listening Equipment)</span></label>
-                    <select name="Kulaklik_Tipi">
-                        <option value="Kablolu_Kulaklik">Kablolu Kulaklık (Wired Headphones)</option>
-                        <option value="Bluetooth_Kulaklik">Bluetooth Kulaklık (Bluetooth Headphones)</option>
-                        <option value="Hoparlor">Hoparlör (Speaker)</option>
-                        <option value="Diger">Diğer (Other)</option>
-                    </select>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Adınız / Rumuzunuz: <span class="en-sub">(Name / Nickname)</span></label>
+                        <input type="text" name="Katilimci_Ismi" id="inputName" placeholder="Örn: Yavuz B." required>
+                    </div>
+                    <div class="form-group">
+                        <label>Dinleme Ekipmanı: <span class="en-sub">(Listening Equipment)</span></label>
+                        <select name="Kulaklik_Tipi" id="inputHeadphones">
+                            <option value="Kablolu_Kulaklik">Kablolu Kulaklık (Wired Headphones)</option>
+                            <option value="Bluetooth_Kulaklik">Bluetooth Kulaklık (Bluetooth Headphones)</option>
+                            <option value="Hoparlor">Hoparlör (Speaker)</option>
+                            <option value="Diger">Diğer (Other)</option>
+                        </select>
+                    </div>
                 </div>
+                <p style="text-align:center; color:#7f8c8d; margin-top:20px;">
+                    Bilgileri girdikten sonra "İleri" butonuna basarak teste başlayabilirsiniz.
+                </p>
             </div>
         </div>
 
-        <div id="audio-container" class="loading">
-            Ses dosyaları hazırlanıyor... <br>
-            <span class="en-sub">(Preparing audio files...)</span>
+        <div id="audio-container">
+            <div class="loading">Ses dosyaları hazırlanıyor...</div>
         </div>
 
-        <button type="submit" id="submit-btn" disabled>
-            Testi Tamamla ve Gönder <br>
-            <span class="en-sub" style="color:white; font-size:0.8em;">(Complete Test and Submit)</span>
-        </button>
+        <div class="nav-buttons">
+            <button type="button" class="nav-btn btn-prev" id="prevBtn" onclick="changeStep(-1)" disabled>Geri / Back</button>
+            
+            <button type="button" class="nav-btn btn-next" id="nextBtn" onclick="changeStep(1)">İleri / Next</button>
+            
+            <button type="submit" class="nav-btn btn-submit" id="submitBtn">
+                Testi Tamamla ve Gönder / Submit
+            </button>
+        </div>
+
     </form>
 
     <div class="footer">
-        © 2026 Akademik Araştırma Grubu - Academic Research Group<br>
-        Bu çalışma bilimsel veri toplama amaçlıdır.
+        © 2026 Akademik Araştırma Grubu
     </div>
 
     <script>
         const scriptURL = 'https://script.google.com/macros/s/AKfycbys0EXNGfyYc7OT3w8-DBDazw9CyPiQjRFCv2i-u-jHppF0aANUx5TQaYxkQ5KMUDwv/exec';
 
-        // === DİKKAT: Sheet header'ına şunları ekle:
-        // anchor_1, anchor_2, anchor_1_repeat
-
+        // --- KONFİGÜRASYON ---
         const indexler = ['01', '02', '05', '09', '13', '14', '16', '18', '20', '22', '26', '28', '29', '50', '53', '70', '75', '82', '84', '95', '98'];
         const varyasyonlar = ["original_1", "recon_0_8", "recon_1_6", "recon_3_2", "recon_4"];
-
-        // Sadece bu sample'ların original_1'i kalsın
         const orijinalKalsin = new Set(["01", "02", "09"]);
-
-        // Anchor havuzu
         const anchorHavuzu = ["anchor_1", "anchor_2"];
 
+        // --- STATE YÖNETİMİ ---
         const startTime = Date.now();
         let oynatmaListesi = [];
+        let currentStep = 0; // 0: Katılımcı Bilgisi, 1+: Sesler
 
-        // Normal sample'lar: original_1 sadece 01/02/09 için eklenecek
+        // 1. LİSTE OLUŞTURMA
         indexler.forEach(idx => {
             varyasyonlar.forEach(tur => {
                 if (tur === "original_1" && !orijinalKalsin.has(idx)) return;
-
                 oynatmaListesi.push({
                     dosyaYolu: `audio/sample_${idx}_${tur}.wav`,
                     sutunAdi: `sample_${idx}_${tur}`,
@@ -349,7 +297,7 @@
             });
         });
 
-        // K-eleman rastgele seç (tekrarsız)
+        // Rastgele 2 anchor seç
         function pickRandomDistinct(arr, k) {
             const a = [...arr];
             for (let i = a.length - 1; i > 0; i--) {
@@ -358,18 +306,16 @@
             }
             return a.slice(0, Math.min(k, a.length));
         }
-
-        // İstenen: test içinde rastgele 2 anchor çalsın (shuffle'a dahil)
         const secilenAnchorlar = pickRandomDistinct(anchorHavuzu, 2);
         secilenAnchorlar.forEach(a => {
             oynatmaListesi.push({
                 dosyaYolu: `audio/${a}.wav`,
-                sutunAdi: a,                 // Sheet kolonu: anchor_1 veya anchor_2
+                sutunAdi: a,
                 benzersizID: `box_${a}`
             });
         });
 
-        // Fisher-Yates shuffle
+        // Karıştır
         function karistir(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -377,74 +323,158 @@
             }
             return array;
         }
-
-        // Önce karıştır
         oynatmaListesi = karistir(oynatmaListesi);
 
-        // İstenen: sonda anchor_1 bir daha çalsın
-        // Not: Aynı name="anchor_1" olursa formda çakışır; bu yüzden anchor_1_repeat
+        // Sona anchor repeat ekle
         oynatmaListesi.push({
             dosyaYolu: `audio/anchor_1.wav`,
             sutunAdi: `anchor_1_repeat`,
             benzersizID: `box_anchor_1_repeat`
         });
 
+        // 2. DOM OLUŞTURMA (Her biri bir .step div'i içinde)
         const container = document.getElementById('audio-container');
         container.innerHTML = "";
-        container.classList.remove("loading");
 
         oynatmaListesi.forEach((item, index) => {
+            // Step index'i = index + 1 (Çünkü 0. step katılımcı formuydu)
+            const stepIndex = index + 1;
+            
             const htmlContent = `
-            <div class="sample-card">
-                <div class="sample-header">
-                    <span class="sample-title">
-                        Ses Kaydı #${index + 1}
-                        <span class="en-sub" style="display:inline; margin-left:5px;">(Audio Sample #${index + 1})</span>
-                    </span>
-                    <span style="font-weight:normal; font-size:0.8em; color:#999;">${index + 1} / ${oynatmaListesi.length}</span>
-                </div>
+            <div class="step" id="step-${stepIndex}">
+                <div class="sample-card">
+                    <div class="sample-header">
+                        <span class="sample-title">
+                            Ses Kaydı #${index + 1}
+                            <span class="en-sub" style="display:inline; margin-left:5px;">(Audio Sample #${index + 1})</span>
+                        </span>
+                        <span style="font-weight:normal; font-size:0.8em; color:#999;">${index + 1} / ${oynatmaListesi.length}</span>
+                    </div>
 
-                <audio controls controlsList="nodownload" preload="none"
-                       src="${item.dosyaYolu}"
-                       onplay="unlockRating('${item.benzersizID}')">
-                </audio>
+                    <audio controls controlsList="nodownload" preload="none"
+                           src="${item.dosyaYolu}"
+                           onplay="unlockRating('${item.benzersizID}')">
+                    </audio>
 
-                <div id="${item.benzersizID}" class="rating-container locked">
-                    <span class="rating-title">Kalite Puanınız: <span class="en-sub" style="display:inline;">(Your Quality Score:)</span></span>
-
-                    <div class="rating-group">
-                        <label class="rating-label">
-                            <input type="radio" name="${item.sutunAdi}" value="1" required disabled onchange="updateProgress()">
-                            <span class="rating-val">1</span>
-                            <span class="rating-desc">Çok Kötü<br><i>(Bad)</i></span>
-                        </label>
-                        <label class="rating-label">
-                            <input type="radio" name="${item.sutunAdi}" value="2" disabled onchange="updateProgress()">
-                            <span class="rating-val">2</span>
-                            <span class="rating-desc">Kötü<br><i>(Poor)</i></span>
-                        </label>
-                        <label class="rating-label">
-                            <input type="radio" name="${item.sutunAdi}" value="3" disabled onchange="updateProgress()">
-                            <span class="rating-val">3</span>
-                            <span class="rating-desc">Orta<br><i>(Fair)</i></span>
-                        </label>
-                        <label class="rating-label">
-                            <input type="radio" name="${item.sutunAdi}" value="4" disabled onchange="updateProgress()">
-                            <span class="rating-val">4</span>
-                            <span class="rating-desc">İyi<br><i>(Good)</i></span>
-                        </label>
-                        <label class="rating-label">
-                            <input type="radio" name="${item.sutunAdi}" value="5" disabled onchange="updateProgress()">
-                            <span class="rating-val">5</span>
-                            <span class="rating-desc">Mükemmel<br><i>(Excellent)</i></span>
-                        </label>
+                    <div id="${item.benzersizID}" class="rating-container locked">
+                        <span class="rating-title">Kalite Puanınız: <span class="en-sub" style="display:inline;">(Your Quality Score:)</span></span>
+                        <div class="rating-group">
+                            <label class="rating-label">
+                                <input type="radio" name="${item.sutunAdi}" value="1" required disabled>
+                                <span class="rating-val">1</span>
+                                <span class="rating-desc">Çok Kötü<br><i>(Bad)</i></span>
+                            </label>
+                            <label class="rating-label">
+                                <input type="radio" name="${item.sutunAdi}" value="2" disabled>
+                                <span class="rating-val">2</span>
+                                <span class="rating-desc">Kötü<br><i>(Poor)</i></span>
+                            </label>
+                            <label class="rating-label">
+                                <input type="radio" name="${item.sutunAdi}" value="3" disabled>
+                                <span class="rating-val">3</span>
+                                <span class="rating-desc">Orta<br><i>(Fair)</i></span>
+                            </label>
+                            <label class="rating-label">
+                                <input type="radio" name="${item.sutunAdi}" value="4" disabled>
+                                <span class="rating-val">4</span>
+                                <span class="rating-desc">İyi<br><i>(Good)</i></span>
+                            </label>
+                            <label class="rating-label">
+                                <input type="radio" name="${item.sutunAdi}" value="5" disabled>
+                                <span class="rating-val">5</span>
+                                <span class="rating-desc">Mükemmel<br><i>(Excellent)</i></span>
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>`;
             container.innerHTML += htmlContent;
         });
 
-        // Unlock rating after play
+        // 3. FONKSİYONLAR
+
+        const totalSteps = oynatmaListesi.length + 1; // Form + Sesler
+
+        function showStep(n) {
+            // Tüm stepleri gizle
+            const steps = document.querySelectorAll('.step');
+            steps.forEach(s => s.classList.remove('active'));
+
+            // İstenen stepi göster
+            const target = document.getElementById(`step-${n}`);
+            if (target) target.classList.add('active');
+
+            // Butonları Yönet
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+
+            // İlk sayfadaysa Geri butonu pasif
+            if (n === 0) prevBtn.disabled = true;
+            else prevBtn.disabled = false;
+
+            // Son sayfadaysa İleri butonu gizle, Gönder göster
+            if (n === totalSteps - 1) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'block';
+            } else {
+                nextBtn.style.display = 'block';
+                submitBtn.style.display = 'none';
+            }
+
+            // Progress Bar Güncelle
+            updateProgress(n);
+            
+            // Sayfanın başına kaydır (Mobil uyumluluk için)
+            // Sadece ses kartına odaklanmak için info box'ın altına kaydırabiliriz veya en üste.
+            // window.scrollTo(0, 400); // Opsiyonel
+        }
+
+        function changeStep(direction) {
+            // İLERİ GİDERKEN VALIDASYON
+            if (direction === 1) {
+                if (!validateCurrentStep()) return;
+            }
+
+            // Step değiştir
+            currentStep += direction;
+            showStep(currentStep);
+        }
+
+        function validateCurrentStep() {
+            // Eğer Katılımcı Bilgisi ekranındaysak (Step 0)
+            if (currentStep === 0) {
+                const name = document.getElementById('inputName').value.trim();
+                if (name === "") {
+                    alert("Lütfen adınızı veya rumuzunuzu giriniz.");
+                    return false;
+                }
+                return true;
+            }
+            
+            // Eğer Ses Puanlama ekranındaysak (Step 1 ve sonrası)
+            // Hangi ses dosyasındayız? Listeden bulalım.
+            const itemIndex = currentStep - 1; // Çünkü step 1, liste[0]
+            const currentItem = oynatmaListesi[itemIndex];
+            
+            // Radyo butonlarından biri seçili mi?
+            const radios = document.getElementsByName(currentItem.sutunAdi);
+            let isChecked = false;
+            for (let r of radios) {
+                if (r.checked) {
+                    isChecked = true;
+                    break;
+                }
+            }
+
+            if (!isChecked) {
+                alert("Lütfen ilerlemeden önce bu ses kaydını puanlayınız.\n(Please rate this audio before proceeding.)");
+                return false;
+            }
+
+            return true;
+        }
+
         window.unlockRating = function(elementId) {
             const c = document.getElementById(elementId);
             if (c.classList.contains('locked')) {
@@ -453,50 +483,54 @@
             }
         };
 
-        // Progress update
-        window.updateProgress = function() {
-            const total = oynatmaListesi.length;
-            const answered = document.querySelectorAll('input[type="radio"]:checked').length;
-            const percentage = Math.round((answered / total) * 100);
+        function updateProgress(stepIndex) {
+            // stepIndex: 0 (form) ... N (son ses)
+            // Sesleri baz alarak yüzde hesaplayalım
+            // Form (0) iken %0, Son ses bitince %100 değil, o anki ilerleme.
+            
+            let percentage = 0;
+            let text = "";
+
+            if (stepIndex === 0) {
+                percentage = 0;
+                text = "Giriş / Introduction";
+            } else {
+                // Toplam ses sayısı üzerinden hesapla
+                const audioCount = oynatmaListesi.length;
+                const currentAudio = stepIndex; 
+                percentage = Math.round(((currentAudio - 1) / audioCount) * 100); 
+                // Biraz hile yapıp kullanıcıya henüz bitenleri değil içinde bulunduğu adımı gösteriyoruz
+                text = `${currentAudio} / ${audioCount}`;
+            }
 
             const bar = document.getElementById('progressBar');
-            const text = document.getElementById('progressText');
-            const label = document.getElementById('progressLabel');
-            const submitBtn = document.getElementById('submit-btn');
+            const progressText = document.getElementById('progressText');
 
             bar.style.width = percentage + "%";
-            text.innerText = `${answered} / ${total} (${percentage}%)`;
-            if (label) label.innerText = `${answered} / ${total}`;
+            progressText.innerText = text;
 
+            // Renk değişimi
             if (percentage < 34) bar.style.backgroundColor = "var(--danger-color)";
             else if (percentage < 67) bar.style.backgroundColor = "var(--warning-color)";
             else bar.style.backgroundColor = "var(--success-color)";
+        }
 
-            if (submitBtn) submitBtn.disabled = (answered !== total);
-        };
-
-        // Initialize progress UI once cards are created
-        updateProgress();
-
+        // --- SUBMIT ---
         const form = document.getElementById('mos-form');
-        const submitBtn = document.getElementById('submit-btn');
+        const submitBtn = document.getElementById('submitBtn');
 
         form.addEventListener('submit', e => {
             e.preventDefault();
+            
+            // Son adım kontrolü (Gerçi butona basamaz ama yine de)
+            if (!validateCurrentStep()) return;
 
-            const total = oynatmaListesi.length;
-            const answered = document.querySelectorAll('input[type="radio"]:checked').length;
-
-            if (answered !== total) {
-                alert(`Lütfen tüm sesleri puanlayınız. (${answered}/${total})\n\nPlease rate all audios.`);
-                return;
-            }
-
+            // Süre Hesapla
             const endTime = Date.now();
             const durationSeconds = Math.round((endTime - startTime) / 1000);
             document.getElementById('durationInput').value = durationSeconds;
 
-            submitBtn.innerHTML = "Sonuçlar Sunucuya Gönderiliyor... <br> <span class='en-sub' style='color:white;'>(Sending results to server...)</span>";
+            submitBtn.innerHTML = "Sonuçlar Gönderiliyor... <br> (Sending...)";
             submitBtn.style.backgroundColor = "#f39c12";
             submitBtn.disabled = true;
 
@@ -504,20 +538,26 @@
 
             fetch(scriptURL, { method: 'POST', body: formData})
                 .then(response => {
-                    alert("✅ İşlem Tamamlandı!\nTüm puanlarınız başarıyla kaydedildi.\n\n(Process Completed! Scores saved successfully.)");
-                    submitBtn.innerHTML = "Gönderildi ✅ <br> <span class='en-sub' style='color:white;'>(Submitted)</span>";
+                    alert("✅ İşlem Tamamlandı!\nKatılımınız için teşekkür ederiz.");
+                    submitBtn.innerHTML = "Tamamlandı ✅";
                     submitBtn.style.backgroundColor = "#27ae60";
+                    // İsterseniz burada sayfayı yenileyebilir veya teşekkür mesajı gösterebilirsiniz.
+                    document.querySelector('.nav-buttons').style.display = 'none';
+                    document.getElementById('audio-container').innerHTML = '<div style="text-align:center; padding:50px;"><h3>Test Tamamlandı. Pencereyi kapatabilirsiniz.</h3></div>';
+                    document.getElementById('step-0').style.display = 'none'; // Formu gizle
                 })
                 .catch(error => {
                     console.error('Hata', error);
-                    alert("❌ Hata oluştu! / Error occurred!");
-                    submitBtn.innerHTML = "Tekrar Dene / Try Again";
+                    alert("❌ Hata oluştu! Lütfen tekrar deneyin.");
+                    submitBtn.innerHTML = "Tekrar Dene";
                     submitBtn.style.backgroundColor = "#c0392b";
                     submitBtn.disabled = false;
                 });
         });
+
+        // Başlangıçta ilk adımı göster
+        showStep(0);
+
     </script>
 </body>
 </html>
-
-
