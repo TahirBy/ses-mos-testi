@@ -27,7 +27,7 @@
       line-height: 1.6;
     }
 
-    /* ===== PROGRESS BAR (ALWAYS VISIBLE) ===== */
+   
     .progress-container {
       position: fixed; top: 0; left: 0; width: 100%; height: 8px; background-color: #ddd; z-index: 2000;
     }
@@ -82,11 +82,9 @@
     }
     .calibration-box p { text-align: justify; }
 
-    /* ===== GUIDE HEADER (NOT STICKY) ===== */
+ 
     .sticky-guide {
-      /* position: sticky;  <-- kaldırıldı */
-      /* top: 44px;         <-- kaldırıldı */
-      /* z-index: 1500;     <-- kaldırıldı */
+
       background: rgba(255,255,255,0.96);
       border: 1px solid #eaeaea;
       border-radius: 12px;
@@ -189,11 +187,11 @@
     .rating-val { font-weight: bold; font-size: 1.1em; color: var(--primary-color); }
     .rating-desc { font-size: 0.75em; color: #666; line-height: 1.2; margin-top: 4px; }
 
-    /* ====== STEP FLOW ====== */
+
     .step-card { display: none; }
     .step-card.active { display: block; }
 
-    /* scrollIntoView'da üstte sabit UI kapatmasın (progress bar/pill için pay) */
+
     .step-card { scroll-margin-top: 80px; }
 
     .nav-row{
@@ -254,7 +252,7 @@
 </head>
 
 <body>
-  <!-- Always-visible progress UI -->
+
   <div class="progress-container">
     <div class="progress-bar" id="progressBar"></div>
   </div>
@@ -270,7 +268,7 @@
     <h3>📄 Çalışmanın Amacı <span class="en-sub">(Aim of the Study)</span></h3>
     <p>
       Bu çalışma, geliştirilen özgün bir konuşma sıkıştırma yönteminin algısal başarısını belirlemek amacıyla gerçekleştirilmektedir.
-      Sizlerden beklenen, sunulan ses örneklerini dikkatlice dinleyerek, duyduğunuz sesin kalitesini belirtilen kriterlere göre puanlamanızdır.
+      Sizlerden beklenen, sunulan ses örneklerini dikkatlice dinleyerek, duyduğunuz sesin anlaşılabilirliğini belirtilen kriterlere göre puanlamanızdır.
       Katkılarınız için teşekkür ederiz.
       <span class="en-sub">
         This study is conducted to determine the perceptual performance of a developed speech compression method.
@@ -312,7 +310,7 @@
     </div>
   </div>
 
-  <!-- BAŞLIKLAR (SABİT DEĞİL) -->
+
   <div class="sticky-guide" aria-label="Rating guide header">
     <div class="row">
       <div class="cell">
@@ -327,7 +325,7 @@
     </div>
   </div>
 
-  <!-- Rehber tablo -->
+
   <table class="rating-guide-table">
     <thead>
       <tr>
@@ -341,8 +339,8 @@
         <td><span class="score-badge score-5">5</span></td>
         <td><strong>Mükemmel</strong><br><span class="en-sub">Excellent</span></td>
         <td>
-          Çok yüksek konuşma kalitesi. Kusurlar yok veya fark edilmeyecek düzeyde.
-          <span class="en-sub">Very high speech quality. Imperfections are non-existent or imperceptible.</span>
+          Çok yüksek konuşma anlaşılabilirliği. Kusurlar yok veya fark edilmeyecek düzeyde.
+          <span class="en-sub">ery high speech intelligibility. Imperfections are non-existent or imperceptible.</span>
         </td>
       </tr>
 
@@ -441,22 +439,19 @@
   <script>
     const scriptURL = 'https://script.google.com/macros/s/AKfycbys0EXNGfyYc7OT3w8-DBDazw9CyPiQjRFCv2i-u-jHppF0aANUx5TQaYxkQ5KMUDwv/exec';
 
-    // === DİKKAT: Sheet header'ına şunları ekle:
-    // anchor_1, anchor_2, anchor_1_repeat
+
 
     const indexler = ['01', '02', '05', '09', '13', '14', '16', '18', '20', '22', '26', '28', '29', '50', '53', '70', '75', '82', '84', '95', '98'];
     const varyasyonlar = ["original_1", "recon_0_8", "recon_1_6", "recon_3_2", "recon_4"];
 
-    // Sadece bu sample'ların original_1'i kalsın
     const orijinalKalsin = new Set(["01", "02", "09"]);
 
-    // Anchor havuzu
     const anchorHavuzu = ["anchor_1", "anchor_2"];
 
     const startTime = Date.now();
     let oynatmaListesi = [];
 
-    // Normal sample'lar: original_1 sadece 01/02/09 için eklenecek
+    
     indexler.forEach(idx => {
       varyasyonlar.forEach(tur => {
         if (tur === "original_1" && !orijinalKalsin.has(idx)) return;
@@ -469,7 +464,7 @@
       });
     });
 
-    // K-eleman rastgele seç (tekrarsız)
+  
     function pickRandomDistinct(arr, k) {
       const a = [...arr];
       for (let i = a.length - 1; i > 0; i--) {
@@ -479,7 +474,6 @@
       return a.slice(0, Math.min(k, a.length));
     }
 
-    // İstenen: test içinde rastgele 2 anchor çalsın (shuffle'a dahil)
     const secilenAnchorlar = pickRandomDistinct(anchorHavuzu, 2);
     secilenAnchorlar.forEach(a => {
       oynatmaListesi.push({
@@ -489,7 +483,7 @@
       });
     });
 
-    // Fisher-Yates shuffle
+
     function karistir(array) {
       for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -498,7 +492,7 @@
       return array;
     }
 
-    // Önce karıştır
+
     oynatmaListesi = karistir(oynatmaListesi);
 
     // İstenen: sonda anchor_1 bir daha çalsın
@@ -512,14 +506,14 @@
     container.innerHTML = "";
     container.classList.remove("loading");
 
-    // ====== STEP state ======
+    
     const totalSteps = oynatmaListesi.length;
     let currentStep = 0;
 
-    // Her adım için: puanlandı mı
+    
     const rated = Array(totalSteps).fill(false);
 
-    // Kartları üret (ama sadece 1 tanesi gösterilecek)
+    
     oynatmaListesi.forEach((item, index) => {
       const htmlContent = `
         <div class="sample-card step-card" data-step="${index}">
@@ -584,7 +578,7 @@
       });
     }
 
-    // showStep: ilk açılışta scroll yapma, ilerledikçe karta kay
+
     function showStep(stepIndex, doScroll = true) {
       stepCards.forEach(c => c.classList.remove('active'));
       const card = stepCards[stepIndex];
@@ -593,7 +587,6 @@
       pauseAllAudios();
       updateNavButtons();
 
-      // Sayfa en başa çıkmasın: sadece kart görünürlüğü için kaydır (isteğe bağlı)
       if (doScroll && card) {
         card.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
@@ -614,7 +607,7 @@
       }
     }
 
-    // Unlock rating after play
+ 
     window.unlockRating = function(elementId) {
       const c = document.getElementById(elementId);
       if (c.classList.contains('locked')) {
@@ -624,14 +617,14 @@
       updateNavButtons();
     };
 
-    // Puan verildiğinde
+
     window.onRate = function(stepIndex) {
       rated[stepIndex] = true;
       updateProgress();
       updateNavButtons();
     };
 
-    // Progress update
+
     window.updateProgress = function() {
       const total = totalSteps;
       const answered = document.querySelectorAll('input[type="radio"]:checked').length;
@@ -650,7 +643,7 @@
       else bar.style.backgroundColor = "var(--success-color)";
     };
 
-    // Next click
+
     nextBtn.addEventListener('click', () => {
       if (!rated[currentStep]) {
         alert("Lütfen bu sesi puanladıktan sonra sonraki kayda geçiniz.\n\nPlease rate this audio before continuing.");
@@ -658,13 +651,13 @@
       }
       if (currentStep < totalSteps - 1) {
         currentStep += 1;
-        showStep(currentStep, true); // ilerlerken karta kaydır, ama en üste zıplatma yok
+        showStep(currentStep, true); 
       }
     });
 
-    // Initialize
+  
     updateProgress();
-    showStep(0, false); // İLK AÇILIŞTA: hoşgeldiniz görünsün, otomatik kaydırma YOK
+    showStep(0, false); 
 
     const form = document.getElementById('mos-form');
 
@@ -713,3 +706,4 @@
   </script>
 </body>
 </html>
+
