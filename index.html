@@ -82,11 +82,11 @@
     }
     .calibration-box p { text-align: justify; }
 
-    /* ===== STICKY GUIDE HEADER (ONLY TITLES) ===== */
+    /* ===== GUIDE HEADER (NOT STICKY) ===== */
     .sticky-guide {
-      position: sticky;
-      top: 44px; /* progress bar + pills alanına çarpmaması için */
-      z-index: 1500;
+      /* position: sticky;  <-- kaldırıldı */
+      /* top: 44px;         <-- kaldırıldı */
+      /* z-index: 1500;     <-- kaldırıldı */
       background: rgba(255,255,255,0.96);
       border: 1px solid #eaeaea;
       border-radius: 12px;
@@ -193,8 +193,8 @@
     .step-card { display: none; }
     .step-card.active { display: block; }
 
-    /* scrollIntoView'da üstte sticky alanlar kartı kapatmasın */
-    .step-card { scroll-margin-top: 140px; }
+    /* scrollIntoView'da üstte sabit UI kapatmasın (progress bar/pill için pay) */
+    .step-card { scroll-margin-top: 80px; }
 
     .nav-row{
       display:flex;
@@ -239,7 +239,8 @@
     button:disabled { background-color: #95a5a6; cursor: not-allowed; transform: none; }
 
     .loading { text-align: center; color: #7f8c8d; font-style: italic; padding: 40px; }
-    .footer { text-align: center; font-size: 0.85em; color: #aaa; margin-top: 50px; border-top: 1px solid #eee; padding-top: 20px; }
+
+    .footer { text-align: center; font-size: 0.95em; color: #777; margin-top: 50px; border-top: 1px solid #eee; padding-top: 20px; }
 
     @media (max-width: 600px) {
       .form-row { grid-template-columns: 1fr; }
@@ -311,7 +312,7 @@
     </div>
   </div>
 
-  <!-- SADECE BAŞLIKLAR SABİT KALSIN -->
+  <!-- BAŞLIKLAR (SABİT DEĞİL) -->
   <div class="sticky-guide" aria-label="Rating guide header">
     <div class="row">
       <div class="cell">
@@ -326,7 +327,7 @@
     </div>
   </div>
 
-  <!-- Tam rehber tablo (istersen kaldırabiliriz / gizleyebiliriz) -->
+  <!-- Rehber tablo -->
   <table class="rating-guide-table">
     <thead>
       <tr>
@@ -427,15 +428,14 @@
   </form>
 
   <div class="footer">
-    
-      <p>
-            © Bursa Teknik Üniversitesi
-            Veriler anonim olarak sadece bilimsel amaçlarla kullanılacaktır.
-      </p>
-      <p class="en-sub" style="margin-top: 5px;">
-            © Bursa Technical University
-            (Data will be used anonymously for scientific purposes only.)
-      </p>
+    <p>
+      © Bursa Teknik Üniversitesi <br>
+      Veriler anonim olarak sadece bilimsel amaçlarla kullanılacaktır.
+    </p>
+    <p class="en-sub" style="margin-top: 5px;">
+      © Bursa Technical University <br>
+      (Data will be used anonymously for scientific purposes only.)
+    </p>
   </div>
 
   <script>
@@ -502,7 +502,6 @@
     oynatmaListesi = karistir(oynatmaListesi);
 
     // İstenen: sonda anchor_1 bir daha çalsın
-    // Not: Aynı name="anchor_1" olursa formda çakışır; bu yüzden anchor_1_repeat
     oynatmaListesi.push({
       dosyaYolu: `audio/anchor_1.wav`,
       sutunAdi: `anchor_1_repeat`,
@@ -517,8 +516,8 @@
     const totalSteps = oynatmaListesi.length;
     let currentStep = 0;
 
-    // Her adım için: dinlendi mi / puanlandı mı
-    const rated  = Array(totalSteps).fill(false);
+    // Her adım için: puanlandı mı
+    const rated = Array(totalSteps).fill(false);
 
     // Kartları üret (ama sadece 1 tanesi gösterilecek)
     oynatmaListesi.forEach((item, index) => {
@@ -585,7 +584,8 @@
       });
     }
 
-    function showStep(stepIndex) {
+    // showStep: ilk açılışta scroll yapma, ilerledikçe karta kay
+    function showStep(stepIndex, doScroll = true) {
       stepCards.forEach(c => c.classList.remove('active'));
       const card = stepCards[stepIndex];
       if (card) card.classList.add('active');
@@ -593,9 +593,8 @@
       pauseAllAudios();
       updateNavButtons();
 
-      // ÖNEMLİ: Sayfanın en üstüne zıplatma yok.
-      // Sadece ilgili kart ekrana gelsin.
-      if (card) {
+      // Sayfa en başa çıkmasın: sadece kart görünürlüğü için kaydır (isteğe bağlı)
+      if (doScroll && card) {
         card.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     }
@@ -659,13 +658,13 @@
       }
       if (currentStep < totalSteps - 1) {
         currentStep += 1;
-        showStep(currentStep);
+        showStep(currentStep, true); // ilerlerken karta kaydır, ama en üste zıplatma yok
       }
     });
 
     // Initialize
     updateProgress();
-    showStep(0);
+    showStep(0, false); // İLK AÇILIŞTA: hoşgeldiniz görünsün, otomatik kaydırma YOK
 
     const form = document.getElementById('mos-form');
 
