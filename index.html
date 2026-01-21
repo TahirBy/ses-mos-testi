@@ -35,14 +35,12 @@
       height: 100%; background-color: var(--danger-color); width: 0%; transition: width 0.25s ease, background-color 0.25s ease;
     }
 
-    /* Small floating progress pill */
     .progress-text {
       position: fixed; top: 10px; right: 20px; background: rgba(0,0,0,0.78); color: white;
       padding: 6px 10px; border-radius: 16px; font-size: 0.82em; z-index: 2001;
       user-select: none;
     }
 
-    /* Optional left panel for extra clarity */
     .progress-panel{
       position: fixed;
       top: 10px;
@@ -70,17 +68,9 @@
       box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 25px;
       border-left: 5px solid var(--accent-color);
     }
-
-    .info-box p {
-      margin-bottom: 15px;
-      text-align: justify;
-    }
+    .info-box p { margin-bottom: 15px; text-align: justify; }
     .info-box ul { padding-left: 20px; }
-
-    .info-box li {
-      margin-bottom: 8px;
-      text-align: justify;
-    }
+    .info-box li { margin-bottom: 8px; text-align: justify; }
 
     .calibration-box {
       background: #fff3cd;
@@ -90,8 +80,41 @@
       margin-bottom: 30px;
       box-shadow: 0 4px 6px rgba(0,0,0,0.05);
     }
-
     .calibration-box p { text-align: justify; }
+
+    /* ===== STICKY GUIDE HEADER (ONLY TITLES) ===== */
+    .sticky-guide {
+      position: sticky;
+      top: 44px; /* progress bar + pills alanına çarpmaması için */
+      z-index: 1500;
+      background: rgba(255,255,255,0.96);
+      border: 1px solid #eaeaea;
+      border-radius: 12px;
+      padding: 10px 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+      margin: 10px 0 18px 0;
+      backdrop-filter: blur(6px);
+    }
+    .sticky-guide .row {
+      display: grid;
+      grid-template-columns: 10% 25% 1fr;
+      gap: 12px;
+      align-items: center;
+      font-weight: 700;
+      color: var(--primary-color);
+    }
+    .sticky-guide .cell {
+      font-size: 0.95em;
+      line-height: 1.1;
+    }
+    .sticky-guide .cell .sub {
+      display: block;
+      font-weight: 500;
+      font-style: italic;
+      color: #7f8c8d;
+      font-size: 0.82em;
+      margin-top: 2px;
+    }
 
     .rating-guide-table {
       width: 100%;
@@ -170,6 +193,9 @@
     .step-card { display: none; }
     .step-card.active { display: block; }
 
+    /* scrollIntoView'da üstte sticky alanlar kartı kapatmasın */
+    .step-card { scroll-margin-top: 140px; }
+
     .nav-row{
       display:flex;
       gap:12px;
@@ -221,6 +247,7 @@
       .progress-panel{ display:none; }
       .nav-row{ flex-direction: column; }
       .nav-row button{ width: 100%; }
+      .sticky-guide .row { grid-template-columns: 18% 32% 1fr; }
     }
   </style>
 </head>
@@ -268,6 +295,38 @@
     </ul>
   </div>
 
+  <div class="calibration-box">
+    <h3>🔊 Ses Seviyesi Ayarı (Kalibrasyon) <span class="en-sub">(Volume Adjustment - Calibration)</span></h3>
+    <p>
+      Lütfen aşağıdaki örnek sesi dinleyerek kulaklık/hoparlör ses seviyesini <strong>rahat ve net duyabileceğiniz</strong> bir düzeye ayarlayınız.
+      Test boyunca bu seviyeyi değiştirmemeniz önerilir.
+      <span class="en-sub">
+        Please listen to the sample audio below and adjust your headphone/speaker volume to a <strong>comfortable and clear level</strong>.
+        It is recommended not to change this level during the test.
+      </span>
+    </p>
+
+    <div style="text-align: center;">
+      <audio controls src="audio/sample_02_original_1.wav" style="max-width: 400px;"></audio>
+    </div>
+  </div>
+
+  <!-- SADECE BAŞLIKLAR SABİT KALSIN -->
+  <div class="sticky-guide" aria-label="Rating guide header">
+    <div class="row">
+      <div class="cell">
+        Puan <span class="sub">(Score)</span>
+      </div>
+      <div class="cell">
+        Kategori <span class="sub">(Category)</span>
+      </div>
+      <div class="cell">
+        Açıklama ve Koşullar <span class="sub">(Description & Conditions)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tam rehber tablo (istersen kaldırabiliriz / gizleyebiliriz) -->
   <table class="rating-guide-table">
     <thead>
       <tr>
@@ -324,22 +383,6 @@
     </tbody>
   </table>
 
-  <div class="calibration-box">
-    <h3>🔊 Ses Seviyesi Ayarı (Kalibrasyon) <span class="en-sub">(Volume Adjustment - Calibration)</span></h3>
-    <p>
-      Lütfen aşağıdaki örnek sesi dinleyerek kulaklık/hoparlör ses seviyesini <strong>rahat ve net duyabileceğiniz</strong> bir düzeye ayarlayınız.
-      Test boyunca bu seviyeyi değiştirmemeniz önerilir.
-      <span class="en-sub">
-        Please listen to the sample audio below and adjust your headphone/speaker volume to a <strong>comfortable and clear level</strong>.
-        It is recommended not to change this level during the test.
-      </span>
-    </p>
-
-    <div style="text-align: center;">
-      <audio controls src="audio/sample_02_original_1.wav" style="max-width: 400px;"></audio>
-    </div>
-  </div>
-
   <form id="mos-form" novalidate>
     <input type="hidden" name="Sure_Saniye" id="durationInput">
 
@@ -384,8 +427,15 @@
   </form>
 
   <div class="footer">
-    © 2026 Akademik Araştırma Grubu - Academic Research Group<br>
-    Bu çalışma bilimsel veri toplama amaçlıdır.
+    
+      <p>
+            © Bursa Teknik Üniversitesi
+            Veriler anonim olarak sadece bilimsel amaçlarla kullanılacaktır.
+      </p>
+      <p class="en-sub" style="margin-top: 5px;">
+            © Bursa Technical University
+            (Data will be used anonymously for scientific purposes only.)
+      </p>
   </div>
 
   <script>
@@ -468,7 +518,6 @@
     let currentStep = 0;
 
     // Her adım için: dinlendi mi / puanlandı mı
-    const played = Array(totalSteps).fill(false);
     const rated  = Array(totalSteps).fill(false);
 
     // Kartları üret (ama sadece 1 tanesi gösterilecek)
@@ -485,8 +534,7 @@
 
           <audio controls controlsList="nodownload" preload="none"
                  src="${item.dosyaYolu}"
-                 data-audio-step="${index}"
-                 onplay="unlockRating('${item.benzersizID}', ${index})">
+                 onplay="unlockRating('${item.benzersizID}')">
           </audio>
 
           <div id="${item.benzersizID}" class="rating-container locked">
@@ -542,14 +590,14 @@
       const card = stepCards[stepIndex];
       if (card) card.classList.add('active');
 
-      // adım değişince, başka sesler çalmasın
       pauseAllAudios();
-
-      // Buton durumunu güncelle
       updateNavButtons();
 
-      // daha okunur olsun diye sayfanın üstüne yakınla
-      window.scrollTo({ top: 80, behavior: 'smooth' });
+      // ÖNEMLİ: Sayfanın en üstüne zıplatma yok.
+      // Sadece ilgili kart ekrana gelsin.
+      if (card) {
+        card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }
 
     function updateNavButtons() {
@@ -567,10 +615,8 @@
       }
     }
 
-    // Unlock rating after play (ve "dinlendi" işaretle)
-    window.unlockRating = function(elementId, stepIndex) {
-      played[stepIndex] = true;
-
+    // Unlock rating after play
+    window.unlockRating = function(elementId) {
       const c = document.getElementById(elementId);
       if (c.classList.contains('locked')) {
         c.classList.remove('locked');
@@ -626,7 +672,6 @@
     form.addEventListener('submit', e => {
       e.preventDefault();
 
-      // katılımcı adı boşsa net uyarı
       const nameInput = form.querySelector('input[name="Katilimci_Ismi"]');
       if (!nameInput.value.trim()) {
         alert("Lütfen adınızı / rumuzunuzu giriniz.\n\nPlease enter your name/nickname.");
@@ -652,7 +697,7 @@
 
       const formData = new FormData(form);
 
-      fetch(scriptURL, { method: 'POST', body: formData})
+      fetch(scriptURL, { method: 'POST', body: formData })
         .then(response => {
           alert("✅ İşlem Tamamlandı!\nTüm puanlarınız başarıyla kaydedildi.\n\n(Process Completed! Scores saved successfully.)");
           submitBtn.innerHTML = "Gönderildi ✅ <br> <span class='en-sub' style='color:white;'>(Submitted)</span>";
